@@ -1,0 +1,319 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ───────────────── Fonts ───────────────── */
+@font-face {
+  font-family: "Modern Negra";
+  src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
+}
+
+/* ───────────────── Theme Tokens ───────────────── */
+@theme {
+  /* ── Color Palette ──────────────────────────────────────── */
+  --color-surface: #0a0e19;
+  --color-surface-dim: #0a0e19;
+  --color-surface-bright: #262c3d;
+  --color-surface-container-lowest: #000000;
+  --color-surface-container-low: #0f131f;
+  --color-surface-container: #141927;
+  --color-surface-container-high: #1a1f2e;
+  --color-surface-container-highest: #202535;
+  --color-surface-variant: #202535;
+  --color-surface-tint: #a3a6ff;
+
+  --color-primary: #a3a6ff;
+  --color-primary-dim: #6063ee;
+  --color-primary-container: #9396ff;
+  --color-primary-fixed: #9396ff;
+  --color-primary-fixed-dim: #8387ff;
+
+  --color-secondary: #c180ff;
+  --color-secondary-dim: #9c48ea;
+  --color-secondary-container: #6f00be;
+  --color-secondary-fixed: #e5c6ff;
+  --color-secondary-fixed-dim: #dbb4ff;
+
+  --color-tertiary: #699cff;
+  --color-tertiary-dim: #699cff;
+  --color-tertiary-container: #4388fd;
+  --color-tertiary-fixed: #8ab0ff;
+  --color-tertiary-fixed-dim: #73a2ff;
+
+  --color-error: #ff6e84;
+  --color-error-dim: #d73357;
+  --color-error-container: #a70138;
+
+  --color-on-primary: #0f00a4;
+  --color-on-primary-container: #0a0081;
+  --color-on-primary-fixed: #000000;
+  --color-on-primary-fixed-variant: #0e009d;
+
+  --color-on-secondary: #33005b;
+  --color-on-secondary-container: #e9cdff;
+  --color-on-secondary-fixed: #4f0089;
+  --color-on-secondary-fixed-variant: #7511c3;
+
+  --color-on-tertiary: #001e4a;
+  --color-on-tertiary-container: #000311;
+  --color-on-tertiary-fixed: #00163b;
+  --color-on-tertiary-fixed-variant: #00377b;
+
+  --color-on-surface: #e8eafb;
+  --color-on-surface-variant: #a7aaba;
+  --color-on-background: #e8eafb;
+  --color-on-error: #490013;
+  --color-on-error-container: #ffb2b9;
+
+  --color-background: #0a0e19;
+  --color-outline: #717583;
+  --color-outline-variant: #444855;
+
+  --color-inverse-surface: #faf8ff;
+  --color-inverse-on-surface: #515562;
+  --color-inverse-primary: #494bd7;
+
+  --color-foreground: #e8eafb;
+
+  /* Semantic colors */
+  --color-muted: #a7aaba;
+  --color-border: #2a2f45;
+  --color-ring: #a3a6ff;
+
+  /* Radius scale */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-modern-negra: "Modern Negra", sans-serif;
+  --font-serif: "DM Serif Text", serif;
+
+  /* Shadows */
+  --shadow-glow-primary: 0 10px 30px rgba(163, 166, 255, 0.3);
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.25);
+
+  /* Spacing system (IMPORTANT ADDITION) */
+  --space-section: 6rem;
+}
+
+/* ───────────────── shadcn bridge ───────────────── */
+:root {
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+  --primary: var(--color-primary);
+  --secondary: var(--color-secondary);
+  --radius: var(--radius-md);
+
+  --muted: var(--color-muted);
+  --border: var(--color-border);
+  --ring: var(--color-ring);
+}
+
+/* ───────────────── Base Layer ───────────────── */
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  /* Selection */
+  ::selection {
+    background: var(--color-primary);
+    color: black;
+  }
+
+  /* Scrollbar */
+  .hide-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  /* Reduced motion (keep as-is but cleaner) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+/* ───────────────── Core Utilities ───────────────── */
+
+/* ───────── Layout ───────── */
+@utility flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@utility col-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@utility abs-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ───────── Gradients ───────── */
+@utility gradient-primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+}
+
+@utility text-gradient {
+  @apply gradient-primary;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility radial-gradient {
+  background: radial-gradient(
+    circle at center,
+    #434343 0%,
+    #000 60%,
+    transparent 100%
+  );
+}
+
+/* ───────── Surfaces / Effects ───────── */
+@utility glass-panel {
+  background: rgba(20, 25, 39, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@utility masked-img {
+  mask-image: url("/images/mask-img.png");
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 50%;
+}
+
+/* ───────── Interaction ───────── */
+@utility focus-glow {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary);
+  }
+}
+
+@utility click-scale {
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/* ───────── Inputs ───────── */
+@utility input-base {
+  @apply h-12 rounded-xl border border-outline-variant/20
+         bg-surface-container-highest text-sm
+         text-on-surface placeholder:text-outline/60
+         transition-all duration-200
+         focus-visible:border-primary/40
+         focus-visible:ring-4 focus-visible:ring-primary/10
+         aria-invalid:border-error/40 aria-invalid:ring-error/10;
+}
+
+/* ───────── Buttons ───────── */
+@utility btn-primary {
+  @apply h-12 w-full rounded-xl text-sm font-semibold
+         bg-linear-to-r from-primary to-secondary
+         text-white shadow-glow-primary
+         transition-all duration-200
+         hover:brightness-110 active:scale-[0.98]
+         disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* ───────── Cards ───────── */
+@utility card-glass {
+  @apply rounded-xl border border-border/10
+         bg-surface-container/80 backdrop-blur-xl;
+}
+
+/* ───────── Typography ───────── */
+@utility label-base {
+  @apply text-[11px] font-bold uppercase tracking-widest text-muted;
+}
+
+/* ───────── Links ───────── */
+@utility link-primary {
+  @apply text-primary font-semibold transition-colors hover:text-secondary;
+}
+
+/* ───────────────── Components Layer ───────────────── */
+@layer components {
+  main {
+    @apply w-full overflow-x-hidden;
+  }
+
+  /* NAV */
+  #nav {
+    @apply fixed top-0 left-0 z-50 w-full py-4 glass-panel;
+
+    div {
+      @apply container mx-auto flex justify-between gap-5 px-5;
+    }
+
+    p {
+      @apply font-modern-negra text-3xl;
+    }
+
+    ul {
+      @apply flex-center gap-7 lg:gap-12;
+    }
+
+    a {
+      @apply text-base cursor-pointer;
+    }
+  }
+
+  /* HERO */
+  #hero {
+    @apply relative min-h-dvh w-full;
+
+    h1 {
+      @apply mt-40 text-center font-modern-negra leading-none
+             text-8xl md:mt-32 md:text-[20vw];
+    }
+  }
+
+  /* NOISE */
+  .noisy {
+    @apply bg-[url("/images/noise.png")];
+  }
+
+  /* ABOUT */
+  #about {
+    @apply container mx-auto px-5;
+
+    .tilted-card-demo-text {
+      @apply rounded-lg bg-[#8a8a89] px-1 py-px text-white opacity-80;
+    }
+  }
+}

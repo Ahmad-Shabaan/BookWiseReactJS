@@ -1,0 +1,19 @@
+if there are many children
+useGSAP(() => {
+  const q = gsap.utils.selector(containerRef);
+  gsap.from(q(".card"), {
+    opacity: 0,
+    y: 40,
+    stagger: 0.12,
+  });
+}, { scope: containerRef });
+
+
+// React
+let el = useRef();
+let q = gsap.utils.selector(el);
+
+useEffect(() => {
+  // uses el.current.querySelectorAll() internally
+  gsap.to(q(".box"), { x: 100 });
+}, []);
