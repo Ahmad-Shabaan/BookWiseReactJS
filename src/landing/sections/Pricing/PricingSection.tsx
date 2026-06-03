@@ -11,9 +11,10 @@ const PricingSection = () => {
     <section
       className="py-24 sm:py-28 md:py-32 bg-background relative"
       ref={sectionRef}
+      id="pricing"
     >
       <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-        <div className="flex flex-col items-center mb-12 sm:mb-16">
+        <div className="flex flex-col items-center">
           <SectionTitle title="Simple Pricing" align="center" />
         </div>
 

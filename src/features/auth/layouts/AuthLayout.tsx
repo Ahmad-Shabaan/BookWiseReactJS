@@ -1,52 +1,10 @@
 import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 import { Outlet } from "react-router-dom";
+import { useLoginFormAnimation } from "../animations/form.animation";
 
 const AuthLayout = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      tl.fromTo(
-        "[data-animate='orb']",
-        { opacity: 0, scale: 0.6 },
-        { opacity: 1, scale: 1, duration: 0.8, stagger: 0.12 },
-      )
-        .fromTo(
-          "[data-animate='brand']",
-          { opacity: 0, x: -30 },
-          { opacity: 1, x: 0, duration: 0.6 },
-          "-=0.55",
-        )
-        // .fromTo(
-        //   "[data-animate='card']",
-        //   { opacity: 0, y: 40 },
-        //   { opacity: 1, y: 0, duration: 0.7 },
-        //   "-=0.7",
-        // )
-        .fromTo(
-          "[data-animate='header'] > *",
-          { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
-          "-=0.4",
-        )
-        .fromTo(
-          "[data-animate='form'] > *",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.55, stagger: 0.08 },
-          "-=0.45",
-        );
-      return () => {
-        tl.kill();
-      };
-    },
-    { scope: containerRef },
-  );
+  useLoginFormAnimation({ sectionRef: containerRef });
   return (
     <div
       ref={containerRef}

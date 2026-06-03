@@ -15,7 +15,7 @@ const PublicOnlyRoute = () => {
 
   // If already authenticated, they don't need to see the public only pages.
   // Send them to their dashboard or home.
-  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  return isAuthenticated ? <Navigate to="/library" replace /> : <Outlet />;
 };
 
 export default PublicOnlyRoute;

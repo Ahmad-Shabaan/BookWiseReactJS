@@ -26,7 +26,7 @@ const RoleRoute = ({ roles } : { roles: string[] }) => {
 
   // If they have the role, render children via Outlet. 
   // Else redirect them to a generic dashboard or generic unauthorized handling.
-  return hasRequiredRole ? <Outlet /> : <Navigate to="/dashboard" replace />;
+  return hasRequiredRole ? <Outlet /> : <Navigate to="/library" replace />;
 };
 
 export default RoleRoute;

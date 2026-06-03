@@ -58,7 +58,7 @@ const MarketingSection = () => {
             <div className="absolute -inset-6 bg-linear-to-tr from-primary/20 to-secondary/20 blur-[120px] pointer-events-none" />
 
             <div
-              className="section-image relative bg-surface-container-highest rounded-3xl sm:rounded-4xl p-3 sm:p-4 shadow-[0_30px_60px_rgba(0,0,0,0.5)] rotate-2"
+              className="section-image relative bg-surface-container-highest rounded-3xl sm:rounded-4xl p-3 sm:p-4 shadow-soft rotate-2"
               style={{ willChange: "transform, opacity" }}
             >
               <img

@@ -24,7 +24,6 @@ type MotionConfig = {
   x?: number;
 };
 
-// my code
 const createMovingUp = (config?: MotionConfig) => {
   return {
     y: config?.y ?? 30,

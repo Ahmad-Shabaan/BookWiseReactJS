@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 // import { store } from './store/store.ts';
@@ -15,18 +15,22 @@ import "./index.css";
 // import App from './App.tsx'
 import router from "./routes/index.tsx";
 
+import { Suspense } from "react";
+import Loading from "./shared/components/common/Loading.tsx";
+
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <QueryClientProvider client={queryClient}>
-          {/* <App /> */}
+  // <StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <QueryClientProvider client={queryClient}>
+        <Suspense fallback={<Loading/>}>
           <RouterProvider router={router} />
-          <Toaster />
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      </PersistGate>
-    </Provider>
-  </StrictMode>
+        </Suspense>
+        <Toaster position="top-right" />
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </PersistGate>
+  </Provider>,
+  // {/* </StrictMode> */}
 );

@@ -17,3 +17,575 @@ useEffect(() => {
   // uses el.current.querySelectorAll() internally
   gsap.to(q(".box"), { x: 100 });
 }, []);
+
+
+
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Ahmad-Shabaan/BookWiseReactJS.git
+git push -u origin main
+
+
+
+
+### `useEffectEvent` معمول لإيه أصلًا؟
+
+هو معمول لـ 3 حالات بس 👇
+
+---
+
+### 1️⃣ Event handlers
+
+زي:
+
+* `onClick`
+* `onSubmit`
+* `onChange`
+
+مثال:
+
+```ts
+const handleClick = useEffectEvent(() => {
+  console.log(state);
+});
+```
+
+👉 لما المستخدم يضغط، ياخد **أحدث state** بدون re-renders
+
+---
+
+### 2️⃣ Callbacks بتتبعت لـ children
+
+```tsx
+<Child onSave={handleSave} />
+```
+
+وبيمنع مشاكل الـ stale closures
+
+---
+
+### 3️⃣ حل مشكلة **stale closures**
+
+يعني:
+
+* function ماسكة قيمة قديمة من state
+* وعايزها دايمًا تشوف أحدث قيمة
+
+---
+
+2️⃣ socket / observer / callback خارجي
+
+const onMessage = useEffectEvent((msg) => {
+  dispatch(handleMessage(msg));
+});
+
+----
+ **الخلاصة**
+`useEffectEvent`:
+
+* ❌ مش trigger
+* ❌ مش بديل لـ `useEffect`
+* ✅ بس للـ events
+
+useEffectEvent للأحداث فقط
+
+متى لا أستخدمه؟
+
+❌ لما:
+
+تكون القيمة هي اللي بتحرك المنطق
+زي:
+React Query data
+props
+URL params
+Redux selectors
+---
+
+
+
+
+في React Query:
+
+لو الـ action “toggle UI state” → استخدم mutate
+لو الـ action “workflow مهم” → استخدم mutateAsync
+
+
+
+
+
+
+ // example for optimistic update
+  // const useAddToWishList = useMutation({
+  //   mutationFn: addToWishList,
+  //   onMutate(bookId) {
+  //     // save old data for rollback
+  //     // const oldWishList = queryClient.getQueryData(["wishlist"]);
+  //     const oldBook: Book | undefined = queryClient.getQueryData(
+  //       BOOKS_QUERY_KEYS.details(bookId.toString()),
+  //     );
+  //     // optimistically update the wishlist in the cache
+  //     queryClient.setQueryData(
+  //       BOOKS_QUERY_KEYS.details(bookId.toString()),
+  //       (book: Book) => {
+  //         return { ...book, isWished: true };
+  //       },
+  //     );
+
+  //     return () => {
+  //       queryClient.setQueryData(
+  //         BOOKS_QUERY_KEYS.details(bookId.toString()),
+  //         oldBook,
+  //       );
+  //     };
+  //     //   dispatch(optimisticToggle(variables));
+  //   },
+  //   onError(error, bookId, rollback) {
+  //     if (rollback) rollback();
+  //     console.error("Failed to update wishlist:", error);
+  //     dispatch(revertToggle(bookId));
+  //   },
+  //   onSuccess(bookId) {
+  //     queryClient.invalidateQueries({
+  //       queryKey: BOOKS_QUERY_KEYS.details(bookId.toString()),
+  //       exact: false,
+  //     });
+  //     //   dispatch(optimisticToggle(bookId));
+  //   },
+  // });
+
+
+
+
+
+
+الـ debounce فكرته بسيطة جدًا:
+
+كل مرة تناديه →
+❌ يلغي التايمر القديم
+✅ يعمل تايمر جديد
+لو مفيش نداءات جديدة خلال delay
+→ ينفذ الفنكشن مرة واحدة فقط بآخر قيم
+
+يعني:
+
+الشرط المهم: لازم يكون عندك debounce واحد ثابت
+
+الـ debounce لازم يعيش بين الكليكات
+مش يتخلق من جديد كل مرة
+
+❌ لو اتخلق من جديد
+→ كل نسخة ليها timer خاص
+→ كلهم يشتغلوا
+→ requests كتير في نفس 
+
+Goal	What to use
+Center grid when space exists	place-content-center
+
+
+features/
+├── books/          browse + details
+├── wishlist/       wishlist state + UI
+├── basket/         cart state + UI
+├── checkout/       full checkout flow (validate + order + payment)
+└── orders/         order history + details
+
+
+
+
+
+colors 
+Variant
+  Borders
+  Dividers
+  Subtle backgrounds
+Tint
+  Effects
+  Focus rings
+  Active states
+
+
+  متى تستخدم كل واحد؟
+primary → زر أساسي
+primary-dim → Hover / Disabled
+primary-container → خلفية Badge أو Section مميز
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ملخص القرارين
+✅ basketId → useSyncExternalStore اختيار ممتاز
+useSyncExternalStore للـ read-only أو external-owned state
+
+
+❌ theme → useState + useEffect هو الصح
+useState للـ interactive UI state
+
+
+
+
+Auto refresh
+Auto-refresh while user is idle:
+
+keeps session alive silently
+BUT:
+wastes backend calls
+fails in sleeping tabs anyway
+can desync tokens
+
+  const expiresAt = useAppSelector((state) => state.auth.expiresAt);
+  // const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+
+in logout delete it 
+      // if (timerRef.current) clearTimeout(timerRef.current);
+
+ // ── Auto-refresh scheduler ─────────────────────────────
+  const scheduleRefresh = (expiresIn: number) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    const refreshIn = (expiresIn - 30) * 1000; // 30s before expiry
+
+    timerRef.current = setTimeout(async () => {
+      try {
+        const { data } = await refreshApi();
+        dispatch(setUser({ user, expiresIn: data.expiresIn }));
+        scheduleRefresh(data.expiresIn); // reschedule
+      } catch {
+        dispatch(clearUser()); // refresh failed → logout
+      }
+    }, refreshIn);
+  };
+
+  // Restart timer if store is rehydrated (e.g. page refresh)
+  useEffect(() => {
+    if (expiresAt) {
+      const remaining = Math.floor((expiresAt - Date.now()) / 1000);
+      if (remaining > 0) scheduleRefresh(remaining);
+      else dispatch(clearUser());
+    }
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // run once on mount
+
+  
+
+
+---
+
+# 🧠 Idea of this setup
+
+You will have **2 tokens**:
+
+### 🍪 1. Auth cookie (HttpOnly)
+
+* used for login
+* NOT readable by JS
+
+### 🔐 2. CSRF token (readable)
+
+* used only for mutating requests
+* sent in header
+
+---
+
+# 🟦 BACKEND (ASP.NET Core)
+
+## 1️⃣ Generate CSRF token + set cookie
+
+```csharp id="csrf1"
+public IActionResult GetCsrfToken()
+{
+    var csrfToken = Guid.NewGuid().ToString("N");
+
+    Response.Cookies.Append("csrf_token", csrfToken, new CookieOptions
+    {
+        HttpOnly = false, // IMPORTANT: JS must read it
+        Secure = true,
+        SameSite = SameSiteMode.None,
+        Expires = DateTime.UtcNow.AddHours(1)
+    });
+
+    return Ok(new { csrfToken });
+}
+```
+
+---
+
+## 2️⃣ Validate CSRF on backend
+
+Create middleware or filter:
+
+```csharp id="csrf2"
+public class CsrfMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public CsrfMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task Invoke(HttpContext context)
+    {
+        var method = context.Request.Method;
+
+        if (method == "POST" || method == "PUT" || method == "DELETE")
+        {
+            var cookieToken = context.Request.Cookies["csrf_token"];
+            context.Request.Headers.TryGetValue("X-CSRF-TOKEN", out var headerToken);
+
+            if (string.IsNullOrEmpty(cookieToken) || cookieToken != headerToken)
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("CSRF validation failed");
+                return;
+            }
+        }
+
+        await _next(context);
+    }
+}
+```
+
+---
+
+## 3️⃣ Register middleware
+
+```csharp id="csrf3"
+app.UseMiddleware<CsrfMiddleware>();
+```
+
+---
+
+## 4️⃣ Cookie auth example (your login)
+
+```csharp id="csrf4"
+Response.Cookies.Append("access_token", token, new CookieOptions
+{
+    HttpOnly = true,
+    Secure = true,
+    SameSite = SameSiteMode.None
+});
+```
+
+---
+
+# 🟨 FRONTEND (React + Axios)
+
+## 1️⃣ Read CSRF cookie
+
+```ts id="csrf5"
+function getCookie(name: string) {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith(name + "="))
+    ?.split("=")[1];
+}
+```
+
+---
+
+## 2️⃣ Axios instance
+
+```ts id="csrf6"
+import axios from "axios";
+
+const axiosClient = axios.create({
+  baseURL: "https://your-api.com",
+  withCredentials: true,
+});
+```
+
+---
+
+## 3️⃣ Attach CSRF token to requests
+
+```ts id="csrf7"
+axiosClient.interceptors.request.use((config) => {
+  const csrf = getCookie("csrf_token");
+
+  if (csrf) {
+    config.headers["X-CSRF-TOKEN"] = csrf;
+  }
+
+  return config;
+});
+```
+
+---
+
+## 4️⃣ Call backend to initialize CSRF
+
+```ts id="csrf8"
+useEffect(() => {
+  axiosClient.get("/csrf/token");
+}, []);
+```
+
+---
+
+# 🧠 Final flow
+
+## 1️⃣ User opens site
+
+```
+GET /csrf/token
+```
+
+## 2️⃣ Backend sets:
+
+```
+csrf_token=abc123 (NOT HttpOnly)
+access_token=xyz (HttpOnly)
+```
+
+## 3️⃣ Frontend:
+
+* reads csrf_token from cookie
+* sends it in header
+
+## 4️⃣ Backend:
+
+* compares header vs cookie
+* allows request if match
+
+---
+
+# 🔥 Important security notes
+
+## ✔ Why CSRF token is NOT HttpOnly here
+
+Because frontend MUST read it.
+
+---
+
+## ⚠️ But don’t worry
+
+Even if attacker knows CSRF token:
+
+* they cannot read HttpOnly auth cookie
+* browser still enforces origin rules
+
+---
+
+# 🚀 Production tips (important)
+
+### ✔ Always add:
+
+```csharp
+Secure = true
+```
+
+### ✔ Use HTTPS only
+
+### ✔ Add CORS correctly:
+
+```csharp
+.AllowCredentials()
+.WithOrigins("https://your-vercel-app.vercel.app")
+```
+
+---
+
+# 🧠 Final recommendation
+
+For your architecture:
+
+### ✔ This is correct:
+
+* SameSite = None
+* HttpOnly auth cookie
+* CSRF token in readable cookie
+* header validation
+
+### ✔ BUT simpler alternative exists:
+
+* SameSite = Lax
+* NO CSRF needed
+
+
+
+
+
+
+
+
+
+
+Object fun
+
+          return Object.values(error.response.data.errors).flat().join(" ");
+{
+  "errors": {
+    "Email": ["Email is required", "Email is invalid"],
+    "Password": ["Password is too short"]
+  }
+}
+
+
+
+
+
+
+
+  useEffect(() => {
+    const debounced = debouncedUpdateRef.current;
+
+    return () => {
+      // Cleanup on unmount: clear any pending debounce timers
+      debounced.cancel?.();
+    };
+  }, []);
+
+
+  
+debounce fun for search
+  const prevHadSearchRef = useRef(false);
+
+  // useEffect(() => {
+  //   const t = setTimeout(() => {
+  //     const next = new URLSearchParams(searchParams);
+  //     const hadSearchBefore = prevHadSearchRef.current;
+  //     if (query.trim()) {
+  //       next.set("search", query.trim());
+  //       prevHadSearchRef.current = true;
+  //       if (!hadSearchBefore) next.set("page", "1");
+  //     } else if (!query.trim() && hadSearchBefore) {
+  //       next.delete("search");
+  //       next.set("page", "1");
+  //       prevHadSearchRef.current = false;
+  //     }
+
+  //     setSearchParams(next, { replace: true });
+  //   }, DEBOUNCE_MS);
+
+  //   return () => clearTimeout(t);
+  // }, [query, searchParams, setSearchParams]);
+
+
+
+
+
+
+
+  pointer event
+      // e: React.PointerEvent<HTMLButtonElement>
+    // const value = (e.target as HTMLButtonElement).value;

@@ -13,8 +13,8 @@ const UserFlowSection = () => {
       ref={sectionRef}
     >
       <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-        <div className="flex flex-col items-center mb-16 sm:mb-20">
-          <Badge variant="outline" className="mb-4">
+        <div className="flex flex-col items-center">
+          <Badge variant="outline" className="mb-2 px-4 py-1">
             Process
           </Badge>
           <SectionTitle
@@ -41,7 +41,7 @@ const UserFlowSection = () => {
               key={i}
               className="step-item relative z-10 flex flex-col items-center text-center max-w-72 mx-auto group will-change-transform"
             >
-              <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full bg-surface-container border border-outline-variant/15 flex items-center justify-center text-2xl sm:text-3xl font-black text-on-surface-variant group-hover:text-primary group-hover:border-primary/50 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.3)] mb-6 sm:mb-8">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full bg-surface-container border border-outline-variant/15 flex items-center justify-center text-2xl sm:text-3xl font-black text-on-surface-variant group-hover:text-primary group-hover:border-primary/50 transition-all duration-300 shadow-soft mb-6 sm:mb-8">
                 {step.num}
               </div>
               <h3 className="text-lg sm:text-xl md:text-lg lg:text-2xl font-bold mb-3 sm:mb-4 text-on-surface tracking-tight">

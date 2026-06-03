@@ -1,33 +1,70 @@
 import { useEffect, useRef, useState } from "react";
+import {
+  Menu,
+  X,
+  Heart,
+  ShoppingBasket,
+  UserIcon,
+  LogOutIcon,
+  Sun,
+  Moon,
+} from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Link } from "react-router-dom";
-import gsap from "gsap";
-import { Bell, Menu, X } from "lucide-react";
+import { useGetBasketCount } from "@/features/basket/hooks/useBasket";
+import { useMobileMenuAnimation, useNavAnimation } from "./navbar.animation";
+import { mergeWishlistCount } from "@/features/wishlist/store/wishlistSlice";
+import { useGetWishlistCount } from "@/features/wishlist/hooks/useWishlist";
+import { mergeBasketCount } from "@/features/basket/store/basketSlice";
+import { useLocation } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { Spinner } from "@/components/ui/spinner";
+import useTheme from "@/shared/hooks/useTheme";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const NAV_LINKS = [
   { label: "Discover", to: "/" },
   { label: "Library", to: "/library" },
-  { label: "Collections", to: "/collections" },
-  { label: "Community", to: "/community" },
+  { label: "Collections", to: "/#collections" },
+  { label: "Pricing", to: "/#pricing" },
 ];
 const Navbar = () => {
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const [basketId] = useState<string | null>(localStorage.getItem("basketId"));
   const navRef = useRef<HTMLElement>(null);
-  // ✅ FIX: Added mobile menu state — previously nav items were `hidden md:flex`
-  // with no mobile alternative. Users on phones had no way to navigate.
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { data: wishlistCount } = useGetWishlistCount(isAuthenticated);
+  const { data: basketCount } = useGetBasketCount(basketId!, isAuthenticated);
+  const { logout, isLoggingOut } = useAuth();
+  const [theme, toggleTheme] = useTheme();
+  const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
+  const wishListCountState = useAppSelector(
+    (state) => state.wishlist.wishlistCount,
+  );
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        navRef.current,
-        { y: -100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2 },
-      );
-    });
+    if (wishlistCount !== undefined) {
+      dispatch(mergeWishlistCount(wishlistCount));
+    }
+  }, [wishlistCount, dispatch]);
 
-    // ✅ FIX: The original had no cleanup. GSAP contexts must be reverted
-    // on unmount to prevent memory leaks (tweens holding refs to detached DOM).
-    return () => ctx.revert();
-  }, []);
+  useEffect(() => {
+    if (basketCount !== undefined) {
+      dispatch(mergeBasketCount(basketCount));
+    }
+  }, [basketCount, dispatch]);
+
+  //animations
+  useNavAnimation({ sectionRef: navRef });
+  useMobileMenuAnimation({ sectionRef: navRef, active: mobileOpen });
 
   // Close mobile menu on route change / escape key
   useEffect(() => {
@@ -38,15 +75,25 @@ const Navbar = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileOpen]);
+
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 w-full z-50 bg-background/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] border-b border-white/5"
-      // ✅ A11Y: role="navigation" + aria-label for screen readers
+      className="fixed top-0 w-full z-50 bg-background/70 backdrop-blur-xl shadow-soft border-b border-border"
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-350 w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 flex justify-between items-center h-16 sm:h-18 md:h-20">
+      <div className="relative z-30 container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 flex justify-between items-center h-16 md:h-20">
         {/* Brand */}
         <Link
           to="/"
@@ -54,39 +101,139 @@ const Navbar = () => {
         >
           BookWise
         </Link>
-
         {/* Desktop nav links */}
-        <div className="hidden md:flex gap-6 lg:gap-8 items-center">
+        <div className="hidden lg:flex gap-6 lg:gap-8 items-center">
           {NAV_LINKS.map(({ label, to }) => (
-            <Link
-              key={label}
+            <HashLink
+              smooth
+              key={label + to}
               to={to}
-              className="font-inter tracking-tight text-sm lg:text-base font-bold text-on-surface-variant hover:text-on-surface transition-colors duration-300 first:text-primary first:border-b-2 first:border-primary first:pb-0.5"
+              className={`font-inter tracking-tight text-sm lg:text-base font-bold text-on-surface hover:text-on-surface transition-colors duration-300 ${pathname === to ? "border-b border-primary text-primary" : ""}`}
             >
               {label}
-            </Link>
+            </HashLink>
           ))}
         </div>
-
         {/* Right controls */}
-        <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
-          <button
-            className="text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors duration-300 active:scale-95"
-            aria-label="Notifications"
+        <div className="flex items-center gap-3 sm:gap-4 md:gap-6 text-on-surface">
+          <Link
+            to="/library/basket"
+            style={
+              {
+                "--count": `"${!basketCount ? 0 : basketCount > 9 ? "9+" : basketCount}"`,
+              } as React.CSSProperties
+            }
+            className={`relative text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors duration-300 active:scale-95
+            aria-label="Notifications
+            before:content-(--count)
+            before:absolute
+            before:top-0 
+            before:right-0
+            before:size-4
+            md:before:min-w-5
+            md:before:h-5
+            before:px-1
+            before:flex 
+            before:items-center 
+            before:justify-center
+            before:rounded-full
+            before:bg-primary-dim
+          before:text-white
+            before:text-[10px]
+            md:before:text-xs
+            before:font-medium
+            md:before:font-bold
+            `}
+            aria-label="Add to cart"
           >
-            <Bell size={18} className="sm:w-5 sm:h-5" />
-          </button>
-
-          <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden border-2 border-outline-variant/15 hover:border-primary/50 transition-colors cursor-pointer shrink-0">
-            <img
-              alt="User profile"
-              className="w-full h-full object-cover"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwUgAKKTV61TXsG7P0E70fv68_nLKzbR6i2Q6OdAlX2hEpTDAFihyT4HiZ_DmsOpzbyDnAyRTkkYByxD7VSz7YNOJP3HVYGQS4fjfGMEGQSkevtP1hXmt04z7iYzujjlZHx-6GqCDJ6RBHrY3Es7-EKK1nHQdzRTQzdFKCVbqxjP8uak9M38iVQ1kLMZxSMxBdNo4SOoU4aJ5Bux8VZzgvvO-QYh94_xBfF46Bs4CmcCxbUITdbn9AGwEzx78wZNOeR43IPHHW2V0"
-            />
+            <ShoppingBasket className="size-5 md:size-7 text-on-surface" />
+          </Link>
+          <Link
+            to="/library/wishlisted"
+            aria-label="Add to wishlist"
+            style={
+              {
+                "--count": `"${!wishListCountState ? 0 : wishListCountState > 9 ? "9+" : wishListCountState}"`,
+              } as React.CSSProperties
+            }
+            className={`relative text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors duration-300 active:scale-95"
+            aria-label="Notifications
+            before:content-(--count)
+            before:absolute
+            before:top-0 
+            before:right-0
+            before:size-4
+            md:before:min-w-5
+            md:before:h-5
+            before:px-1
+            before:flex 
+            before:items-center 
+            before:justify-center
+            before:rounded-full
+            before:bg-primary-dim before:text-white
+            before:text-[10px]
+            md:before:text-xs
+            before:font-medium
+            md:before:font-bold
+            `}
+          >
+            <Heart className="size-5 md:size-7 text-on-surface" />
+          </Link>
+          <div className="hidden lg:block h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden border-2 border-outline-variant/15 hover:border-primary/50 transition-colors cursor-pointer shrink-0">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <img
+                  alt="User profile"
+                  className="w-8 h-8 sm:w-10 sm:h-10 object-cover"
+                  src="/icons/user.png"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {isAuthenticated && (
+                  <DropdownMenuItem>
+                    <UserIcon />
+                    Profile
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem onClick={toggleTheme}>
+                  {theme === "light" ? (
+                    <>
+                      <Moon /> Dark Mode
+                    </>
+                  ) : (
+                    <>
+                      <Sun /> Light Mode
+                    </>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {!isAuthenticated ? (
+                  <DropdownMenuItem>
+                    <Link to="/login" className="flex-center gap-2">
+                      <LogOutIcon />
+                      Login in
+                    </Link>
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem onClick={logout} variant="destructive">
+                    {isLoggingOut ? (
+                      <>
+                        <Spinner /> Logging out
+                      </>
+                    ) : (
+                      <>
+                        <LogOutIcon />
+                        Log out
+                      </>
+                    )}
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           {/* ✅ NEW: Hamburger button — only visible on mobile */}
           <button
-            className=" md:hidden text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors active:scale-95"
+            className="lg:hidden text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors active:scale-95"
             onClick={() => setMobileOpen((v) => !v)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
@@ -97,29 +244,77 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/*
-        ✅ NEW: Mobile dropdown menu.
-        Uses CSS max-height transition for a smooth open/close without GSAP
-        (keeps this lightweight — GSAP is overkill for a simple disclosure).
-        `overflow-hidden` + `max-h-0`→`max-h-64` gives a smooth slide-down.
-      */}
       <div
         id="mobile-menu"
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          mobileOpen ? "max-h-72 border-t border-white/5" : "max-h-0"
-        }`}
+        className={`container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 lg:hidden fixed inset-0 ${mobileOpen ? "h-dvh" : "h-0"}  will-change-transform bg-background`}
       >
-        <div className="px-4 py-4 space-y-1 bg-background/90 backdrop-blur-xl">
+        <div
+          className={`flex flex-col items-start pt-4 pb-12 h-full space-y-1 overflow-y-scroll hide-scrollbar`}
+        >
           {NAV_LINKS.map(({ label, to }) => (
-            <Link
-              key={label}
-              to={to}
-              onClick={() => setMobileOpen(false)}
-              className="block px-4 py-3 rounded-xl font-bold text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
-            >
-              {label}
-            </Link>
+            <div className="nav-link" key={label}>
+              <Link to={to} onClick={() => setMobileOpen(false)}>
+                {label}
+              </Link>
+            </div>
           ))}
+          {isAuthenticated && (
+            <div className="nav-link">
+              <button className="flex items-center gap-2 cursor-not-allowed">
+                Profile
+                <UserIcon size={16} />
+              </button>
+            </div>
+          )}
+          <div className="nav-link">
+            <button
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => {
+                toggleTheme();
+                setMobileOpen(false);
+              }}
+            >
+              {theme === "light" ? (
+                <>
+                  Dark Mode
+                  <Moon size={16} />
+                </>
+              ) : (
+                <>
+                  Light Mode
+                  <Sun size={16} />
+                </>
+              )}
+            </button>
+          </div>
+          <div className="nav-link">
+            {!isAuthenticated ? (
+              <Link to="/login" className="flex-center gap-2">
+                <LogOutIcon />
+                Login in
+              </Link>
+            ) : (
+              <button
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => {
+                  logout();
+                  setMobileOpen(false);
+                }}
+              >
+                {isLoggingOut ? (
+                  <>
+                    Logging out
+                    <Spinner fontSize={16} />
+                  </>
+                ) : (
+                  <>
+                    Log out
+                    <LogOutIcon size={16} />
+                  </>
+                )}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </nav>

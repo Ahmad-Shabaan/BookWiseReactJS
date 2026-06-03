@@ -20,12 +20,13 @@ import { signupSchema, type SignupFormValues } from "../schemas/signup.schema";
 import FieldWrapper from "./FieldWrapper";
 import type { SignupFormProps } from "../types/auth.types";
 import SectionDivider from "./SectionDivider";
+import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
 
 export default function SignupForm({
   onSubmit,
   isLoading = false,
-  error = null,
-  serverErrors = null,
+  error,
+  isSignupError = false,
 }: SignupFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -64,9 +65,10 @@ export default function SignupForm({
       noValidate
     >
       {/* ── Server error — identical to LoginForm ── */}
-      {serverErrors ? (
+      {isSignupError && <ErrorMessage msg={error} />}
+      {/* {isSignupError ? (
         <div>
-          {serverErrors.map((err, idx) => (
+          {er.map((err, idx) => (
             <div
               key={idx}
               role="alert"
@@ -89,7 +91,7 @@ export default function SignupForm({
             {error}
           </div>
         )
-      )}
+      )} */}
 
       {/* ════════════════════════════════════════
           SECTION — Personal Info

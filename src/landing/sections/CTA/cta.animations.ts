@@ -6,7 +6,6 @@ import type React from "react";
 export function useCTAAnimation( sectionRef : React .RefObject<HTMLDivElement | null>) {
   useGSAP(
     () => {
-      // ✅ FIX: Respect reduced-motion
       if (prefersReducedMotion()) return;
 
       const tl = gsap.timeline({
@@ -20,7 +19,6 @@ export function useCTAAnimation( sectionRef : React .RefObject<HTMLDivElement | 
       tl.from(".cta-content", {
         ...motion.movingUpCinematic,
         scale: 0.96,
-        // ✅ PERF: clear inline styles after animation to avoid stale transforms
         clearProps: "scale,y,opacity",
       });
 

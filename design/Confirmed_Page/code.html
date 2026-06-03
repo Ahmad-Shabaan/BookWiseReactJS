@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BookWise - Order Confirmed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#8ab0ff",
+                    "tertiary-fixed-dim": "#73a2ff",
+                    "inverse-on-surface": "#515562",
+                    "outline-variant": "#444855",
+                    "surface-bright": "#262c3d",
+                    "on-primary-fixed": "#000000",
+                    "tertiary": "#699cff",
+                    "primary-fixed-dim": "#8387ff",
+                    "on-tertiary": "#001e4a",
+                    "on-surface-variant": "#a7aaba",
+                    "on-secondary": "#33005b",
+                    "tertiary-container": "#4388fd",
+                    "error": "#ff6e84",
+                    "on-tertiary-fixed": "#00163b",
+                    "on-secondary-container": "#e9cdff",
+                    "error-container": "#a70138",
+                    "on-secondary-fixed-variant": "#7511c3",
+                    "inverse-surface": "#faf8ff",
+                    "surface-container-high": "#1a1f2e",
+                    "on-background": "#e8eafb",
+                    "outline": "#717583",
+                    "primary": "#a3a6ff",
+                    "surface-container-highest": "#202535",
+                    "secondary-fixed-dim": "#dbb4ff",
+                    "on-error-container": "#ffb2b9",
+                    "background": "#0a0e19",
+                    "secondary-fixed": "#e5c6ff",
+                    "secondary-container": "#6f00be",
+                    "on-primary": "#0f00a4",
+                    "on-primary-container": "#0a0081",
+                    "surface-variant": "#202535",
+                    "error-dim": "#d73357",
+                    "surface-tint": "#a3a6ff",
+                    "on-error": "#490013",
+                    "on-tertiary-container": "#000311",
+                    "secondary-dim": "#9c48ea",
+                    "primary-fixed": "#9396ff",
+                    "surface-container-lowest": "#000000",
+                    "surface-container": "#141927",
+                    "surface-dim": "#0a0e19",
+                    "on-primary-fixed-variant": "#0e009d",
+                    "primary-dim": "#6063ee",
+                    "tertiary-dim": "#699cff",
+                    "secondary": "#c180ff",
+                    "surface": "#0a0e19",
+                    "primary-container": "#9396ff",
+                    "on-tertiary-fixed-variant": "#00377b",
+                    "on-secondary-fixed": "#4f0089",
+                    "on-surface": "#e8eafb",
+                    "inverse-primary": "#494bd7",
+                    "surface-container-low": "#0f131f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": [
+                            "Inter", "sans-serif"
+                    ],
+                    "display": [
+                            "Inter", "sans-serif"
+                    ],
+                    "body": [
+                            "Inter", "sans-serif"
+                    ],
+                    "label": [
+                            "Inter", "sans-serif"
+                    ]
+            },
+            "fontSize": {}
+    },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.on-surface');
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Ethereal Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.surface-container-lowest');
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-container-highest');
+            border-radius: theme('borderRadius.full');
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline-variant');
+        }
+
+        .glass-panel {
+            background: rgba(26, 31, 46, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(68, 72, 85, 0.15);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, theme('colors.primary') 0%, theme('colors.secondary') 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-border-b {
+            position: relative;
+        }
+        .gradient-border-b::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(68, 72, 85, 0.3), transparent);
+        }
+
+        .signature-gradient {
+            background: linear-gradient(135deg, theme('colors.primary'), theme('colors.secondary'));
+        }
+        .signature-text-gradient {
+            background: linear-gradient(135deg, theme('colors.primary'), theme('colors.secondary'));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .ambient-shadow {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-primary/30 selection:text-primary bg-background text-on-surface relative overflow-x-hidden">
+<!-- Header -->
+<header class="w-full px-8 py-4 flex justify-between items-center z-50 glass-panel border-b-0 gradient-border-b sticky top-0">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black tracking-tighter gradient-text">BookWise</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors text-sm font-medium tracking-wide" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors text-sm font-medium tracking-wide" href="#">Catalog</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors text-sm font-medium tracking-wide" href="#">About Us</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 relative group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform duration-200">favorite</span>
+<span class="absolute -top-1 -right-1 bg-error text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">1</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 relative group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform duration-200" data-icon="shopping_bag">shopping_bag</span>
+<span class="absolute -top-1 -right-1 bg-error text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 group">
+<span class="text-sm font-bold tracking-wider group-hover:text-primary">AR</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-300 group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform duration-200">person</span>
+</button>
+</div>
+</header>
+<!-- Ambient Background Effects -->
+<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+<div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-secondary/5 blur-[150px]"></div>
+</div>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center relative z-10 px-4 py-16 md:py-24">
+<div class="w-full max-w-2xl flex flex-col items-center justify-center animate-fade-in-up" style="animation: fadeInUp 0.8s ease-out forwards;">
+<!-- Success Icon -->
+<div class="mb-10 relative group">
+<div class="absolute inset-0 rounded-full signature-gradient opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-700"></div>
+<div class="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center relative z-10 ambient-shadow border border-outline-variant/15 shadow-inner">
+<span class="material-symbols-outlined text-5xl signature-text-gradient" style="font-variation-settings: 'FILL' 1;">
+                        check_circle
+                    </span>
+</div>
+</div>
+<!-- Headlines -->
+<h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 text-center text-on-surface">
+                Order Confirmed!
+            </h1>
+<p class="text-on-surface-variant text-lg mb-12 text-center font-medium max-w-md">
+                Your order has been placed successfully. A confirmation email has been sent to your inbox.
+            </p>
+<!-- Order Details Card -->
+<div class="w-full glass-panel rounded-2xl p-8 mb-12 ambient-shadow shadow-[0_10px_30px_rgba(0,0,0,0.2)] flex flex-col md:flex-row justify-around items-center gap-8 md:gap-4 relative overflow-hidden">
+<!-- Subtle internal highlight -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+<div class="text-center z-10">
+<span class="block text-xs uppercase tracking-[0.05em] text-on-surface-variant font-semibold mb-2">Order Number</span>
+<span class="block text-2xl font-bold tracking-tight text-on-surface">#BKW-8924</span>
+</div>
+<!-- Vertical separator (visible on md) / Horizontal (visible on mobile) -->
+<div class="hidden md:block w-px h-16 bg-outline-variant/15 z-10"></div>
+<div class="block md:hidden w-16 h-px bg-outline-variant/15 z-10"></div>
+<div class="text-center z-10">
+<span class="block text-xs uppercase tracking-[0.05em] text-on-surface-variant font-semibold mb-2">Total Processed</span>
+<span class="block text-2xl font-bold tracking-tight text-primary">10,050.00 EGP</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="w-full max-w-sm flex flex-col gap-4">
+<button class="w-full py-4 px-6 rounded-xl signature-gradient text-on-primary font-bold tracking-wide hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background ambient-shadow flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">
+                        receipt_long
+                    </span>
+                    View My Orders
+                </button>
+<button class="w-full py-4 px-6 rounded-xl bg-surface-container-highest border border-outline-variant/30 text-primary font-semibold tracking-wide hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 flex items-center justify-center gap-2">
+                    Continue Shopping
+                    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">
+                        arrow_forward
+                    </span>
+</button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-8 bg-surface-container-low border-t border-outline-variant/15 flex flex-col md:flex-row justify-between items-center gap-6 mt-auto z-20 relative">
+<div class="text-lg font-bold text-on-background tracking-tight">
+            BookWise
+        </div>
+<div class="flex flex-wrap gap-6 justify-center">
+<a class="font-['Inter'] text-sm tracking-wide uppercase font-semibold text-on-surface-variant hover:text-secondary transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-['Inter'] text-sm tracking-wide uppercase font-semibold text-on-surface-variant hover:text-secondary transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-['Inter'] text-sm tracking-wide uppercase font-semibold text-on-surface-variant hover:text-secondary transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Cookie Settings</a>
+<a class="font-['Inter'] text-sm tracking-wide uppercase font-semibold text-on-surface-variant hover:text-secondary transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Help Center</a>
+</div>
+<div class="text-sm text-on-surface-variant tracking-wide">
+            © 2024 BookWise. Engineered for Readers.
+        </div>
+</footer>
+</body></html>

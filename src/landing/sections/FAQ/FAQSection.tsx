@@ -23,13 +23,8 @@ const FAQSection = () => {
           {FAQS.map((faq, i) => (
             <div
               key={i}
-              className="faq-item p-6 sm:p-8 rounded-[1.25rem] sm:rounded-[1.5rem] bg-surface border border-outline-variant/15 hover:border-primary/30 transition-colors shadow-soft will-change-transform"
+              className="faq-item p-6 sm:p-8 rounded-[1.25rem] sm:rounded-3xl bg-surface border border-outline-variant/15 hover:border-primary/30 transition-colors shadow-soft will-change-transform"
             >
-              {/*
-                ✅ FIX: `text-xl` on mobile with long question strings caused
-                overflow on 320–375px phones. Scaled down to `text-base sm:text-lg
-                md:text-xl` for a smooth progression across breakpoints.
-              */}
               <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4 text-on-surface leading-snug">
                 {faq.q}
               </h3>

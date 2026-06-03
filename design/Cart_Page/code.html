@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BookWise - Shopping Cart</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#7511c3",
+                    "primary-fixed-dim": "#8387ff",
+                    "tertiary-container": "#4388fd",
+                    "on-secondary-fixed": "#4f0089",
+                    "surface-dim": "#0a0e19",
+                    "surface-container": "#141927",
+                    "on-tertiary": "#001e4a",
+                    "surface-variant": "#202535",
+                    "on-tertiary-container": "#000311",
+                    "error": "#ff6e84",
+                    "on-secondary-container": "#e9cdff",
+                    "on-error": "#490013",
+                    "primary-dim": "#6063ee",
+                    "on-surface": "#e8eafb",
+                    "surface-tint": "#a3a6ff",
+                    "inverse-surface": "#faf8ff",
+                    "secondary-dim": "#9c48ea",
+                    "secondary-fixed-dim": "#dbb4ff",
+                    "on-primary-fixed": "#000000",
+                    "surface-bright": "#262c3d",
+                    "on-primary": "#0f00a4",
+                    "on-background": "#e8eafb",
+                    "inverse-primary": "#494bd7",
+                    "background": "#0a0e19",
+                    "primary": "#a3a6ff",
+                    "tertiary": "#699cff",
+                    "surface-container-lowest": "#000000",
+                    "tertiary-fixed": "#8ab0ff",
+                    "secondary": "#c180ff",
+                    "primary-fixed": "#9396ff",
+                    "on-surface-variant": "#a7aaba",
+                    "tertiary-dim": "#699cff",
+                    "outline-variant": "#444855",
+                    "on-tertiary-fixed-variant": "#00377b",
+                    "on-primary-fixed-variant": "#0e009d",
+                    "on-primary-container": "#0a0081",
+                    "primary-container": "#9396ff",
+                    "outline": "#717583",
+                    "surface-container-high": "#1a1f2e",
+                    "surface": "#0a0e19",
+                    "error-dim": "#d73357",
+                    "secondary-container": "#6f00be",
+                    "inverse-on-surface": "#515562",
+                    "surface-container-highest": "#202535",
+                    "surface-container-low": "#0f131f",
+                    "on-tertiary-fixed": "#00163b",
+                    "on-error-container": "#ffb2b9",
+                    "tertiary-fixed-dim": "#73a2ff",
+                    "secondary-fixed": "#e5c6ff",
+                    "on-secondary": "#33005b",
+                    "error-container": "#a70138"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "display": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .signature-gradient { background: linear-gradient(135deg, #a3a6ff 0%, #c180ff 100%); }
+        .text-signature-gradient { background: linear-gradient(135deg, #a3a6ff 0%, #c180ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-surface text-on-background min-h-screen flex flex-col font-body antialiased selection:bg-primary/30 selection:text-primary">
+<!-- TopNavBar: BookWise -->
+<nav class="fixed top-0 w-full z-50 bg-[#0a0e19]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] no-line tonal-transition bg-[#0f131f] transition-all duration-300">
+<div class="flex justify-between items-center px-8 py-4 max-w-full">
+<div class="flex items-center gap-12">
+<a class="text-2xl font-black tracking-tighter bg-gradient-to-r from-[#a3a6ff] to-[#c180ff] bg-clip-text text-transparent hover:opacity-80 transition-opacity" href="#">
+                    BookWise
+                </a>
+<div class="hidden md:flex gap-8 font-['Inter'] tracking-tight">
+<a class="text-[#a7aaba] hover:text-[#e8eafb] transition-colors hover:bg-[#a3a6ff]/10 transition-all duration-300 px-3 py-2 rounded-lg" href="#">Discover</a>
+<a class="text-[#a7aaba] hover:text-[#e8eafb] transition-colors hover:bg-[#a3a6ff]/10 transition-all duration-300 px-3 py-2 rounded-lg" href="#">Library</a>
+<a class="text-[#a7aaba] hover:text-[#e8eafb] transition-colors hover:bg-[#a3a6ff]/10 transition-all duration-300 px-3 py-2 rounded-lg" href="#">Collections</a>
+<a class="text-[#a7aaba] hover:text-[#e8eafb] transition-colors hover:bg-[#a3a6ff]/10 transition-all duration-300 px-3 py-2 rounded-lg" href="#">Community</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<!-- Shopping Cart Icon (Active Intent) -->
+<button class="text-[#a3a6ff] hover:bg-[#a3a6ff]/10 transition-all duration-300 p-2 rounded-full scale-95 active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+</button>
+<button class="text-[#a7aaba] hover:text-[#e8eafb] transition-colors hover:bg-[#a3a6ff]/10 transition-all duration-300 p-2 rounded-full scale-95 active:scale-90 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/30 scale-95 active:scale-90 duration-200 hover:border-primary/50 transition-colors">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A close-up portrait of a young person in a subtly lit, modern environment. The lighting is soft and cinematic, highlighting their features against a deep, dark space-inspired background. The aesthetic is clean, professional, and sophisticated, perfectly aligned with a high-end application interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClAyik2_K-birWEbBq9K5a98HHNG_aYmrHWIqDGbYLvpxTp4BicZ9vnzuUcmscfQ4jlKVYmRpejVlZJY8UMz6tiy7gCIiTkZ8kVgdkxEr_Uu3HGhRggoG26y_Y8YpPz2fT8qZAKYeK3siOfjsENu3_LppDAIoWqGNA1F1VcymA3duGlpmDlvUbbSpHSElOXz_Mlj65beafwV2TrP7Fs1r0rihDBVTCq1JKbrXShTczoyZv7G3haa5SBveuJ0bD53SHlmPvP_mBK20"/>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-32 pb-24 px-6 md:px-12 max-w-[1400px] mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-12">
+<a class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-medium mb-6 group" href="#">
+<span class="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                Back to Library
+            </a>
+<h1 class="text-4xl md:text-5xl font-bold tracking-tight text-on-background flex items-center gap-4">
+                Your Cart
+                <span class="text-primary-dim text-2xl font-medium px-4 py-1 rounded-full bg-surface-container-high border border-outline-variant/15">3 Items</span>
+</h1>
+</div>
+<!-- Two Column Layout -->
+<div class="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+<!-- Left Column: Cart Items -->
+<div class="w-full lg:w-2/3 flex flex-col gap-6">
+<!-- Item 1 -->
+<div class="flex flex-col sm:flex-row gap-6 p-6 rounded-xl bg-surface-container-low transition-all hover:bg-surface-container">
+<div class="w-full sm:w-32 aspect-[2/3] flex-shrink-0 rounded-lg overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.3)] bg-surface-container-lowest">
+<img alt="Book Cover" class="w-full h-full object-cover" data-alt="A stylized, minimalist book cover featuring abstract geometric shapes in electric blue and vibrant purple against a deep obsidian background. The design is modern, conveying a sense of profound depth and intellectual weight. The lighting feels slightly ethereal, casting a soft glow over the sharp lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf5-8FBZueuVDuSmdYhFWjrKCQPJpVWdl-0qkqkCgV0kUk9i_sRTiUDS9elPSLRIS15SJLosEalTnfJO2ONh7eCAWuAquzDiPTmcMfr2zLe_kOvf7At-_ji2bPbHHHQeFn9f9mmCYzKhmqSG4BShaFKxoDEHY_Sp1i6zXhJSZoV18YfgKE1Uj4Lzt9OZea5CfvHqtpuW_iw_YFn8e8KwVQ2EVHEBAVObJperXZYAmCZ7UzF_2-0WfIq8txxG-gYpsd4-dfQWB5-ZU"/>
+</div>
+<div class="flex flex-col flex-grow justify-between py-2">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-xl font-semibold text-on-background tracking-tight">The Quantum Thief</h3>
+<p class="text-on-surface-variant text-sm mt-1">Hannu Rajaniemi</p>
+</div>
+<span class="text-2xl font-bold text-on-background">$24.99</span>
+</div>
+<div class="flex flex-wrap gap-2 mt-4">
+<span class="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 rounded-full border border-primary/20">Hardcover</span>
+<span class="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-secondary bg-secondary/10 rounded-full border border-secondary/20">Sci-Fi</span>
+</div>
+</div>
+<div class="flex justify-between items-center mt-6 pt-6 border-t border-outline-variant/15">
+<div class="flex items-center gap-4 bg-surface-container-highest rounded-lg px-2 py-1 border border-outline-variant/15">
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">remove</span></button>
+<span class="text-sm font-medium w-6 text-center">1</span>
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-base">delete</span>
+                                Remove
+                            </button>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex flex-col sm:flex-row gap-6 p-6 rounded-xl bg-surface-container-low transition-all hover:bg-surface-container">
+<div class="w-full sm:w-32 aspect-[2/3] flex-shrink-0 rounded-lg overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.3)] bg-surface-container-lowest">
+<img alt="Book Cover" class="w-full h-full object-cover" data-alt="A vintage yet pristine book cover showcasing an elegant, typographic layout with gold foil accents on a dark navy, almost black background. The texture of the cover looks rich and tactile, illuminated by a dramatic, moody spotlight that enhances the premium, literary aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3_1ggO_8K3vwepCiKes4-0LnNqZuKVAkmjopL1GzvCVcxn_1rC00fVtT6ugDolS48y2CleKMZHfk2O8GlmlWKmAoDYc0w9xGsST1xzHGfXpe5K-8zBLhvxGTxP_hNCIwrqsfR35C0uiLZDWMxAXX3o1_ZS7E8rrztrfKvWmJyA6_bQe_h3FyuiuzxHxFGndx0RoaZTtELIXs059AKa1NOgWr5cBV8RKnpsNoHMEAzK8lu1clgL8wONTDFNdsdxLhxp3pnvbwmprE"/>
+</div>
+<div class="flex flex-col flex-grow justify-between py-2">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-xl font-semibold text-on-background tracking-tight">Dune Deluxe Edition</h3>
+<p class="text-on-surface-variant text-sm mt-1">Frank Herbert</p>
+</div>
+<span class="text-2xl font-bold text-on-background">$45.00</span>
+</div>
+<div class="flex flex-wrap gap-2 mt-4">
+<span class="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 rounded-full border border-primary/20">Special Edition</span>
+</div>
+</div>
+<div class="flex justify-between items-center mt-6 pt-6 border-t border-outline-variant/15">
+<div class="flex items-center gap-4 bg-surface-container-highest rounded-lg px-2 py-1 border border-outline-variant/15">
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">remove</span></button>
+<span class="text-sm font-medium w-6 text-center">1</span>
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-base">delete</span>
+                                Remove
+                            </button>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex flex-col sm:flex-row gap-6 p-6 rounded-xl bg-surface-container-low transition-all hover:bg-surface-container">
+<div class="w-full sm:w-32 aspect-[2/3] flex-shrink-0 rounded-lg overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.3)] bg-surface-container-lowest flex items-center justify-center relative">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-variant to-surface-container-highest opacity-50"></div>
+<span class="material-symbols-outlined text-4xl text-on-surface-variant z-10">menu_book</span>
+</div>
+<div class="flex flex-col flex-grow justify-between py-2">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-xl font-semibold text-on-background tracking-tight">Neuromancer</h3>
+<p class="text-on-surface-variant text-sm mt-1">William Gibson</p>
+</div>
+<span class="text-2xl font-bold text-on-background">$16.50</span>
+</div>
+<div class="flex flex-wrap gap-2 mt-4">
+<span class="px-3 py-1 text-xs font-semibold uppercase tracking-wider text-on-surface-variant bg-surface-variant rounded-full border border-outline-variant/30">Paperback</span>
+</div>
+</div>
+<div class="flex justify-between items-center mt-6 pt-6 border-t border-outline-variant/15">
+<div class="flex items-center gap-4 bg-surface-container-highest rounded-lg px-2 py-1 border border-outline-variant/15">
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">remove</span></button>
+<span class="text-sm font-medium w-6 text-center">2</span>
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-2 text-sm font-medium">
+<span class="material-symbols-outlined text-base">delete</span>
+                                Remove
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Order Summary (Sticky) -->
+<div class="w-full lg:w-1/3 lg:sticky lg:top-32">
+<div class="bg-surface-container-high rounded-[1.5rem] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.4)] border border-outline-variant/15 relative overflow-hidden">
+<!-- Decorative ambient glow -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<h2 class="text-2xl font-bold tracking-tight mb-8">Order Summary</h2>
+<!-- Promo Code Input -->
+<div class="mb-8 relative group">
+<input class="w-full bg-surface-container-highest border border-outline-variant/30 rounded-lg py-3 px-4 text-sm text-on-background placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-transparent transition-all" placeholder="Enter promo code" type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:text-primary-fixed-dim text-sm font-semibold px-3 py-1 transition-colors">Apply</button>
+</div>
+<!-- Cost Breakdown -->
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-on-surface-variant text-sm">
+<span>Subtotal (4 items)</span>
+<span class="text-on-background font-medium">$102.99</span>
+</div>
+<div class="flex justify-between text-on-surface-variant text-sm">
+<span>Shipping</span>
+<span class="text-primary font-medium">Free</span>
+</div>
+<div class="flex justify-between text-on-surface-variant text-sm">
+<span>Estimated Tax</span>
+<span class="text-on-background font-medium">$8.24</span>
+</div>
+</div>
+<div class="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent w-full mb-8"></div>
+<!-- Total -->
+<div class="flex justify-between items-end mb-8">
+<span class="text-lg font-semibold text-on-background">Total</span>
+<div class="text-right">
+<span class="text-3xl font-black tracking-tighter text-signature-gradient block leading-none">$111.23</span>
+<span class="text-xs text-on-surface-variant mt-1">USD</span>
+</div>
+</div>
+<!-- Checkout Button -->
+<button class="w-full signature-gradient text-on-primary font-bold py-4 px-6 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(163,166,255,0.2)]">
+                        Proceed to Checkout
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<div class="mt-6 flex items-center justify-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">lock</span>
+                        Secure encrypted checkout
+                    </div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer: BookWise -->
+<footer class="bg-[#0a0e19] w-full py-12 px-8 tonal-shift bg-[#0f131f] flat no-shadows border-t border-[#444855]/15">
+<div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="text-lg font-bold text-[#e8eafb]">
+                BookWise
+            </div>
+<div class="flex flex-wrap justify-center gap-6 font-['Inter'] text-sm tracking-wide uppercase font-semibold">
+<a class="text-[#a7aaba] hover:text-[#c180ff] transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="text-[#a7aaba] hover:text-[#c180ff] transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="text-[#a7aaba] hover:text-[#c180ff] transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Cookie Settings</a>
+<a class="text-[#a7aaba] hover:text-[#c180ff] transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Help Center</a>
+</div>
+<div class="text-[#a3a6ff] text-sm font-['Inter']">
+                © 2024 BookWise. Engineered for Readers.
+            </div>
+</div>
+</footer>
+</body></html>

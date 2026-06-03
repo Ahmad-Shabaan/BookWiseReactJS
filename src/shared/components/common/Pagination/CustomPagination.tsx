@@ -64,7 +64,8 @@ const CustomPagination = ({ pageIndex, pageSize, count, onPageChange }: Paginati
           ) : (
             <PaginationItem key={`page-${p}`}>
               <PaginationLink
-                href={`#${p}`}
+                // href={`#${p}`}
+                className="cursor-pointer"
                 isActive={p === pageIndex}
                 onClick={(e) => {
                   e.preventDefault();

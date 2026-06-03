@@ -1,52 +1,22 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { setUser, clearUser } from "../store/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
+  forgetPasswordApi,
   loginApi,
   logoutApi,
-  refreshApi,
+  resetPasswordApi,
 } from "../services/authApi";
-
+import { handleErrorMessage } from "../utils/authHelpers";
+import { WISHLIST_COUNT_QUERY_KEYS } from "@/features/wishlist/constants/wishlist.constants";
+import { BASKET_COUNT_QUERY_KEYS } from "@/features/basket/constants/basket.constants";
 
 export function useAuth() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
-  const expiresAt = useAppSelector((state) => state.auth.expiresAt);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
-  // ── Auto-refresh scheduler ─────────────────────────────
-  const scheduleRefresh = (expiresIn: number) => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    const refreshIn = (expiresIn - 30) * 1000; // 30s before expiry
-
-    timerRef.current = setTimeout(async () => {
-      try {
-        const { data } = await refreshApi();
-        dispatch(setUser({ user, expiresIn: data.expiresIn }));
-        scheduleRefresh(data.expiresIn); // reschedule
-      } catch {
-        dispatch(clearUser()); // refresh failed → logout
-      }
-    }, refreshIn);
-  };
-
-  // Restart timer if store is rehydrated (e.g. page refresh)
-  useEffect(() => {
-    if (expiresAt) {
-      const remaining = Math.floor((expiresAt - Date.now()) / 1000);
-      if (remaining > 0) scheduleRefresh(remaining);
-      else dispatch(clearUser());
-    }
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // run once on mount
+  const queryClient = useQueryClient();
 
   // ── Login mutation ────────────────────────────────────
   const loginMutation = useMutation({
@@ -58,8 +28,29 @@ export function useAuth() {
           expiresIn: data.expiresIn,
         }),
       );
-      scheduleRefresh(data.expiresIn);
-      navigate("/dashboard", { replace: true });
+      queryClient.invalidateQueries({ queryKey: WISHLIST_COUNT_QUERY_KEYS });
+      queryClient.invalidateQueries({ queryKey: BASKET_COUNT_QUERY_KEYS });
+
+      navigate("/library", { replace: true });
+    },
+  });
+
+  // forget password mutation
+  const forgetPasswordMutation = useMutation({
+    mutationFn: forgetPasswordApi,
+    onSuccess: (response) => {
+      const { userId, token } = response.data;
+      navigate(`/reset-password?userId=${userId}&token=${token}`, {
+        replace: true,
+      });
+    },
+  });
+
+  // reset password mutation
+  const resetPasswordMutation = useMutation({
+    mutationFn: resetPasswordApi,
+    onSuccess: () => {
+      navigate("/login", { replace: true });
     },
   });
 
@@ -68,8 +59,10 @@ export function useAuth() {
     mutationFn: logoutApi,
     // Regardless of logout success or failure, clear user data and timers
     onSettled: () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
       dispatch(clearUser());
+      queryClient.invalidateQueries({ queryKey: WISHLIST_COUNT_QUERY_KEYS });
+      queryClient.invalidateQueries({ queryKey: BASKET_COUNT_QUERY_KEYS });
+      navigate("/login", { replace: true });
     },
   });
 
@@ -81,10 +74,20 @@ export function useAuth() {
     logout: () => logoutMutation.mutate(),
     isLoggingIn: loginMutation.isPending,
     isLoggingOut: logoutMutation.isPending,
-    // loginError: loginMutation.error?.response?.data?.message ?? null,
-    loginError: axios.isAxiosError(loginMutation.error)
-      ? (loginMutation.error.response?.data?.message ??
-        loginMutation.error.message)
-      : null,
+    loginError: handleErrorMessage(loginMutation.error),
+    isLoginError: !!loginMutation.error,
+    // loginError: axios.isAxiosError(loginMutation.error)
+    //   ? (loginMutation.error.response?.data?.message ??
+    //     loginMutation.error.message)
+    //   : null,
+    forgetPassword: (email: string) => forgetPasswordMutation.mutate(email),
+    isForgettingPassword: forgetPasswordMutation.isPending,
+    forgetPasswordError: handleErrorMessage(forgetPasswordMutation.error),
+    isForgettingPasswordError: !!forgetPasswordMutation.error,
+    resetPassword: (userId: string, token: string, newPassword: string) =>
+      resetPasswordMutation.mutate({ userId, token, newPassword }),
+    isResettingPassword: resetPasswordMutation.isPending,
+    resetPasswordError: handleErrorMessage(resetPasswordMutation.error),
+    isResettingPasswordError: !!resetPasswordMutation.error,
   };
 }

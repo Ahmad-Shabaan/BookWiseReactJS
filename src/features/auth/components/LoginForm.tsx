@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import { Label } from "@/components/ui/label";
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,17 +12,15 @@ import { loginSchema, type LoginSchema } from "../schemas/login.schema";
 import GoogleIcon from "@/assets/icons/google.svg";
 import GitHubIcon from "@/assets/icons/github.svg";
 import FieldWrapper from "./FieldWrapper";
+import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
+import type { LoginFormProps } from "../types/auth.types";
 
-interface LoginFormProps {
-  onSubmit: (email: string, password: string) => void;
-  isLoading?: boolean;
-  error?: string | null;
-}
 
 export default function LoginForm({
   onSubmit,
   isLoading = false,
-  error = null,
+  error,
+  isLoginError = false,
 }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -48,15 +45,16 @@ export default function LoginForm({
       data-animate="form"
     >
       {/* ── Server error ── */}
-      {error && (
-        <div
-          role="alert"
-          className="flex items-start gap-3 rounded-xl border border-error/20
-                     bg-error/8 px-4 py-3 text-sm text-error"
-        >
-          <span className="mt-px text-base leading-none">⚠</span>
-          {error}
-        </div>
+      {isLoginError && (
+        <ErrorMessage msg={error} />
+        // <div
+        //   role="alert"
+        //   className="mx-auto flex-center gap-3 rounded-xl border border-error/20
+        //              bg-error/8 px-4 py-3 text-sm text-error"
+        // >
+        //   <span className="mt-px text-base leading-none">⚠</span>
+        //   {error}
+        // </div>
       )}
 
       {/* ── Email ── */}
@@ -92,42 +90,6 @@ export default function LoginForm({
           />
         </div>
       </FieldWrapper>
-      {/* <div className="flex flex-col gap-1.5">
-        <Label htmlFor="login-email">Email Address</Label>
-
-        <div className="group relative">
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                          pl-4 text-on-surface-variant transition-colors duration-200
-                          group-focus-within:text-primary"
-          >
-            <Mail className="size-4" />
-          </div>
-
-          <Controller
-            name="email"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                id="login-email"
-                type="email"
-                placeholder="name@company.com"
-                autoComplete="email"
-                aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? "email-error" : undefined}
-                className="pl-11 pr-4"
-              />
-            )}
-          />
-        </div>
-
-        {errors.email && (
-          <p id="email-error" role="alert" className="text-xs text-error pl-1">
-            {errors.email.message}
-          </p>
-        )}
-      </div> */}
 
       {/* ── Password ── */}
       <FieldWrapper
@@ -152,7 +114,7 @@ export default function LoginForm({
                 {...field}
                 id="signup-password"
                 type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
+                placeholder="•••••••••••••••"
                 autoComplete="new-password"
                 aria-invalid={!!errors.password}
                 aria-describedby={
@@ -167,7 +129,7 @@ export default function LoginForm({
             onClick={() => setShowPassword((v) => !v)}
             aria-label={showPassword ? "Hide password" : "Show password"}
             className="absolute inset-y-0 right-0 flex items-center pr-4
-                       text-on-surface-variant transition-colors hover:text-on-surface"
+            text-on-surface-variant transition-colors hover:text-on-surface"
           >
             {showPassword ? (
               <EyeOff className="size-4" />
@@ -177,87 +139,21 @@ export default function LoginForm({
           </button>
         </div>
       </FieldWrapper>
-
-      {/* <div className="flex flex-col gap-1.5">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="login-password">Password</Label>
-          <Link
-            to="/forgot-password"
-            className="text-xs font-semibold text-primary transition-colors
-                       hover:text-secondary"
-          >
-            Forgot password?
-          </Link>
-        </div>
-
-        <div className="group relative">
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 flex items-center
-                          pl-4 text-on-surface-variant transition-colors duration-200
-                          group-focus-within:text-primary"
-          >
-            <Lock className="size-4" />
-          </div>
-
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => (
-              <Input
-                {...field}
-                id="login-password"
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                autoComplete="current-password"
-                aria-invalid={!!errors.password}
-                aria-describedby={
-                  errors.password ? "password-error" : undefined
-                }
-                className="pl-11 pr-12 "
-              />
-            )}
-          />
-
-          <button
-            type="button"
-            onClick={() => setShowPassword((v) => !v)}
-            aria-label={showPassword ? "Hide password" : "Show password"}
-            className="absolute inset-y-0 right-0 flex items-center pr-4
-                       text-on-surface-variant transition-colors hover:text-on-surface"
-          >
-            {showPassword ? (
-              <EyeOff className="size-4" />
-            ) : (
-              <Eye className="size-4" />
-            )}
-          </button>
-        </div>
-
-        {errors.password && (
-          <p
-            id="password-error"
-            role="alert"
-            className="text-xs text-error pl-1"
-          >
-            {errors.password.message}
-          </p>
-        )}
-      </div> */}
+      <div className="flex items-center justify-end">
+        <Link
+          to="/forgot-password"
+          className="text-sm font-semibold text-primary transition-colors hover:text-secondary"
+        >
+          Forgot password?
+        </Link>
+      </div>
 
       {/* ── Submit ── */}
       <div>
         <Button
           type="submit"
           disabled={isLoading}
-          className="mt-1 h-12 w-full cursor-pointer rounded-xl
-                   bg-linear-to-r from-primary to-secondary
-                   text-sm font-bold text-on-primary
-                   shadow-[0_8px_24px_rgba(163,166,255,0.25)]
-                   transition-all duration-200
-                   hover:shadow-[0_8px_32px_rgba(163,166,255,0.4)]
-                   hover:brightness-110
-                   active:scale-[0.98]
-                   disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+          className="btn-primary mt-1 py-6 font-bold rounded-xl"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">

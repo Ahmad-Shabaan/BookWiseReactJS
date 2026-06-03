@@ -1,17 +1,21 @@
-import { useRef } from "react";
-// import { useHeroAnimation } from "./hero.animations";
-import { Button } from "@/components/ui/button";
+import { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useHeroAnimation } from "./hero.animations";
+import { useNavigate } from "react-router-dom";
 
 export function HeroSection() {
   // 1️Section root (used as GSAP scope)
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState<string>();
+  const navigate = useNavigate();
 
   //  Animation hook (ALL GSAP is isolated)
   useHeroAnimation(sectionRef);
 
+  const handleSearch = () => {
+    navigate(`/library?search=${searchQuery}`, { replace: true });
+  };
   return (
     <section
       ref={sectionRef}
@@ -41,13 +45,6 @@ export function HeroSection() {
             </p>
           </div>
 
-          {/*
-          ✅ FIX: Replaced the hard step from `text-3xl sm:text-5xl md:text-6xl
-          lg:text-[5.5rem]` with a fluid `clamp()`. On 320px devices, `text-3xl`
-          (1.875rem) is fine but jumps sharply to `text-5xl` (3rem) at 640px.
-          With clamp we get a smooth scale: ~1.9rem at 320px → 5.5rem at 1280px.
-          Eliminates the jarring reflow at the sm breakpoint.
-        */}
           <h1
             className="heading font-black tracking-tight leading-[1.05] text-on-background"
             style={{ fontSize: "clamp(1.9rem, 6.5vw, 5.5rem)" }}
@@ -61,38 +58,20 @@ export function HeroSection() {
 
           {/* Search */}
           <div className="search relative w-full max-w-lg sm:max-w-xl md:max-w-2xl">
-            {/*
-            ✅ FIX: Original used `z-1` which is not a standard Tailwind utility
-            (z-index scale: 0, 10, 20, 30, 40, 50). Changed to `z-[1]` (arbitrary
-            value) to ensure the icon renders above the Input's background layer.
-          */}
-            <Search className="absolute z-1 left-4 sm:left-5 top-1/2 -translate-y-1/2 text-on-surface-variant w-4 h-4 sm:w-5 sm:h-5 pointer-events-none" />
-
-            {/*
-            ✅ FIX: Original `pr-28 sm:pr-32` right padding on a full-width
-            input caused visible text-to-button overlap on 320px screens.
-            Reduced to `pr-24` on mobile (the Find button is narrower there too).
-          */}
+            <Search
+              onPointerDown={handleSearch}
+              className="absolute z-1 left-4 sm:left-5 top-1/2 -translate-y-1/2 text-on-surface-variant w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
+            />
             <Input
               type="text"
+              value={searchQuery}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search title, author..."
-              className="h-10 sm:h-11 md:h-12 pl-10 sm:pl-14 pr-24 sm:pr-28 md:pr-32 rounded-xl text-sm sm:text-base md:text-lg"
+              className="h-10 sm:h-11 md:h-12 pl-10 sm:pl-14 pr-24 sm:pr-28 md:pr-32 rounded-full text-sm sm:text-base md:text-lg"
             />
-            <Button
-              size="sm"
-              className="
-              absolute right-0 top-1/2 -translate-y-1/2
-              h-10 sm:h-11 md:h-12
-              px-4 sm:px-5 md:px-6
-              text-xs sm:text-sm md:text-base
-              rounded-xl
-              cursor-pointer
-              text-on-primary-container
-              font-bold
-            "
-            >
-              Find
-            </Button>
           </div>
         </div>
       </div>

@@ -1,21 +1,30 @@
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import BookCard from "@/landing/components/BookCard";
-import { BOOKS } from "@/landing/data/trending-books";
 import { useRef } from "react";
 import { useTrendingAnimation } from "./trending.animation";
+import {  useGetTrendingBooks } from "@/features/books/hooks/useBooks";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const TrendingSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { data: books } = useGetTrendingBooks();
   useTrendingAnimation(sectionRef);
   return (
     <section
       ref={sectionRef}
-      className="py-14 sm:py-16 md:py-20 bg-surface-container-low"
+      className="py-14 sm:py-16 md:py-20 bg-surface-container-low "
+      id="collections"
     >
-      <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+      <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative">
         {/* ✅ NEW: Added section heading for context — was missing in original */}
         <SectionTitle title="Trending Now" accentColor="secondary" />
-
+        <div className="absolute right-0 top-0 px-4 text-xs py-1 border rounded-full">
+          <Link to="/library" className="flex-center gap-1">
+            See More
+            <ArrowRight size={14} />
+          </Link>
+        </div>
         <div
           className="
             flex gap-4 sm:gap-5 md:gap-6
@@ -27,18 +36,7 @@ const TrendingSection = () => {
             mt-8 sm:mt-10
           "
         >
-          {BOOKS.map((book, i) => (
-            /*
-              ✅ FIX: The original wrapper had `flex-1` on each card wrapper
-              alongside `shrink-0` on BookCard — these conflict. `flex-1`
-              tries to grow cards to fill the container but `shrink-0` on
-              the inner card prevents shrinking, causing layout thrash.
-
-              Fix: give each wrapper an explicit min-width that controls card
-              size at each breakpoint. BookCard takes 100% of that width.
-              This is a cleaner ownership model: TrendingSection decides
-              widths, BookCard just fills its slot.
-            */
+          {books?.map((book, i) => (
             <div
               key={i}
               className="trending-card shrink-0 snap-center sm:snap-start w-36.25 sm:w-46.25 md:w-53.75 lg:w-60 will-change-transform"

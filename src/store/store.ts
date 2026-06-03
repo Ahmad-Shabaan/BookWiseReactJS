@@ -3,8 +3,9 @@ import storage from "redux-persist/lib/storage"; // localStorage
 // import { createMigrate } from "redux-persist";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import booksReducer from "@/features/books/store/booksSlice";
 import authReducer from "@/features/auth/store/authSlice";
+import wishlistReducer from "@/features/wishlist/store/wishlistSlice";
+import basketCountReducer from "@/features/basket/store/basketSlice";
 
 
 
@@ -22,12 +23,13 @@ const persistConfig = {
   storage,
   // version: 2, // bump this when your state shape changes
   // migrate: createMigrate(migrations, { debug: false }),
-  whitelist: ["books" , "auth"], // ✅ only persist UI state
+  whitelist: ["books" , "auth", "wishlist","basketCount"], // ✅ only persist UI state
   // blacklist: ['auth'],  // ❌ never persist auth (security)
 };
 const rootReducer = combineReducers({
   auth: authReducer,
-  books: booksReducer,
+  wishlist: wishlistReducer,
+  basketCount : basketCountReducer
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -30,7 +30,7 @@ export function SectionTitle({
       )}
       <h2
         className="headline-lg font-bold flex items-center gap-4 text-on-surface"
-        style={{ fontSize: "clamp(1rem, 1.25vw, 1.5rem)" }}
+        style={{ fontSize: "clamp(1.5rem, 1.75vw, 2rem)" }}
       >
         {title}
         {align === "left" && (
