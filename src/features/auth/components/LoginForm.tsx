@@ -3,7 +3,6 @@ import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

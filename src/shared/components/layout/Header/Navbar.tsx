@@ -17,7 +17,7 @@ import { mergeWishlistCount } from "@/features/wishlist/store/wishlistSlice";
 import { useGetWishlistCount } from "@/features/wishlist/hooks/useWishlist";
 import { mergeBasketCount } from "@/features/basket/store/basketSlice";
 import { useLocation } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
+// import { HashLink } from "react-router-hash-link";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Spinner } from "@/components/ui/spinner";
 import useTheme from "@/shared/hooks/useTheme";
@@ -102,14 +102,13 @@ const Navbar = () => {
           {/* Desktop nav links */}
           <div className="hidden lg:flex gap-6 lg:gap-8 items-center">
             {NAV_LINKS.map(({ label, to }) => (
-              <HashLink
-                smooth
+              <Link
                 key={label + to}
                 to={to}
                 className={`font-inter tracking-tight text-sm lg:text-base font-bold text-on-surface hover:text-on-surface transition-colors duration-300 ${pathname === to ? "border-b border-primary text-primary" : ""}`}
               >
                 {label}
-              </HashLink>
+              </Link>
             ))}
           </div>
           {/* Right controls */}

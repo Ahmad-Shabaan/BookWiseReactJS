@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const Logo = ({ className }: { className?: string }) => {
   const [theme] = useTheme();
-  console.log(theme);
   return (
     <Link to="/">
       {theme === "dark" ? (

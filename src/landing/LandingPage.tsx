@@ -10,12 +10,14 @@ import PricingSection from "./sections/Pricing/PricingSection";
 import FAQSection from "./sections/FAQ/FAQSection";
 import { CTASection } from "./sections/CTA/CTASection";
 import Footer from "@/shared/components/layout/Footer/Footer";
+import { useScrollToHash } from "@/shared/hooks/useScrollToHash";
 
 const LandingPage = () => {
+  useScrollToHash();
   return (
     <main className="min-h-svh">
       <Navbar />
-      <HeroSection/>
+      <HeroSection />
       <TrendingSection />
       <MarketingSection />
       <FeaturesSection />

@@ -28,8 +28,6 @@ const getWishlistCount = async (
 const toggleWishlistAsync = async (
   wishlist: WishlistBookParams,
 ): Promise<WishlistToggleResponse> => {
-  console.log("checkoutIdempotencyKey", wishlist.checkoutIdempotencyKey);
-
   const res = wishlist.isWished
     ? await axiosClient.post(`/v1/wishlist/${wishlist.bookId}`, null, {
         headers: {

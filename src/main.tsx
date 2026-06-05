@@ -8,7 +8,7 @@ import { store, persistor } from "./store/store";
 
 import { RouterProvider } from "react-router/dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "@/components/ui/sonner";
 import "./config/env";
 import "./index.css";
@@ -28,7 +28,7 @@ createRoot(document.getElementById("root")!).render(
           <RouterProvider router={router} />
         </Suspense>
         <Toaster position="top-right" />
-        <ReactQueryDevtools />
+        {/* <ReactQueryDevtools /> */}
       </QueryClientProvider>
     </PersistGate>
   </Provider>,
