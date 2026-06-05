@@ -3,7 +3,11 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* hover:
+focus:
+dark:
+create new custom variant use it if حاجات مش معمولة ب variables*/
+@custom-variant light (&:is([data-theme="light"] *));
 
 /* ───────────────── Fonts ───────────────── */
 @font-face {
@@ -12,6 +16,7 @@
 }
 
 /* ───────────────── Theme Tokens ───────────────── */
+
 @theme {
   /* ── Color Palette ──────────────────────────────────────── */
   --color-background: #0a0e19;
@@ -108,7 +113,7 @@
   /* Spacing system (IMPORTANT ADDITION) */
   --space-section: 6rem;
 }
-.light {
+[data-theme="light"] {
   color-scheme: light;
 
   /* ── Core Backgrounds ───────────────────────────────────── */
@@ -189,29 +194,6 @@
   --shadow-soft: 0 1px 1px rgba(0, 0, 0, 0.25);
   --shadow-soft-dim: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
-
-/* .light {
-  color-scheme: light;
-
-  --color-background: #faf8ff;
-  --color-foreground: #1b1f2a;
-
-  --color-surface: #ffffff;
-  --color-surface-container: #f1f2f6;
-  --color-surface-container-highest: #dfe2eb;
-  --color-surface-container-low:#dfe2eb;
-
-  --color-on-surface: #1b1f2a;
-
-
-  --color-primary: #494bd7;
-  --color-secondary: #7a2fd6;
-  --color-tertiary: #2f6fe4;
-
-  --color-muted: #5a5f73;
-  --color-border: #e0e2ea;
-  --color-ring: #494bd7;
-} */
 
 /* no need but maybe some lib depends on it */
 /* :root {
@@ -297,14 +279,14 @@
 
 /* ───────── Layout ───────── */
 @utility main-container {
-  @apply min-h-screen bg-surface font-sans text-on-surface pt-20 sm:pt-28;
+  @apply bg-surface font-sans text-on-surface pt-18 sm:pt-22 lg:pt-24;
 }
 @utility page-container {
-  @apply container w-full mx-auto py-8 px-4;
+  @apply container w-full mx-auto py-6 sm:py-8 px-4;
 }
-
+/* p-8  */
 @utility aside-section {
-  @apply bg-surface-container-low rounded-xl p-8 shadow-soft border border-outline-variant/10 relative overflow-hidden;
+  @apply bg-surface-container-low rounded-md px-2 py-4  shadow-soft border border-outline-variant/10 relative overflow-hidden;
 }
 
 @utility flex-center {
@@ -319,7 +301,6 @@
   justify-content: center;
   align-items: center;
 }
-
 @utility abs-center {
   position: absolute;
   top: 50%;
@@ -382,7 +363,7 @@
 
 /* ───────── Inputs ───────── */
 @utility input-base {
-  @apply h-12 rounded-xl border border-outline-variant/20
+  @apply h-12 rounded border border-outline-variant/20
          bg-surface-container-highest text-sm
          text-on-surface placeholder:text-outline/60
          transition-all duration-200
@@ -393,25 +374,24 @@
 
 /* ───────── Buttons ───────── */
 @utility btn-primary {
-  @apply w-full py-3 px-6 rounded-xl font-medium
+  @apply w-full py-3 px-6 rounded font-medium
         flex justify-center items-center gap-2 text-base
         bg-linear-to-r from-primary to-secondary
         text-on-primary shadow-glow-primary
-        transition-all duration-200
+        transition-colors duration-200
         cursor-pointer
         tracking-widest
         hover:brightness-110 active:scale-[0.98]
-        disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none;     
+        disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none;
 }
 
 @utility btn-secondary {
   @apply w-full py-3 px-6 font-semibold
-        flex justify-center items-center gap-2 rounded-xl
-        bg-linear-to-r from-surface-container-highest hover:from-surface-container-low
-        to-surface-container-low
-      hover:to-surface-container-highest
+        flex justify-center items-center gap-2 rounded
+        bg-linear-to-r from-surface-container-highest 
+        hover:bg-surface-container-high
         text-on-surface-variant shadow-soft
-        transition-all duration-500
+        transition-colors duration-200
         cursor-pointer
         hover:text-on-surface
         active:scale-[0.98]
@@ -447,7 +427,7 @@
 }
 
 @utility aside-header {
-  @apply font-serif text-2xl font-bold tracking-tight text-on-surface mb-6 pb-4 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-linear-to-r after:from-transparent after:via-outline-variant/30 after:to-transparent;
+  @apply lg:pl-2 font-serif text-2xl font-bold tracking-tight text-on-surface mb-6 pb-4  relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-linear-to-r after:from-transparent after:via-outline-variant/30 after:to-transparent;
 }
 
 @utility aside-section-blur {
@@ -460,7 +440,7 @@
 }
 
 @utility nav-link {
-  @apply w-full aside-header mb-4 pb-2  text-lg text-on-surface flex  items-center justify-start gap-2  hover:text-primary-dim transition-colors duration-100;
+  @apply w-full aside-header mb-4 pb-2  text-lg text-on-surface flex  items-center justify-start gap-2  hover:text-primary-dim transition-colors duration-200;
 }
 
 /* borders */
@@ -468,6 +448,25 @@
   @apply pb-4 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-linear-to-r after:from-transparent after:via-outline-variant/30 after:to-transparent;
 }
 
+@utility nav-icon {
+  @apply relative text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors duration-300 active:scale-95
+            before:content-(--count)
+            before:absolute
+            before:top-0 
+            before:right-0
+            before:size-5
+            lg:size-6
+            before:px-1
+            before:flex 
+            before:items-center 
+            before:justify-center
+            before:rounded-full
+            before:bg-primary-dim before:text-white
+            before:text-[11px]
+            lg:before:text-xs
+            before:font-medium
+            lg:before:font-bold;
+}
 /* ───────────────── Components Layer ───────────────── */
 @layer components {
   main {
@@ -495,30 +494,6 @@
     }
   }
 
-  /* HERO */
-  #hero {
-    @apply relative min-h-dvh w-full;
-
-    h1 {
-      @apply mt-40 text-center font-modern-negra leading-none
-             text-8xl md:mt-32 md:text-[20vw];
-    }
-  }
-
-  /* NOISE */
-  .noisy {
-    @apply bg-[url("/images/noise.png")];
-  }
-
-  /* ABOUT */
-  #about {
-    @apply container mx-auto px-5;
-
-    .tilted-card-demo-text {
-      @apply rounded-lg bg-[#8a8a89] px-1 py-px text-white opacity-80;
-    }
-  }
-
   /* info filed */
 
   .info-field {
@@ -540,5 +515,38 @@
   /* face forward again */
   100% {
     transform: translateX(100%);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.33);
+    opacity: 1;
+  }
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes pulse-dot {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

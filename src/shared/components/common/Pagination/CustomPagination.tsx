@@ -7,10 +7,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import type { PaginationProps } from "@/shared/types/common.types";
+import type { PaginationParams } from "@/shared/types/common.types";
 import { useMemo } from 'react'
 
-const CustomPagination = ({ pageIndex, pageSize, count, onPageChange }: PaginationProps) => {
+const CustomPagination = ({ pageIndex, pageSize, count, onPageChange }: PaginationParams) => {
   const totalPages = useMemo(() => {
     return Math.ceil(count / pageSize);
   }, [count, pageSize]);

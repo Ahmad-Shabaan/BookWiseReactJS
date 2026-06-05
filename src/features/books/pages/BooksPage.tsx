@@ -95,10 +95,10 @@ export default function BooksPage() {
   };
 
   return (
-    <section className="main-container relative">
+    <div className="main-container lg:pt-16 relative">
       <div className="page-container">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start ">
-          <div className="lg:col-span-2 order-1 lg:order-1 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-7 2xl:grid-cols-16 gap-6 items-start ">
+          <div className="lg:col-span-5 2xl:col-span-13 order-1 lg:order-1 relative">
             <SectionHeader
               to="/library"
               link="Explore more Books"
@@ -146,7 +146,7 @@ export default function BooksPage() {
               )}
             </div>
             {!mobileOpen && (
-              <div className=" absolute -top-8 sm:-top-12 right-0 lg:hidden z-20 pr-2 sm:pr-0">
+              <div className=" absolute -top-8 sm:-top-10.5 right-0 lg:hidden z-20 pr-2 sm:pr-0">
                 <SlidersHorizontal
                   size={20}
                   onClick={() => setMobileOpen((prev) => !prev)}
@@ -156,69 +156,72 @@ export default function BooksPage() {
             )}
           </div>
           {/* ── Sidebar ─────────────────────────────────────────────── */}
-          <aside
-            className={`fixed bottom-0 left-0 right-0 z-20   bg-background ${mobileOpen ? "h-[calc(100dvh-60px)]" : "h-0"}
+
+          {mobileOpen && (
+            <aside
+              className={`fixed bottom-0 left-0 right-0 z-20   bg-background h-[calc(100dvh-60px)]
           overflow-y-auto hide-scrollbar overflow-x-hidden transition-all duration-300 ease-in-out 
           `}
-          >
-            {mobileOpen && (
-              <>
-                {isLoading && (
-                  <div className="fixed inset-0 pointer-events-auto bg-surface/50 z-50 flex-center ">
-                    <Spinner className="size-8 text-primary" />
-                  </div>
-                )}
-                <div className="fixed top-16 md:top-20 z-40 h-12 w-full flex justify-end items-center text-on-surface bg-background p-6">
-                  <X
-                    size={20}
-                    onClick={() => setMobileOpen((prev) => !prev)}
-                    className="cursor-pointer"
-                  />
-                </div>
-                <div className="fixed bottom-0 z-40 h-12 w-full flex justify-between items-center text-on-surface bg-background px-6 py-8">
-                  <button
-                    onClick={clearFilters}
-                    className="text-sm font-semibold text-on-surface rounded-full transition hover:text-primary border border-on-surface-variant px-4 py-2 cursor-pointer"
-                  >
-                    Clear Filters
-                  </button>
-                  <div className="bg-primary text-on-primary px-4 py-2 flex-center font-semibold text-sm rounded-full">
-                    Show {data?.count} results
-                  </div>
-                </div>
-              </>
-            )}
-            <div
-              className=" flex flex-col gap-6 p-6 w-full mt-12 mb-16"
-              ref={sidebarRef}
             >
-              <Aside asideHeader="Sort by">
+              {mobileOpen && (
                 <>
-                  <Sort />
+                  {isLoading && (
+                    <div className="h-dvh fixed inset-0 pointer-events-auto bg-surface/50 z-50 flex-center ">
+                      <Spinner className="size-8 text-primary" />
+                    </div>
+                  )}
+                  <div className="fixed top-12 sm:top-14 z-40 h-12 w-full flex justify-end items-center text-on-surface bg-background p-6">
+                    <X
+                      size={20}
+                      onClick={() => setMobileOpen((prev) => !prev)}
+                      className="cursor-pointer"
+                    />
+                  </div>
+                  <div className="fixed bottom-0 z-40 h-12 w-full flex justify-between items-center text-on-surface bg-background px-6 py-8">
+                    <button
+                      onClick={clearFilters}
+                      className="text-sm font-semibold text-on-surface rounded-full transition hover:text-primary border border-on-surface-variant px-4 py-2 cursor-pointer"
+                    >
+                      Clear Filters
+                    </button>
+                    <div className="bg-primary text-on-primary px-4 py-2 flex-center font-semibold text-sm rounded-full">
+                      Show {data?.count} results
+                    </div>
+                  </div>
                 </>
-              </Aside>
-              <Aside
-                asideHeader={
-                  <>
-                    Filters
-                    {activeCount > 0 && (
-                      <span className="flex gap-1 items-center">
-                        {activeCount}
-                        <SlidersHorizontal />
-                      </span>
-                    )}
-                  </>
-                }
+              )}
+              <div
+                className=" flex flex-col gap-6 px-6 pt-12 pb-16 w-full"
+                ref={sidebarRef}
               >
-                <>
-                  <Filter />
-                </>
-              </Aside>
-            </div>
-          </aside>
+                <Aside asideHeader="Sort by">
+                  <>
+                    <Sort />
+                  </>
+                </Aside>
+                <Aside
+                  asideHeader={
+                    <>
+                      Filters
+                      {activeCount > 0 && (
+                        <span className="flex gap-1 items-center">
+                          {activeCount}
+                          <SlidersHorizontal />
+                        </span>
+                      )}
+                    </>
+                  }
+                >
+                  <>
+                    <Filter />
+                  </>
+                </Aside>
+              </div>
+            </aside>
+          )}
 
           <aside
-            className="hidden order-2 lg:order-2 col-span-1 lg:flex flex-col gap-6"
+            className="hidden order-2 lg:order-2 lg:col-span-2 2xl:col-span-3  lg:flex flex-col gap-6"
             ref={sidebarRef}
           >
             <Aside asideHeader="Sort by">
@@ -241,7 +244,7 @@ export default function BooksPage() {
             >
               <>
                 <Filter />
-                <section className="w-full flex justify-between items-center flex-wrap text-on-surface pt-4 gap-y-2">
+                <div className="w-full flex justify-between items-center flex-wrap text-on-surface pt-4 gap-y-2">
                   <button
                     onClick={clearFilters}
                     className="text-sm font-semibold text-on-surface rounded-full transition hover:text-primary border border-on-surface-variant px-4 py-2 cursor-pointer"
@@ -251,13 +254,13 @@ export default function BooksPage() {
                   <div className="bg-primary text-on-primary px-4 py-2 flex-center font-semibold text-sm rounded-full ">
                     Show {data?.count} results
                   </div>
-                </section>
+                </div>
               </>
             </Aside>
           </aside>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+.opencode
+.agents
+.specify
+specks
+AGENTS.md
 # Environment files
 .env
 .env.*.local

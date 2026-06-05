@@ -1,40 +1,39 @@
 import { useGSAP } from "@gsap/react";
 import gsap, { prefersReducedMotion } from "@/lib/gsap.config";
 import type React from "react";
+import type { SectionAnimationParams } from "@/shared/types/common.types";
 
-type useNavAnimationProps = {
-  sectionRef: React.RefObject<HTMLElement | null>;
-};
-export function useNavAnimation({ sectionRef }: useNavAnimationProps) {
+export function useNavAnimation({ sectionRef }: SectionAnimationParams) {
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
       if (!sectionRef.current) return;
+      if (prefersReducedMotion()) return;
       gsap.fromTo(
         sectionRef.current,
         { y: -100, opacity: 0 },
         { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.1 },
       );
     },
-    { scope: sectionRef },
   );
 }
 
-type useNavbarAnimationProps = {
+type useNavbarAnimationParams = {
   sectionRef: React.RefObject<HTMLElement | null>;
   active: boolean;
 };
 export function useMobileMenuAnimation({
   sectionRef,
   active,
-}: useNavbarAnimationProps) {
+}: useNavbarAnimationParams) {
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
       if (!sectionRef.current) return;
+      if (prefersReducedMotion()) return;
+      if(active === false)
+        return;
       const q = gsap.utils.selector(sectionRef.current);
-      const navLink = q(".nav-link");
-      const menu = q("#mobile-menu");
+      const navLink = q("[data-animate='nav-link']");
+      const menu = q("[data-animate='mobile-menu']");
       // kill previous animations to prevent overlap
       gsap.killTweensOf([menu, navLink]);
       const matchMedia = gsap.matchMedia();
@@ -50,11 +49,11 @@ export function useMobileMenuAnimation({
           y: 20,
           scale: 0.97,
         });
-        matchMedia.add("(max-width: 767px)", () => {
+        matchMedia.add("(max-width: 639px)", () => {
           tl.fromTo(
             menu,
             { y: "-100%" },
-            { y: "65px", duration: 0.6, ease: "expo.inOut" },
+            { y: "49px", duration: 0.6, ease: "expo.inOut" },
           ).to(navLink, {
             opacity: 1,
             y: 0,
@@ -64,11 +63,11 @@ export function useMobileMenuAnimation({
             stagger: { amount: 0.25, from: "start" },
           });
         });
-        matchMedia.add("(min-width: 768px)", () => {
+        matchMedia.add("(min-width: 640px)", () => {
           tl.fromTo(
             menu,
             { y: "-100%" },
-            { y: "81px", duration: 0.6, ease: "expo.inOut" },
+            { y: "57px", duration: 0.6, ease: "expo.inOut" },
           ).to(navLink, {
             opacity: 1,
             y: 0,
@@ -114,6 +113,6 @@ export function useMobileMenuAnimation({
       //   });
       //   return () => t1.kill();
     },
-    { scope: sectionRef, dependencies: [active] },
+    {  dependencies: [active] },
   );
 }

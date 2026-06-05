@@ -13,7 +13,7 @@ import Footer from "@/shared/components/layout/Footer/Footer";
 
 const LandingPage = () => {
   return (
-    <>
+    <main className="min-h-svh">
       <Navbar />
       <HeroSection/>
       <TrendingSection />
@@ -26,7 +26,7 @@ const LandingPage = () => {
       <FAQSection />
       <CTASection />
       <Footer />
-    </>
+    </main>
   );
 };
 

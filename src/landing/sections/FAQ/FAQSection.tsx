@@ -8,11 +8,11 @@ const FAQSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   useFAQAnimations(sectionRef);
   return (
-    <section
+    <div
       ref={sectionRef}
       className="py-24 sm:py-28 md:py-32 bg-surface-container-low"
     >
-      <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 section-title-center">
+      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 section-title-center">
         <SectionTitle
           title="Frequently Asked Questions"
           align="center"
@@ -23,7 +23,8 @@ const FAQSection = () => {
           {FAQS.map((faq, i) => (
             <div
               key={i}
-              className="faq-item p-6 sm:p-8 rounded-[1.25rem] sm:rounded-3xl bg-surface border border-outline-variant/15 hover:border-primary/30 transition-colors shadow-soft will-change-transform"
+              data-animate="faq-item"
+              className="p-6 sm:p-8 rounded-[1.25rem] sm:rounded-3xl bg-surface border border-outline-variant/15 hover:border-primary/30 transition-colors shadow-soft will-change-transform"
             >
               <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4 text-on-surface leading-snug">
                 {faq.q}
@@ -34,8 +35,8 @@ const FAQSection = () => {
             </div>
           ))}
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 export default FAQSection;

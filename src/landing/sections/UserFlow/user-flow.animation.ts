@@ -1,5 +1,5 @@
 import {
-    motion,
+  motion,
   prefersReducedMotion,
   START_SCROLL_TRIGGER,
 } from "@/landing/animations";
@@ -13,6 +13,7 @@ export function useUserFlowAnimation(
     () => {
       if (!sectionRef.current) return;
       if (prefersReducedMotion()) return;
+      const q = gsap.utils.selector(sectionRef.current);
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -21,11 +22,11 @@ export function useUserFlowAnimation(
         },
       });
 
-      tl.from(".step-item", {
-       ...motion.movingUpCinematic,
-        clearProps: "y,opacity",
+      tl.from(q("[data-animate='step-item']"), {
+        ...motion.movingUpCinematic,
+        clearProps: "transform,opacity",
       }).from(
-        ".step-line",
+        q("[data-animate='step-line']"),
         {
           scaleX: 0,
           transformOrigin: "left center",
@@ -37,6 +38,5 @@ export function useUserFlowAnimation(
 
       return () => tl.kill();
     },
-    { scope: sectionRef },
   );
 }

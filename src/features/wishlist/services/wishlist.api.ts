@@ -1,10 +1,9 @@
 import axiosClient from "@/shared/api/axiosClient";
 import type {
-  WishlistBookProps,
+  WishlistBookParams,
   WishlistResponse,
   WishlistToggleResponse,
 } from "../types/wishlist";
-import { v4 as uuidv4 } from "uuid";
 
 const getWishlist = async (
   pageIndex: number,
@@ -27,17 +26,19 @@ const getWishlistCount = async (
 };
 
 const toggleWishlistAsync = async (
-  wishlist: WishlistBookProps,
+  wishlist: WishlistBookParams,
 ): Promise<WishlistToggleResponse> => {
+  console.log("checkoutIdempotencyKey", wishlist.checkoutIdempotencyKey);
+
   const res = wishlist.isWished
     ? await axiosClient.post(`/v1/wishlist/${wishlist.bookId}`, null, {
         headers: {
-          "X-Idempotency-Key": uuidv4(),
+          "X-Idempotency-Key":wishlist.checkoutIdempotencyKey ,
         },
       })
     : await axiosClient.delete(`/v1/wishlist/${wishlist.bookId}`, {
         headers: {
-          "X-Idempotency-Key": uuidv4(),
+          "X-Idempotency-Key": wishlist.checkoutIdempotencyKey,
         },
       });
   return res.data;

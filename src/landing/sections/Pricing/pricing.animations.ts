@@ -22,14 +22,13 @@ export const usePricingAnimations = (
         },
       });
 
-      tl.from(".pricing-card", {
+      tl.from("[data-animate='pricing-card']", {
         ...motion.movingUpCinematic,
         stagger: 0.18,
-        clearProps: "y,opacity",
+        clearProps: "transform,opacity",
       });
 
       return () => tl.kill();
     },
-    { scope: sectionRef },
   );
 };

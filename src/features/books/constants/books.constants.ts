@@ -1,5 +1,4 @@
 import type { BookFilters } from "../types/book";
-export const GENRES = ["Fantasy","Sci-Fi","Mystery","Biography","Horror","Romance"];
 
 export const BOOKS_PAGE_SIZE = 12;
 export const BOOKS_DEBOUNCE_MS = 300;

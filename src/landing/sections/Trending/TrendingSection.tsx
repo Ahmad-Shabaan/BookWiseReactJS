@@ -2,22 +2,23 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import BookCard from "@/landing/components/BookCard";
 import { useRef } from "react";
 import { useTrendingAnimation } from "./trending.animation";
-import {  useGetTrendingBooks } from "@/features/books/hooks/useBooks";
+import { useGetTrendingBooks } from "@/features/books/hooks/useBooks";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import SkeletonCard from "@/shared/components/common/SkeletonCard";
+import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
 
 const TrendingSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { data: books } = useGetTrendingBooks();
-  useTrendingAnimation(sectionRef);
+  const { data: books, isLoading, isError } = useGetTrendingBooks();
+  useTrendingAnimation({sectionRef ,isLoading});
   return (
-    <section
+    <div
       ref={sectionRef}
       className="py-14 sm:py-16 md:py-20 bg-surface-container-low "
       id="collections"
     >
-      <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative">
-        {/* ✅ NEW: Added section heading for context — was missing in original */}
+      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative">
         <SectionTitle title="Trending Now" accentColor="secondary" />
         <div className="absolute right-0 top-0 px-4 text-xs py-1 border rounded-full">
           <Link to="/library" className="flex-center gap-1">
@@ -34,19 +35,31 @@ const TrendingSection = () => {
             snap-x snap-mandatory
             scroll-smooth
             mt-8 sm:mt-10
+          w-full
           "
         >
-          {books?.map((book, i) => (
-            <div
-              key={i}
-              className="trending-card shrink-0 snap-center sm:snap-start w-36.25 sm:w-46.25 md:w-53.75 lg:w-60 will-change-transform"
-            >
-              <BookCard {...book} />
-            </div>
-          ))}
+          {isLoading ? (
+            Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} className="w-1/4 min-w-52 shrink-0">
+                <SkeletonCard parentType="Main"/>
+              </div>
+            ))
+          ) : isError ? (
+            <ErrorMessage msg="Oops! Something went wrong while loading trending books. Please try again in a minute" />
+          ) : (
+            books?.map((book, i) => (
+              <div
+                key={i}
+                data-animate="trending-card"
+                className="shrink-0 snap-center sm:snap-start w-36.25 sm:w-46.25 md:w-53.75 lg:w-60 will-change-transform"
+              >
+                <BookCard {...book} />
+              </div>
+            ))
+          )}
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 export default TrendingSection;

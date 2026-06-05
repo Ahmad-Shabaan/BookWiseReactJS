@@ -5,15 +5,15 @@ import { useFeaturesAnimations } from "./features.animations";
 
 const FeaturesSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  useFeaturesAnimations(sectionRef, gridRef);
+  useFeaturesAnimations(sectionRef);
   return (
-    <section className="py-16 sm:py-20 md:py-24" ref={sectionRef}>
-      <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+    <div className="py-16 sm:py-20 md:py-24" ref={sectionRef}>
+      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
         <SectionTitle title="Engineered for Readers" subtitle="Experience" />
 
         <div
-          ref={gridRef}
+          // ref={gridRef}
+          data-animate="features"
           className="
             grid grid-cols-1 md:grid-cols-3
             gap-4 sm:gap-5 md:gap-6
@@ -21,7 +21,6 @@ const FeaturesSection = () => {
     
           "
         >
-          {/* ── Main Large Bento ─────────────────────────────────────────── */}
           <div
             className="
             bento-item md:col-span-2
@@ -38,12 +37,6 @@ const FeaturesSection = () => {
               <span className="bg-primary/10 text-primary px-3 sm:px-4 py-1 sm:py-1.5 rounded-full label-sm font-bold w-fit block tracking-widest uppercase text-xs">
                 Personalized
               </span>
-              {/*
-                ✅ FIX: Replaced `text-[clamp(2.2rem,5vw,3.2rem)]` with a
-                slightly tighter lower bound. On 320px phones 2.2rem (35px) is
-                very large for this card — `clamp(1.8rem,5vw,3.2rem)` starts
-                smaller and still scales up beautifully on wider screens.
-              */}
               <h3
                 className="font-black tracking-tighter text-on-surface leading-tight"
                 style={{ fontSize: "clamp(1.8rem, 5vw, 3.2rem)" }}
@@ -97,12 +90,6 @@ const FeaturesSection = () => {
             will-change-transform
           "
           >
-            {/*
-              ✅ FIX: Removed the cascading size classes on the emoji wrapper
-              (w-16 h-16 sm:w-18 sm:h-18 md:w-16 md:h-16 lg:w-20 lg:h-20)
-              which created a "shrink at md, grow at lg" size bounce on tablet.
-              Simplified to a smooth two-step scale.
-            */}
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-surface-container flex items-center justify-center text-primary-dim shadow-inner text-2xl">
               👥
             </div>
@@ -146,8 +133,8 @@ const FeaturesSection = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

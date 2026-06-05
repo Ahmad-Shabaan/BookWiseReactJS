@@ -11,8 +11,9 @@ const useTheme = (): [Theme, () => void] => {
 
   useEffect(() => {
     const html = document.documentElement;
-    html.classList.remove("dark", "light");
-    html.classList.add(theme);
+    html.dataset.theme = theme;
+    // html.classList.remove("dark", "light");
+    // html.classList.add(theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
   const toggleTheme = () => {

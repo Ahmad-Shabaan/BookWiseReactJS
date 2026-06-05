@@ -7,10 +7,9 @@ export function useFAQAnimations(sectionRef : React.RefObject<HTMLDivElement | n
   useGSAP(
     () => {
       if (!sectionRef.current) return;
-      // ✅ FIX: Respect reduced-motion
       if (prefersReducedMotion()) return;
-
-      const items = sectionRef.current.querySelectorAll(".faq-item");
+      const q = gsap.utils.selector(sectionRef.current);
+      const items = q("[data-animate='faq-item'] > *");
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -30,9 +29,7 @@ export function useFAQAnimations(sectionRef : React.RefObject<HTMLDivElement | n
           duration: 0.9,
           stagger: 0.1,
           ease: "power4.out",
-          // ✅ PERF: Clear inline transforms after animation completes so
-          // hover transitions run cleanly without competing with stale values
-          clearProps: "x,scale,opacity",
+          clearProps: "transform,opacity",
         },
       );
 
@@ -40,6 +37,5 @@ export function useFAQAnimations(sectionRef : React.RefObject<HTMLDivElement | n
         tl.kill();
       };
     },
-    { scope: sectionRef },
   );
 }

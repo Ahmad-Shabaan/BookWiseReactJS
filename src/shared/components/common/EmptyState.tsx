@@ -11,7 +11,7 @@ const EmptyState: React.FC<WishlistEmptyStateProps> = ({
   icon = <HeartCrack size={34} className="text-primary" />,
 }) => {
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center py-24 px-6 text-center bg-surface-container-low rounded-xl border border-outline-variant/15 border-dashed">
+    <div className="flex-1 col-center text-center  pt-12 sm:pt-14  lg:pt-16 px-4 bg-surface-container-low rounded-xl border border-outline-variant/15 border-dashed">
       <div className="w-20 h-20 bg-surface-container rounded-full flex items-center justify-center mb-6 border border-outline-variant/30">
         {icon}
       </div>

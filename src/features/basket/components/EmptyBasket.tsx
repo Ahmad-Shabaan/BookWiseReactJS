@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 
 const EmptyShoppingCart = () => {
   return (
-    <main className="min-h-dvh bg-surface font-sans text-on-surface pt-24 main-container">
+    <main className="min-h-svh bg-surface font-sans text-on-surface pt-24 main-container">
       <section className="container w-full mx-auto px-4 page-container">
-        <div className="flex flex-col items-center justify-center min-h-[60dvh] text-center max-w-md mx-auto">
+        <div className="col-center min-h-[60dvh] text-center max-w-md mx-auto">
           <div className="size-20 rounded-full bg-surface-container-highest flex items-center justify-center mb-8">
             <ShoppingBag className="size-9 text-on-surface-variant" />
           </div>

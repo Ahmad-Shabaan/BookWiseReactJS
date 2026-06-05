@@ -1,10 +1,9 @@
 import { useSearchParams } from "react-router-dom";
-// import { GENRES } from "../constants/books.constants";
 import { useAuthors, useCategories } from "../hooks/useBooks";
 import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
+import { SkeletonBlock } from "@/shared/components/common/SkeletonBlock";
 // const clamp = (v: number, min: number, max: number) =>
-  // Math.min(Math.max(v, min), max);
-
+// Math.min(Math.max(v, min), max);
 // const CURRENT_YEAR = new Date().getFullYear();
 
 // ── Section wrapper ───────────────────────────────────────────────────────────
@@ -15,18 +14,17 @@ const FilterSection = ({
   title: string;
   children: React.ReactNode;
 }) => (
-  <section className=" w-full p-2 shadow-soft">
+  <div className=" w-full p-2 shadow-soft">
     <span className="mb-4 block text-base text-primary">{title}</span>
     {children}
-  </section>
+  </div>
 );
 
 // ── FilterSidebar ─────────────────────────────────────────────────────────────
-const FilterSidebar = () => {
+const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const category = Number(searchParams.get("category") ?? undefined);
   const author = Number(searchParams.get("author") ?? undefined);
-
   // const genre = searchParams.get("genre") ?? undefined;
   // const rating = Number(searchParams.get("rating") ?? 1);
   // const yearFrom = Number(searchParams.get("yearFrom") ?? 1900);
@@ -64,10 +62,7 @@ const FilterSidebar = () => {
         <div className="animate-pulse h-4 bg-surface-container rounded w-1/3 mb-4" />
         <div className="flex flex-wrap gap-2 p-2">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="animate-pulse h-8 bg-surface-container rounded-full w-22"
-            />
+            <SkeletonBlock className="w-22 h-8 rounded-full" key={i} />
           ))}
         </div>
       </div>
@@ -294,4 +289,4 @@ const FilterSidebar = () => {
   );
 };
 
-export default FilterSidebar;
+export default Filter;

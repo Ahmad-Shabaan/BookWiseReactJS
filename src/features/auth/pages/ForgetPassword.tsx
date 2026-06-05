@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 const ForgetPassword = () => {
   return (
-    <main className="main-container pt-0">
-      <section className="page-container flex-center h-dvh ">
-        <div className="aside-section w-fit px-6 py-8 flex flex-col items-center gap-6">
+    <main className="main-container pt-0 min-h-svh">
+      <div className="page-container flex-center h-dvh ">
+        <section className="aside-section w-fit px-6 py-8 flex flex-col items-center gap-6">
           <div className="rounded-full bg-surface-variant p-4">
             <GlobeLockIcon className="size-6 text-primary" />
           </div>
@@ -25,8 +25,8 @@ const ForgetPassword = () => {
             <ArrowLeft className="size-4 group-hover:-translate-x-0.5 transition-transform" />
             Back to Login
           </Link>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 };

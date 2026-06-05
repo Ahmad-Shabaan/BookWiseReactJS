@@ -13,7 +13,7 @@ import type {
   BasketItem,
   Flag,
   BasketResponse,
-  UpdateBasketItemProps,
+  UpdateBasketItemParams,
 } from "../types";
 import { useAppDispatch } from "@/store/hooks";
 import type { AxiosError } from "axios";
@@ -50,7 +50,7 @@ export const useUpdateBasket = () => {
   const updateBasketFun: UseMutationResult<
     BasketResponse,
     AxiosError,
-    UpdateBasketItemProps
+    UpdateBasketItemParams
   > = useMutation({
     mutationFn: updateBasket,
     onMutate({ basketItem }) {
@@ -113,8 +113,8 @@ export const useUpdateBasket = () => {
   });
 
   return {
-    updateOrRemoveBasketItem: (updateBasketProps: UpdateBasketItemProps) =>
-      updateBasketFun.mutate(updateBasketProps),
+    updateOrRemoveBasketItem: (updateBasketParams: UpdateBasketItemParams) =>
+      updateBasketFun.mutate(updateBasketParams),
   };
 };
 
@@ -141,11 +141,11 @@ export const useUpdateBasketItemQuantity = () => {
   }, [mutation.mutate]);
 
   const debouncedUpdateRef = useRef<
-    ((item: UpdateBasketItemProps) => void) & { cancel?: () => void }
+    ((item: UpdateBasketItemParams) => void) & { cancel?: () => void }
   >(null); // stores the debounced function so it persists across renders
 
   useEffect(() => {
-    debouncedUpdateRef.current = debounce((item: UpdateBasketItemProps) => {
+    debouncedUpdateRef.current = debounce((item: UpdateBasketItemParams) => {
       // runs only after user stops clicking for the delay period
       mutateRef.current(item);
       // calls the latest mutate to avoid stale closure issues
@@ -161,7 +161,7 @@ export const useUpdateBasketItemQuantity = () => {
     updateBasketItemQuantity: ({
       basketId,
       basketItem,
-    }: UpdateBasketItemProps) => {
+    }: UpdateBasketItemParams) => {
       queryClient.setQueryData(
         BASKET_QUERY_KEYS,
         (prevState?: BasketResponse) => {

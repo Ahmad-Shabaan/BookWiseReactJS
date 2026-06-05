@@ -5,19 +5,17 @@ import {
 } from "@/landing/animations";
 import { useGSAP } from "@gsap/react";
 import gsap from "@/lib/gsap.config";
+import type { SectionAnimationParams } from "@/shared/types/common.types";
 
-export function useTrendingAnimation(
-  sectionRef: React.RefObject<HTMLDivElement | null>,
-) {
+export function useTrendingAnimation({ sectionRef ,isLoading}: SectionAnimationParams & {isLoading : boolean}) {
   useGSAP(
     () => {
-        if(!sectionRef.current) return;
+      if (!sectionRef.current) return;
       if (prefersReducedMotion()) return;
 
       const q = gsap.utils.selector(sectionRef.current);
-
-    //   gsap.set(cards, { x: 30, opacity: 0 });
-
+      const cards = q("[data-animate='trending-card']");
+      if (isLoading) return;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -26,23 +24,16 @@ export function useTrendingAnimation(
         },
       });
 
-      tl.from(q(".trending-card"), {
+      tl.from(cards, {
         ...motion.movingLeft,
         stagger: 0.1,
         clearProps: "x,opacity",
       });
 
       return () => {
-        /*
-          ✅ FIX: Original cleanup looped over ALL ScrollTriggers and killed
-          only those matching `containerRef.current` — but used a `forEach`
-          with an external filter, which is fragile if the ref is null.
-          Replacing with `tl.kill()` which also kills its associated
-          ScrollTrigger when the timeline is destroyed.
-        */
         tl.kill();
       };
     },
-    { scope: sectionRef },
+    { dependencies:[isLoading]},
   );
 }

@@ -7,20 +7,8 @@ const STEPS = [
 const ProcessingPayment = () => {
   return (
     <main className="main-container">
-      <section className="page-container py-0">
+      <div className="page-container py-0">
         <div className=" flex items-center justify-center relative overflow-hidden">
-          <style>{`
-        @keyframes pulse-ring {
-          0% { transform: scale(0.33); opacity: 1; }
-          80%, 100% { opacity: 0; }
-        }
-        @keyframes pulse-dot {
-          0% { transform: scale(0.8); }
-          50% { transform: scale(1); }
-          100% { transform: scale(0.8); }
-        }
-      `}</style>
-
           {/* Tonal background transition */}
           <div className="absolute inset-0 bg-surface" />
           {/* bg-[radial-gradient(circle_at_50%_50%,#1a1f2e_0%,#0a0e19_100%)] */}
@@ -118,7 +106,7 @@ const ProcessingPayment = () => {
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </main>
   );
 };

@@ -7,9 +7,10 @@ import {
 } from "@tanstack/react-query";
 import { useAppDispatch } from "@/store/hooks";
 import { optimisticToggle, revertToggle } from "../store/wishlistSlice";
+import { v4 as uuidv4 } from "uuid";
 
 import type {
-  WishlistBookProps,
+  WishlistBookParams,
   WishlistResponse,
   WishlistToggleResponse,
 } from "../types/wishlist";
@@ -20,10 +21,16 @@ import {
 } from "../options/wishlist.query.options";
 import { toggleWishlistAsync } from "../services/wishlist.api";
 import { BOOKS_QUERY_KEYS } from "@/features/books/constants/books.constants";
-import { useSearchParams } from "react-router-dom";
-import type { BooksResponse } from "@/shared/types/api.types";
 import { toast } from "sonner";
+import { useFiltersFromURL } from "@/features/books/hooks/useFilter";
+import { useRef } from "react";
+import type { BookFilters, BooksResponse } from "@/features/books/types/book";
 
+type ToggleWishlistParams = {
+  bookId: number;
+  isWished: boolean;
+  filters: BookFilters;
+};
 export const useGetWishlist = (
   pageIndex: number,
 ): UseQueryResult<WishlistResponse, Error> => {
@@ -39,30 +46,20 @@ export const useGetWishlistCount = (
 const useToggleWishlist = () => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
+  const checkoutIdempotencyKey = useRef<string | null>(uuidv4()); //fixed across re-render
   const useToggleWishlist: UseMutationResult<
     WishlistToggleResponse,
     AxiosError,
-    WishlistBookProps
+    WishlistBookParams
   > = useMutation({
     mutationFn: toggleWishlistAsync,
     onMutate(variables) {
       dispatch(optimisticToggle(variables.bookId));
       const oldBooks =
-        queryClient.getQueryData(
-          BOOKS_QUERY_KEYS.list({
-            pageIndex: variables.pageIndex,
-            search: variables.search,
-            // authorId: variables.authorId,
-            category: variables.category,
-          }),
-        ) || [];
+        queryClient.getQueryData(BOOKS_QUERY_KEYS.list(variables.filters)) ||
+        [];
       queryClient.setQueryData(
-        BOOKS_QUERY_KEYS.list({
-          pageIndex: variables.pageIndex,
-          search: variables.search,
-          // authorId: variables.authorId,
-          category: variables.category,
-        }),
+        BOOKS_QUERY_KEYS.list(variables.filters),
         (prevState?: BooksResponse) => {
           if (!prevState) return prevState;
           return {
@@ -83,12 +80,7 @@ const useToggleWishlist = () => {
       return () => {
         dispatch(revertToggle(variables.bookId));
         queryClient.setQueryData(
-          BOOKS_QUERY_KEYS.list({
-            pageIndex: variables.pageIndex,
-            search: variables.search,
-            authorId: variables.authorId,
-            category: variables.category,
-          }),
+          BOOKS_QUERY_KEYS.list(variables.filters),
           oldBooks,
         );
         toast.error(
@@ -101,27 +93,31 @@ const useToggleWishlist = () => {
     },
     onSuccess(_, variables) {
       queryClient.invalidateQueries({
-        queryKey: wishlistQueryOptions(variables.pageIndex).queryKey,
+        queryKey: wishlistQueryOptions(variables.filters.pageIndex || 1)
+          .queryKey,
       });
+      checkoutIdempotencyKey.current = null;
     },
   });
 
   return {
-    toggleWishlist: (wishlist: WishlistBookProps) =>
-      useToggleWishlist.mutate(wishlist),
+    toggleWishlist: (wishlist: ToggleWishlistParams) =>
+      useToggleWishlist.mutate({
+        ...wishlist,
+        checkoutIdempotencyKey: checkoutIdempotencyKey.current,
+      }),
   };
 };
 
 export const useHandleToggleWishlist = () => {
   const { toggleWishlist } = useToggleWishlist();
-  const [searchParams] = useSearchParams();
+  const filters = useFiltersFromURL();
+  // const checkoutIdempotencyKey = useRef(uuidv4()); //fixed across re-render
   return ({ bookId, isWished }: { bookId: number; isWished: boolean }) =>
     toggleWishlist({
       bookId,
       isWished: !isWished,
-      pageIndex: parseInt(searchParams.get("page") || "1"), // Pass the current page index if needed for cache updates
-      search: searchParams.get("search") || "",
-      // authorId: parseInt(searchParams.get("authorId"))||1,
-      category: searchParams.get("category") || "",
+      filters,
+      // checkoutIdempotencyKey: checkoutIdempotencyKey.current,
     });
 };

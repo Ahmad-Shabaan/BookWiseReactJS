@@ -61,10 +61,10 @@ const WishlistPage = () => {
       />
     );
   return (
-    <section className="main-container">
+    <div className="main-container">
       <div className="page-container">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 lg:grid-cols-7 2xl:grid-cols-16 gap-6 items-start">
+          <div className="lg:col-span-5 2xl:col-span-13">
             <SectionHeader to="/library" link="Explore more Books">
               <div className="flex items-center gap-6 z-10">
                 <div className="icon-card">
@@ -102,7 +102,7 @@ const WishlistPage = () => {
               )}
             </div>
           </div>
-          <aside className="col-span-1 flex flex-col gap-6" ref={sidebarRef}>
+          <aside className="lg:col-span-2 2xl:col-span-3 flex flex-col gap-6" ref={sidebarRef}>
             <Aside asideHeader="My Library">
               <>
                 <p className="text-on-surface-variant text-body-md mb-6">
@@ -163,7 +163,7 @@ const WishlistPage = () => {
           </aside>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

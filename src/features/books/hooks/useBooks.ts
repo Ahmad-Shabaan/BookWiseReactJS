@@ -1,8 +1,8 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { authorsQueryOptions, bookDetailsQueryOptions, booksQueryOptions, categoriesQueryOptions, trendingBooksQueryOptions } from '../options/books.query.option';
-import type { BookFilters, PaginatedBooks, TrendingBooks } from '../types/book';
+import type { BookFilters, BooksResponse, TrendingBooks } from '../types/book';
 
-export const useBooks = (filters: BookFilters): UseQueryResult<PaginatedBooks , Error> => {
+export const useBooks = (filters: BookFilters): UseQueryResult<BooksResponse , Error> => {
   return useQuery(booksQueryOptions(filters));
 };
 

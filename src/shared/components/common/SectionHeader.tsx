@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import type { ReactElement } from "react";
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 const SectionHeader = ({
@@ -11,7 +11,7 @@ const SectionHeader = ({
   link: string;
   to: string;
   hideLink?: boolean;
-  children: ReactElement;
+  children: ReactNode;
 }) => {
   return (
     <div className="relative">

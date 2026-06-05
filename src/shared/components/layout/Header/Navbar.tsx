@@ -28,6 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Logo from "../../common/Logo";
 
 const NAV_LINKS = [
   { label: "Discover", to: "/" },
@@ -38,7 +39,7 @@ const NAV_LINKS = [
 const Navbar = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [basketId] = useState<string | null>(localStorage.getItem("basketId"));
-  const navRef = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: wishlistCount } = useGetWishlistCount(isAuthenticated);
   const { data: basketCount } = useGetBasketCount(basketId!, isAuthenticated);
@@ -87,237 +88,197 @@ const Navbar = () => {
   }, [mobileOpen]);
 
   return (
-    <nav
-      ref={navRef}
-      className="fixed top-0 w-full z-50 bg-background/70 backdrop-blur-xl shadow-soft border-b border-border"
-      role="navigation"
-      aria-label="Main navigation"
-    >
-      <div className="relative z-30 container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 flex justify-between items-center h-16 md:h-20">
-        {/* Brand */}
-        <Link
-          to="/"
-          className="text-xl sm:text-2xl font-black tracking-tighter bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent shrink-0"
-        >
-          BookWise
-        </Link>
-        {/* Desktop nav links */}
-        <div className="hidden lg:flex gap-6 lg:gap-8 items-center">
-          {NAV_LINKS.map(({ label, to }) => (
-            <HashLink
-              smooth
-              key={label + to}
-              to={to}
-              className={`font-inter tracking-tight text-sm lg:text-base font-bold text-on-surface hover:text-on-surface transition-colors duration-300 ${pathname === to ? "border-b border-primary text-primary" : ""}`}
+    <header>
+      <nav
+        ref={navRef}
+        className="fixed top-0 w-full z-50 bg-background/70 backdrop-blur-xl shadow-soft border-b border-border"
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        <div className="relative z-30 container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 flex justify-between items-center h-12 sm:h-14  lg:h-16">
+          {/* Brand */}
+
+          <Logo />
+          {/* Desktop nav links */}
+          <div className="hidden lg:flex gap-6 lg:gap-8 items-center">
+            {NAV_LINKS.map(({ label, to }) => (
+              <HashLink
+                smooth
+                key={label + to}
+                to={to}
+                className={`font-inter tracking-tight text-sm lg:text-base font-bold text-on-surface hover:text-on-surface transition-colors duration-300 ${pathname === to ? "border-b border-primary text-primary" : ""}`}
+              >
+                {label}
+              </HashLink>
+            ))}
+          </div>
+          {/* Right controls */}
+          <div className="flex items-start gap-3 sm:gap-4 lg:gap-6 text-on-surface">
+            <Link
+              to="/library/basket"
+              style={
+                {
+                  "--count": `"${!basketCount ? 0 : basketCount > 9 ? "9+" : basketCount}"`,
+                } as React.CSSProperties
+              }
+              className="nav-icon"
+              aria-label="Basket"
             >
-              {label}
-            </HashLink>
-          ))}
-        </div>
-        {/* Right controls */}
-        <div className="flex items-center gap-3 sm:gap-4 md:gap-6 text-on-surface">
-          <Link
-            to="/library/basket"
-            style={
-              {
-                "--count": `"${!basketCount ? 0 : basketCount > 9 ? "9+" : basketCount}"`,
-              } as React.CSSProperties
-            }
-            className={`relative text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors duration-300 active:scale-95
-            aria-label="Notifications
-            before:content-(--count)
-            before:absolute
-            before:top-0 
-            before:right-0
-            before:size-4
-            md:before:min-w-5
-            md:before:h-5
-            before:px-1
-            before:flex 
-            before:items-center 
-            before:justify-center
-            before:rounded-full
-            before:bg-primary-dim
-          before:text-white
-            before:text-[10px]
-            md:before:text-xs
-            before:font-medium
-            md:before:font-bold
-            `}
-            aria-label="Add to cart"
-          >
-            <ShoppingBasket className="size-5 md:size-7 text-on-surface" />
-          </Link>
-          <Link
-            to="/library/wishlisted"
-            aria-label="Add to wishlist"
-            style={
-              {
-                "--count": `"${!wishListCountState ? 0 : wishListCountState > 9 ? "9+" : wishListCountState}"`,
-              } as React.CSSProperties
-            }
-            className={`relative text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors duration-300 active:scale-95"
-            aria-label="Notifications
-            before:content-(--count)
-            before:absolute
-            before:top-0 
-            before:right-0
-            before:size-4
-            md:before:min-w-5
-            md:before:h-5
-            before:px-1
-            before:flex 
-            before:items-center 
-            before:justify-center
-            before:rounded-full
-            before:bg-primary-dim before:text-white
-            before:text-[10px]
-            md:before:text-xs
-            before:font-medium
-            md:before:font-bold
-            `}
-          >
-            <Heart className="size-5 md:size-7 text-on-surface" />
-          </Link>
-          <div className="hidden lg:block h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden border-2 border-outline-variant/15 hover:border-primary/50 transition-colors cursor-pointer shrink-0">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <img
-                  alt="User profile"
-                  className="w-8 h-8 sm:w-10 sm:h-10 object-cover"
-                  src="/icons/user.png"
-                />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {isAuthenticated && (
-                  <DropdownMenuItem>
-                    <UserIcon />
-                    Profile
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuItem onClick={toggleTheme}>
-                  {theme === "light" ? (
-                    <>
-                      <Moon /> Dark Mode
-                    </>
-                  ) : (
-                    <>
-                      <Sun /> Light Mode
-                    </>
+              <ShoppingBasket className="size-5 sm:size-6 lg:size-7 text-on-surface" />
+            </Link>
+            <Link
+              to="/library/wishlisted"
+              aria-label="Wishlist"
+              style={
+                {
+                  "--count": `"${!wishListCountState ? 0 : wishListCountState > 9 ? "9+" : wishListCountState}"`,
+                } as React.CSSProperties
+              }
+              className="nav-icon"
+            >
+              <Heart className="size-5 sm:size-6 lg:size-7 text-on-surface" />
+            </Link>
+            <div className="hidden lg:block h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden border-2 border-outline-variant/15 hover:border-primary/50 transition-colors cursor-pointer shrink-0">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <img
+                    alt="User profile"
+                    className="w-8 h-8 sm:w-10 sm:h-10 object-cover"
+                    src="/icons/user.png"
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {isAuthenticated && (
+                    <DropdownMenuItem>
+                      <UserIcon />
+                      Profile
+                    </DropdownMenuItem>
                   )}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {!isAuthenticated ? (
-                  <DropdownMenuItem>
-                    <Link to="/login" className="flex-center gap-2">
-                      <LogOutIcon />
-                      Login in
-                    </Link>
-                  </DropdownMenuItem>
-                ) : (
-                  <DropdownMenuItem onClick={logout} variant="destructive">
-                    {isLoggingOut ? (
+                  <DropdownMenuItem onClick={toggleTheme}>
+                    {theme === "light" ? (
                       <>
-                        <Spinner /> Logging out
+                        <Moon /> Dark Mode
                       </>
                     ) : (
                       <>
-                        <LogOutIcon />
-                        Log out
+                        <Sun /> Light Mode
                       </>
                     )}
                   </DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          {/* ✅ NEW: Hamburger button — only visible on mobile */}
-          <button
-            className="lg:hidden text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors active:scale-95"
-            onClick={() => setMobileOpen((v) => !v)}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-menu"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </div>
-
-      <div
-        id="mobile-menu"
-        className={`container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 lg:hidden fixed inset-0 ${mobileOpen ? "h-dvh" : "h-0"}  will-change-transform bg-background`}
-      >
-        <div
-          className={`flex flex-col items-start pt-4 pb-12 h-full space-y-1 overflow-y-scroll hide-scrollbar`}
-        >
-          {NAV_LINKS.map(({ label, to }) => (
-            <div className="nav-link" key={label}>
-              <Link to={to} onClick={() => setMobileOpen(false)}>
-                {label}
-              </Link>
+                  <DropdownMenuSeparator />
+                  {!isAuthenticated ? (
+                    <DropdownMenuItem>
+                      <Link to="/login" className="flex-center gap-2">
+                        <LogOutIcon />
+                        Login in
+                      </Link>
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem onClick={logout} variant="destructive">
+                      {isLoggingOut ? (
+                        <>
+                          <Spinner /> Logging out
+                        </>
+                      ) : (
+                        <>
+                          <LogOutIcon />
+                          Log out
+                        </>
+                      )}
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-          ))}
-          {isAuthenticated && (
-            <div className="nav-link">
-              <button className="flex items-center gap-2 cursor-not-allowed">
-                Profile
-                <UserIcon size={16} />
-              </button>
-            </div>
-          )}
-          <div className="nav-link">
             <button
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => {
-                toggleTheme();
-                setMobileOpen(false);
-              }}
+              className="lg:hidden text-on-surface-variant hover:bg-primary/10 p-2 rounded-full transition-colors active:scale-95"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
-              {theme === "light" ? (
-                <>
-                  Dark Mode
-                  <Moon size={16} />
-                </>
-              ) : (
-                <>
-                  Light Mode
-                  <Sun size={16} />
-                </>
-              )}
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
-          <div className="nav-link">
-            {!isAuthenticated ? (
-              <Link to="/login" className="flex-center gap-2">
-                <LogOutIcon />
-                Login in
-              </Link>
-            ) : (
-              <button
-                className="flex items-center gap-2 cursor-pointer"
-                onClick={() => {
-                  logout();
-                  setMobileOpen(false);
-                }}
-              >
-                {isLoggingOut ? (
-                  <>
-                    Logging out
-                    <Spinner fontSize={16} />
-                  </>
-                ) : (
-                  <>
-                    Log out
-                    <LogOutIcon size={16} />
-                  </>
-                )}
-              </button>
-            )}
-          </div>
         </div>
-      </div>
-    </nav>
+
+        {mobileOpen && (
+          <div
+            data-animate="mobile-menu"
+            className={`container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 lg:hidden fixed inset-0  h-dvh  will-change-transform bg-background`}
+          >
+            <div
+              className={`flex flex-col items-start pt-4 pb-12 h-full space-y-1 overflow-y-scroll hide-scrollbar`}
+            >
+              {NAV_LINKS.map(({ label, to }) => (
+                <div data-animate="nav-link" className="nav-link" key={label}>
+                  <Link to={to} onClick={() => setMobileOpen(false)}>
+                    {label}
+                  </Link>
+                </div>
+              ))}
+              {isAuthenticated && (
+                <div data-animate="nav-link" className="nav-link">
+                  <button className="flex items-center gap-2 cursor-not-allowed">
+                    Profile
+                    <UserIcon size={16} />
+                  </button>
+                </div>
+              )}
+              <div data-animate="nav-link" className="nav-link">
+                <button
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={() => {
+                    toggleTheme();
+                    setMobileOpen(false);
+                  }}
+                >
+                  {theme === "light" ? (
+                    <>
+                      Dark Mode
+                      <Moon size={16} />
+                    </>
+                  ) : (
+                    <>
+                      Light Mode
+                      <Sun size={16} />
+                    </>
+                  )}
+                </button>
+              </div>
+              <div data-animate="nav-link" className="nav-link">
+                {!isAuthenticated ? (
+                  <Link to="/login" className="flex-center gap-2">
+                    <LogOutIcon />
+                    Login in
+                  </Link>
+                ) : (
+                  <button
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={() => {
+                      logout();
+                      setMobileOpen(false);
+                    }}
+                  >
+                    {isLoggingOut ? (
+                      <>
+                        Logging out
+                        <Spinner fontSize={16} />
+                      </>
+                    ) : (
+                      <>
+                        Log out
+                        <LogOutIcon size={16} />
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
   );
 };
 

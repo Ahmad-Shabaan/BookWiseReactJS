@@ -9,7 +9,8 @@ import AppLayout from "@/shared/components/layout/AppLayout";
 import LandingPage from "@/landing";
 import ForgetPassword from "@/features/auth/pages/ForgetPassword";
 import ResetPassword from "@/features/auth/pages/ResetPassword";
-import NotFound from "@/features/errors/pages/NotFound";
+import NotFound from "@/shared/pages/NotFound";
+// import NotFound from "@/features/errors/pages/NotFound";
 
 const Profile = lazy(() => import("@/features/profile/pages/Profile"));
 const Books = lazy(() => import("@/features/books/pages/BooksPage"));

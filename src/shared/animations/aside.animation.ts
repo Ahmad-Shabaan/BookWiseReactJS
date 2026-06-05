@@ -1,19 +1,15 @@
 import { useGSAP } from "@gsap/react";
 import gsap, { prefersReducedMotion } from "@/lib/gsap.config";
-import type React from "react";
+import type { SectionAnimationParams } from "../types/common.types";
 
-type useAsideAnimationProps = {
-  sectionRef: React.RefObject<HTMLDivElement | null>;
-  dependencies?: unknown[]; // allow passing dependencies to re-run animation on updates (e.g. when books data changes)
-};
 export function useAsideAnimation({
   sectionRef,
   dependencies,
-}: useAsideAnimationProps) {
+}: SectionAnimationParams) {
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
       if (!sectionRef.current) return;
+      if (prefersReducedMotion()) return;
       const q = gsap.utils.selector(sectionRef.current);
       gsap.fromTo(
         q("section"),
@@ -28,6 +24,6 @@ export function useAsideAnimation({
         },
       );
     },
-    { scope: sectionRef, dependencies: dependencies ?? [] },
+    {  dependencies: dependencies ?? [] },
   );
 }

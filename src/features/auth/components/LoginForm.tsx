@@ -40,21 +40,14 @@ export default function LoginForm({
     <form
       id="login-form"
       onSubmit={handleSubmit(submitHandler)}
-      className="flex flex-col gap-5"
+      className="flex flex-col gap-4 w-full max-w-md lg:max-w-full "
       noValidate
       data-animate="form"
     >
       {/* ── Server error ── */}
       {isLoginError && (
         <ErrorMessage msg={error} />
-        // <div
-        //   role="alert"
-        //   className="mx-auto flex-center gap-3 rounded-xl border border-error/20
-        //              bg-error/8 px-4 py-3 text-sm text-error"
-        // >
-        //   <span className="mt-px text-base leading-none">⚠</span>
-        //   {error}
-        // </div>
+
       )}
 
       {/* ── Email ── */}
@@ -150,10 +143,10 @@ export default function LoginForm({
 
       {/* ── Submit ── */}
       <div>
-        <Button
+        <button
           type="submit"
           disabled={isLoading}
-          className="btn-primary mt-1 py-6 font-bold rounded-xl"
+          className="btn-primary mt-1 font-bold rounded-md"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
@@ -166,7 +159,7 @@ export default function LoginForm({
           ) : (
             "Sign In to Account"
           )}
-        </Button>
+        </button>
       </div>
 
       {/* ── Divider ── */}
@@ -212,7 +205,8 @@ export default function LoginForm({
                        text-sm font-semibold text-on-surface
                        transition-all duration-200
                        hover:border-outline-variant/30 hover:bg-surface-bright
-                       active:scale-[0.98]"
+                       active:scale-[0.98]
+                       "
           >
             {icon}
             {label}

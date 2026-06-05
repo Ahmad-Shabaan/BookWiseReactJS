@@ -16,7 +16,7 @@ export interface BasketResponse {
   shippingPrice: number;
 }
 
-export interface UpdateBasketItemProps {
+export interface UpdateBasketItemParams {
   basketItem: BasketItem;
   basketId: string;
 }

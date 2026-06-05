@@ -54,7 +54,7 @@ const BookSearch = () => {
     setSearchParams(next, { replace: true });
   };
   return (
-    <section className="flex-1">
+    <div className="flex-1">
       <div className="flex flex-wrap items-end justify-between gap-6">
         {/* ── Title + Search ──────────────────────────────────────────────── */}
         <div className="w-full max-w-xl" data-anim="title">
@@ -114,7 +114,7 @@ const BookSearch = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

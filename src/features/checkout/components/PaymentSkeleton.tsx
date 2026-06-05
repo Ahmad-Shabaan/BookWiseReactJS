@@ -1,11 +1,9 @@
-const SkeletonBlock = ({ className }: { className?: string }) => (
-  <div className={`animate-pulse rounded bg-surface-container ${className ?? ""}`} />
-);
+import { SkeletonBlock } from "@/shared/components/common/SkeletonBlock";
 
 const PaymentSkeleton = () => {
   return (
-    <main className="main-container">
-      <section className="page-container">
+    <main className="flex-1 main-container">
+      <div className="page-container">
         <div className="relative mb-10 sm:mb-16">
           <div className="flex justify-between w-full max-w-2xl mx-auto px-0 sm:px-4">
             {[1, 2, 3].map((i) => (
@@ -17,53 +15,49 @@ const PaymentSkeleton = () => {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 xl:gap-16">
-          <div className="w-full lg:w-2/3 space-y-8 sm:space-y-12">
-            <section className="bg-surface-container-low rounded-xl p-5 sm:p-8 lg:p-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-surface-container-low rounded-xl p-5 sm:p-8 lg:p-12">
               <SkeletonBlock className="h-7 w-52 mb-8" />
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <SkeletonBlock className="h-3 w-20" />
-                    <SkeletonBlock className="h-12 w-full rounded-lg" />
+                    <SkeletonBlock className="h-12 w-full rounded-md" />
                   </div>
                   <div className="space-y-2">
                     <SkeletonBlock className="h-3 w-20" />
-                    <SkeletonBlock className="h-12 w-full rounded-lg" />
+                    <SkeletonBlock className="h-12 w-full rounded-md" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <SkeletonBlock className="h-3 w-28" />
-                  <SkeletonBlock className="h-12 w-full rounded-lg" />
-                </div>
-                <div className="space-y-2">
-                  <SkeletonBlock className="h-3 w-32" />
-                  <SkeletonBlock className="h-12 w-full rounded-lg" />
+                  <SkeletonBlock className="h-12 w-full rounded-md" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="md:col-span-2 space-y-2">
                     <SkeletonBlock className="h-3 w-12" />
-                    <SkeletonBlock className="h-12 w-full rounded-lg" />
+                    <SkeletonBlock className="h-12 w-full rounded-md" />
                   </div>
                   <div className="space-y-2">
                     <SkeletonBlock className="h-3 w-24" />
-                    <SkeletonBlock className="h-12 w-full rounded-lg" />
+                    <SkeletonBlock className="h-12 w-full rounded-md" />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <SkeletonBlock className="h-3 w-16" />
-                    <SkeletonBlock className="h-12 w-full rounded-lg" />
+                    <SkeletonBlock className="h-12 w-full rounded-md" />
                   </div>
                   <div className="space-y-2">
                     <SkeletonBlock className="h-3 w-36" />
-                    <SkeletonBlock className="h-12 w-full rounded-lg" />
+                    <SkeletonBlock className="h-12 w-full rounded-md" />
                   </div>
                 </div>
               </div>
-            </section>
+            </div>
 
-            <section className="bg-surface-container-low rounded-xl p-5 sm:p-8 lg:p-12">
+            <div className="bg-surface-container-low rounded-xl p-5 sm:p-8 lg:p-12">
               <SkeletonBlock className="h-7 w-44 mb-6 sm:mb-8" />
               <div className="space-y-3 sm:space-y-4">
                 {[1, 2].map((i) => (
@@ -79,10 +73,10 @@ const PaymentSkeleton = () => {
                   </div>
                 ))}
               </div>
-            </section>
+            </div>
           </div>
 
-          <div className="w-full lg:w-1/3">
+          <aside className="col-span-1 flex flex-col gap-6">
             <div className="bg-surface-container-low rounded-xl p-5 sm:p-8">
               <SkeletonBlock className="h-7 w-36 mb-8" />
               <div className="space-y-6 mb-8">
@@ -111,16 +105,16 @@ const PaymentSkeleton = () => {
                   <SkeletonBlock className="h-7 w-24" />
                 </div>
               </div>
-              <SkeletonBlock className="h-12 w-full rounded-lg mb-3" />
-              <SkeletonBlock className="h-12 w-full rounded-lg" />
+              <SkeletonBlock className="h-12 w-full rounded-md mb-3" />
+              <SkeletonBlock className="h-12 w-full rounded-md" />
 
               <div className="mt-6 flex justify-center">
                 <SkeletonBlock className="h-3 w-40" />
               </div>
             </div>
-          </div>
+          </aside>
         </div>
-      </section>
+      </div>
     </main>
   );
 };

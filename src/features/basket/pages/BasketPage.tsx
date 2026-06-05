@@ -14,14 +14,13 @@ import {
 } from "lucide-react";
 import SectionHeader from "@/shared/components/common/SectionHeader";
 import BasketSkeleton from "../components/BasketSkeleton";
-import { useBasketId } from "@/shared/hooks/useLocalStorage";
 import OrderSummary from "../components/OrderSummary";
 import EmptyState from "@/shared/components/common/EmptyState";
 import AppError from "@/shared/components/common/ErrorBoundary/AppError";
-
+import { getBasketId } from "@/lib/utils/localStorageService";
 
 const BasketPage = () => {
-  const basketId = useBasketId();
+  const basketId = getBasketId();
   const {
     data: basket,
     isLoading: cartLoading,
@@ -29,7 +28,6 @@ const BasketPage = () => {
   } = useGetBasket(basketId);
   const { updateOrRemoveBasketItem } = useUpdateBasket();
   const { updateBasketItemQuantity } = useUpdateBasketItemQuantity();
-
 
   const updateQuantity = async (itemId: number, newQuantity: number) => {
     if (!basket || newQuantity < 1) return;
@@ -81,7 +79,7 @@ const BasketPage = () => {
 
   return (
     <main className="main-container">
-      <section className="page-container">
+      <div className="page-container">
         {/* <div className="flex items-start gap-6 flex-col md:flex-row"> */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           <div className="lg:col-span-2">
@@ -102,14 +100,14 @@ const BasketPage = () => {
                 </div>
               </div>
             </SectionHeader>
-            <section className="bg-surface-container-low rounded-xl p-4 sm:p-6 shadow-soft border border-outline-variant/10">
+            <div className="bg-surface-container-low rounded-xl p-4 sm:p-6 shadow-soft border border-outline-variant/10">
               <div className="flex flex-col  gap-4 items-start flex-1 sm:max-h-dvh sm:overflow-y-scroll hide-scrollbar">
                 {basket.items.map((item) => (
-                  <div
+                  <article
                     key={item.id}
-                    className="w-full shadow-soft flex flex-col sm:flex-row gap-6 p-3 sm:p-4 rounded-xl bg-surface-container-low transition-all hover:bg-surface-container"
+                    className="w-full shadow-soft flex flex-col sm:flex-row sm:gap-6 p-3 sm:p-4 rounded-xl bg-surface-container-low transition-all hover:bg-surface-container"
                   >
-                    <div className="w-full sm:size-40 aspect sm:aspect-2/3 shrink-0 rounded-lg overflow-hidden shadow-soft-dim bg-surface-container-lowest flex items-center justify-center relative">
+                    <div className="max-w-56 sm:size-40 aspect-auto sm:aspect-2/3 shrink-0 rounded-lg overflow-hidden shadow-soft-dim bg-surface-container-lowest flex items-center justify-center relative">
                       {item.pictureUrl ? (
                         <img
                           src={item.pictureUrl}
@@ -122,7 +120,6 @@ const BasketPage = () => {
                     </div>
 
                     <div className="flex flex-col flex-1 justify-between py-2">
-                      {/* <div> */}
                       <div className="flex flex-col  sm:flex-row sm:justify-between items-end sm:items-start space-y-1">
                         <div className="space-y-1 flex flex-col items-start w-full">
                           <h2 className="text-xl font-semibold text-on-background tracking-tight">
@@ -170,14 +167,14 @@ const BasketPage = () => {
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
-            </section>
+            </div>
           </div>
           <OrderSummary basket={basket} />
         </div>
-      </section>
+      </div>
     </main>
   );
 };

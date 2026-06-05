@@ -12,9 +12,10 @@ import {
   useUpdateBasket,
 } from "@/features/basket/hooks/useBasket";
 import type { BasketItem } from "@/features/basket/types";
-import { useBasketId } from "@/shared/hooks/useLocalStorage";
 import { useRef } from "react";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { getBasketId } from "@/lib/utils/localStorageService";
+import { toast } from "sonner";
 
 const BookDetailsPage = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -23,7 +24,7 @@ const BookDetailsPage = () => {
   const toggleWishlist = useHandleToggleWishlist();
   const { updateOrRemoveBasketItem } = useUpdateBasket();
   // const queryClient = useQueryClient();
-  const basketId = useBasketId();
+  const basketId = getBasketId();
   const { data: basket } = useGetBasket(basketId);
   const wishlistIds = useAppSelector((state) => state.wishlist);
   const isWished = (bookId: number): boolean => {
@@ -59,13 +60,16 @@ const BookDetailsPage = () => {
 
   const status = STATUS_CONFIG[book.status] ?? STATUS_CONFIG.Unavailable;
 
-  const onAddToCart = async (bookId: number, e: React.PointerEvent) => {
+  const onAddToCart = async (
+    bookId: number,
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     e.preventDefault();
     e.stopPropagation();
     let basketItem: BasketItem | undefined = basket?.items?.find(
       (i) => i.id === bookId,
     );
-    if (!basketItem)
+    if (!basketItem) {
       basketItem = {
         id: bookId,
         title: book.title,
@@ -75,21 +79,25 @@ const BookDetailsPage = () => {
         author: book.author,
         publisher: book.publisher,
       };
-    updateOrRemoveBasketItem({ basketItem, basketId });
+      updateOrRemoveBasketItem({ basketItem, basketId });
+    } else {
+      toast.info(
+        "You've already added this book to your basket. View your basket.",
+      );
+    }
   };
 
   return (
-    <section className="min-h-screen bg-surface text-on-surface pt-20">
-      <div className="container w-full mx-auto py-8 px-4">
-        <Link
-          to="/library"
-          className="mb-4 flex w-fit items-center uppercase gap-2 text-xs sm:text-sm font-medium group text-on-surface-variant transition-colors hover:text-primary"
-        >
-          <ArrowLeft className="size-4 group-hover:-translate-x-0.5 transition-transform" />
-          Back to Library
-        </Link>
-
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 ">
+    <main className="flex-1 main-container">
+      <div className="page-container">
+        <article className="grid grid-cols-1 gap-12 lg:grid-cols-12 relative">
+          <Link
+            to="/library"
+            className="absolute -top-6 sm:-top-8 -translate-y-1/2 right-0 z-1 inline-flex items-center gap-2 text-on-surface-variant hover:text-primary uppercase transition-colors group text-xs sm:text-sm font-medium"
+          >
+            <ArrowLeft className="size-4 group-hover:-translate-x-0.5 transition-transform" />
+            Back to Library
+          </Link>
           <div className="lg:col-span-5">
             <div className="glass-panel flex aspect-3/4 items-center justify-center overflow-hidden rounded-3xl p-4">
               <img
@@ -158,7 +166,7 @@ const BookDetailsPage = () => {
 
             <div className="mb-12 flex flex-col gap-4 sm:flex-row">
               <button
-                onPointerDown={(e) => onAddToCart(book.id, e)}
+                onClick={(e) => onAddToCart(book.id, e)}
                 className="group bg-on-surface text-surface font-extrabold flex items-center justify-center gap-3 rounded-lg px-12 py-4  transition-all hover:bg-inverse-surface cursor-pointer"
               >
                 <ShoppingCart className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-100" />
@@ -192,7 +200,7 @@ const BookDetailsPage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </article>
 
         <section className="mt-24 border-t border-outline-variant/20 pt-12">
           <h2 className="text-3xl">Reader Reviews</h2>
@@ -210,7 +218,7 @@ const BookDetailsPage = () => {
           </div>
         </section>
       </div>
-    </section>
+    </main>
   );
 };
 

@@ -1,3 +1,4 @@
+import type { BookFilters } from "@/features/books/types/book";
 
 export interface WishlistToggleResponse {
   message: string;
@@ -20,11 +21,10 @@ export interface WishlistResponse {
   totalPages: number;
 }
 
-export interface WishlistBookProps {
+export interface WishlistBookParams {
   bookId: number;
   isWished: boolean;
-  pageIndex: number;
-  search?: string;
-  category?: string;
-  authorId?: number;
+  filters:BookFilters;
+  checkoutIdempotencyKey:string | null
+  
 }

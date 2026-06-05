@@ -1,4 +1,3 @@
-import AppError from "@/features/errors/pages/AppError";
 import OrderSkeleton from "../components/OrderSkeleton";
 import { useGetOrderDetails } from "../hooks/useOrders";
 import { useParams } from "react-router-dom";
@@ -10,19 +9,13 @@ import Aside from "@/shared/components/common/Aside";
 import { useAsideAnimation } from "@/shared/animations/aside.animation";
 import { STATUS_CONFIG } from "../constants/orders.constants";
 import { useRef } from "react";
+import AppError from "@/shared/components/common/ErrorBoundary/AppError";
 
 const OrderDetails = () => {
   const { id } = useParams();
   const { data: order, isLoading, isError } = useGetOrderDetails(Number(id));
   const sidebarRef = useRef<HTMLDivElement>(null);
   useAsideAnimation({ sectionRef: sidebarRef });
-
-  // useEffect(() => {
-  //   const root = document.documentElement;
-  //   root.classList.remove("dark", "light");
-  //   root.classList.add("light");
-  //   console.log("add light")
-  // }, []);
 
   if (isLoading) return <OrderSkeleton />;
   if (isError)
@@ -39,7 +32,7 @@ const OrderDetails = () => {
 
   return (
     <main className="main-container">
-      <section className="page-container">
+      <div className="page-container">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           <div className="lg:col-span-2">
             <SectionHeader to="/library/orders" link="Explore Orders">
@@ -50,12 +43,12 @@ const OrderDetails = () => {
                   </div>
                   <div>
                     <h1 className="section-header">Order #ORD-{order!.id}</h1>
-                    <p className="text-sm text-on-surface-variant tracking-wide">
+                    <p className="text-sm text-on-surface-variant tracking-wide text-nowrap">
                       Placed on {formatDateFull(order!.orderDate)}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-wrap items-center justify-center gap-4 z-10">
+                <div className="flex-center flex-wrap gap-4 z-10">
                   <span className="inline-flex items-center gap-2 rounded-full bg-surface-container-highest border border-outline-variant/20 px-4 py-1.5 text-xs font-semibold tracking-wider uppercase text-on-surface-variant">
                     <span
                       className={`size-1.5 rounded-full ${config.dotColor} ${config.dotShadow}`}
@@ -63,12 +56,12 @@ const OrderDetails = () => {
                     {config.label}
                   </span>
                   <span className="px-4 py-1.5 rounded-full bg-tertiary-container/20 border border-tertiary-container/30 text-tertiary-fixed text-xs font-semibold tracking-wider uppercase">
-                    {order!.deliveryMethod}
+                    {order!.deliveryMethod} 
                   </span>
                 </div>
               </>
             </SectionHeader>
-            <section className="bg-surface-container-low rounded-xl p-4 sm:p-6 shadow-soft border border-outline-variant/10">
+            <div className="bg-surface-container-low rounded-xl p-4 sm:p-6 shadow-soft border border-outline-variant/10">
               <div className="flex justify-between items-center mb-4 pb-4 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-linear-to-r after:from-transparent after:via-outline-variant/30 after:to-transparent">
                 <h2 className=" text-xl sm:text-2xl font-bold tracking-tight text-on-surface">
                   Items in this order
@@ -79,7 +72,7 @@ const OrderDetails = () => {
               </div>
               <div className="flex flex-col gap-4">
                 {order!.orderItems.map((item) => (
-                  <div
+                  <article
                     key={item.id}
                     className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-3 sm:p-4 rounded-lg bg-surface-container/50 hover:bg-surface-container transition-colors border border-transparent hover:border-outline-variant/15 group"
                   >
@@ -119,10 +112,10 @@ const OrderDetails = () => {
                         <span className="currency-span">EGP</span>
                       </span>
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
-            </section>
+            </div>
           </div>
           <aside className="col-span-1 flex flex-col gap-6" ref={sidebarRef}>
             <Aside asideHeader="Payment Summary">
@@ -185,7 +178,7 @@ const OrderDetails = () => {
             </Aside>
           </aside>
         </div>
-      </section>
+      </div>
     </main>
   );
 };

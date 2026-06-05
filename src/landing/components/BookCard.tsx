@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const BookCard = ({ title, author, imageUrl, id }: TrendingBooks) => {
   return (
-    <div className="group cursor-pointer w-full">
+    <article className="group cursor-pointer w-full">
       <div
         className="
           relative aspect-2/3
@@ -59,7 +59,7 @@ const BookCard = ({ title, author, imageUrl, id }: TrendingBooks) => {
       <p className="mt-1 text-xs sm:text-sm text-on-surface-variant truncate">
         by {author}
       </p>
-    </div>
+    </article>
   );
 };
 

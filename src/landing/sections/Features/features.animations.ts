@@ -1,18 +1,22 @@
-import { motion, prefersReducedMotion, START_SCROLL_TRIGGER } from "@/landing/animations";
+import {
+  motion,
+  prefersReducedMotion,
+  START_SCROLL_TRIGGER,
+} from "@/landing/animations";
 import { useGSAP } from "@gsap/react";
 import gsap from "@/lib/gsap.config";
 import type React from "react";
 
 export function useFeaturesAnimations(
   sectionRef: React.RefObject<HTMLDivElement | null>,
-  gridRef: React.RefObject<HTMLDivElement | null>
 ) {
   useGSAP(
     () => {
+      if (!sectionRef.current) return;
       if (prefersReducedMotion()) return;
+      const q = gsap.utils.selector(sectionRef.current);
 
-      const items = gridRef.current?.children;
-      if (!items) return;
+      const items = q("[data-animate='features'] > *");
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -22,15 +26,14 @@ export function useFeaturesAnimations(
         },
       });
 
-      tl.from(Array.from(items), {
+      tl.from(items, {
         ...motion.movingUpCinematic,
         scale: 0.97,
         stagger: { each: 0.12, from: "start" },
-        clearProps: "y,scale,opacity",
+        clearProps: "transform,opacity",
       });
 
       return () => tl.kill();
     },
-    { scope: sectionRef },
   );
 }

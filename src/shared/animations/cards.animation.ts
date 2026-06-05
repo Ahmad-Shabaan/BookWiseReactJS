@@ -1,19 +1,16 @@
 import { useGSAP } from "@gsap/react";
 import gsap, { prefersReducedMotion } from "@/lib/gsap.config";
-import type React from "react";
+import type { SectionAnimationParams } from "../types/common.types";
 
-type useBooksAnimationProps = {
-  sectionRef: React.RefObject<HTMLDivElement | null>;
-  dependencies?: unknown[]; // allow passing dependencies to re-run animation on updates (e.g. when books data changes)
-};
+
 export function useCardsAnimation({
   sectionRef,
   dependencies,
-}: useBooksAnimationProps) {
+}: SectionAnimationParams) {
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
       if (!sectionRef.current) return;
+      if (prefersReducedMotion()) return;
       const q = gsap.utils.selector(sectionRef.current);
       gsap.fromTo(
         q("article"),
@@ -29,6 +26,6 @@ export function useCardsAnimation({
         },
       );
     },
-    { scope: sectionRef, dependencies },
+    { dependencies },
   );
 }

@@ -140,7 +140,7 @@ const OrderSummary = memo(function OrderSummary({
 
           <Link
             to="/library/checkout"
-            className="btn-primary lg:text-sm xl:text-base"
+            className="btn-primary  font-bold"
           >
             Proceed to Checkout
             <ArrowRight className="w-5 h-5" />

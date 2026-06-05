@@ -76,3 +76,8 @@ export interface OrderItem {
 export interface PaymentIntentResponse {
   clientSecret: string;
 }
+
+export type CheckoutParams = {
+  addressForm: AddressForm;
+  checkoutIdempotencyKey: string;
+};

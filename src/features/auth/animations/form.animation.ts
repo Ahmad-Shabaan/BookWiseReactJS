@@ -14,8 +14,8 @@ export function useSignupFormAnimation({
 }: AnimationProps) {
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
       if (!sectionRef.current) return;
+      if (prefersReducedMotion()) return;
       const q = gsap.utils.selector(sectionRef.current);
 
       const tl = gsap.timeline({
@@ -87,18 +87,17 @@ export function useSignupFormAnimation({
         tl.kill();
       };
     },
-    { scope: sectionRef, dependencies },
+    { dependencies },
   );
 }
 
 export function useLoginFormAnimation({
   sectionRef,
-  dependencies,
 }: AnimationProps) {
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
       if (!sectionRef.current) return;
+      if (prefersReducedMotion()) return;
       const q = gsap.utils.selector(sectionRef.current);
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -152,6 +151,5 @@ export function useLoginFormAnimation({
         tl.kill();
       };
     },
-    { scope: sectionRef, dependencies },
   );
 }

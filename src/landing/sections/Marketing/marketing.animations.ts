@@ -22,22 +22,21 @@ export function useMarketingAnimation(
           once: true,
         },
       });
-      tl.from(q(".section-heading > *"), {
+      tl.from(q("[data-animate='section-marketing'] > *"), {
         ...motion.movingUpCinematic,
-        clearProps: "y,opacity",
+        clearProps: "transform,opacity",
       }).from(
         q(".section-image"),
         {
           ...motion.movingLeft,
           rotation: -4,
           scale: 0.96,
-          clearProps: "x,rotation,scale,opacity",
+          clearProps: "transform,opacity",
         },
         "-=0.5",
       );
 
       return () => tl.kill();
     },
-    { scope: sectionRef },
   );
 }

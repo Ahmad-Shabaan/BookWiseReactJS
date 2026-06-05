@@ -22,16 +22,15 @@ export function useHeroAnimation(
         defaults: { ease: "power3.out" },
       });
 
-      tl.from(q(".badge"), { ...motion.movingUp, clearProps: "y,opacity" })
-        .from(split.chars, { ...motion.movingUp , clearProps: "y,opacity" }, "-=0.3")
-        .from(q(".nosplit"), { ...motion.movingRight, clearProps: "x,opacity" }, "-=0.8")
-        .from(q(".search"), { ...motion.movingUp, clearProps: "y,opacity" }, "-=0.5");
+      tl.from(q(".badge"), { ...motion.movingUp, clearProps: "transform,opacity" })
+        .from(split.chars, { ...motion.movingUp , clearProps: "transform,opacity" }, "-=0.3")
+        .from(q(".nosplit"), { ...motion.movingRight, clearProps: "transform,opacity" }, "-=0.8")
+        .from(q(".search"), { ...motion.movingUp, clearProps: "transform,opacity" }, "-=0.5");
 
       return () => {
         split.revert();
         tl.kill();
       };
     },
-    { scope: sectionRef },
   );
 }

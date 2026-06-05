@@ -15,7 +15,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { signupSchema, type SignupFormValues } from "../schemas/signup.schema";
 import FieldWrapper from "./FieldWrapper";
 import type { SignupFormProps } from "../types/auth.types";
@@ -60,7 +60,7 @@ export default function SignupForm({
     <form
       id="signup-form"
       onSubmit={handleSubmit(submitHandler)}
-      className="flex flex-col gap-5"
+      className="flex flex-col gap-4 w-full"
       data-animate="form"
       noValidate
     >
@@ -563,18 +563,11 @@ export default function SignupForm({
 
       {/* ── Submit — identical gradient button to LoginForm ── */}
       <div>
-        <Button
+        <button
           type="submit"
           disabled={isLoading}
-          className="mt-1 h-12 w-full cursor-pointer rounded-xl
-                   bg-linear-to-r from-primary to-secondary
-                   text-sm font-bold text-on-primary
-                   shadow-[0_8px_24px_rgba(163,166,255,0.25)]
-                   transition-all duration-200
-                   hover:shadow-[0_8px_32px_rgba(163,166,255,0.4)]
-                   hover:brightness-110
-                   active:scale-[0.98]
-                   disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+          className=" btn-primary font-bold rounded-md
+          "
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
@@ -587,7 +580,7 @@ export default function SignupForm({
           ) : (
             "Create Account"
           )}
-        </Button>
+        </button>
       </div>
 
       {/* ── Sign in link — mirrors LoginForm's "Sign up" link ── */}

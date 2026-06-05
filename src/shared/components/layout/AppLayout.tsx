@@ -4,10 +4,10 @@ import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
   return (
-    <div>
+    <div className="min-h-svh flex flex-col">
       <Navbar />
       <Outlet />
-      <Footer/>
+      <Footer />
     </div>
   );
 };

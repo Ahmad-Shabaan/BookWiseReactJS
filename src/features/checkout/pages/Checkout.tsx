@@ -3,13 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import FieldWrapper from "@/shared/components/common/Form/FieldWrapper";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { addressSchema, type AddressSchema } from "../utils";
 import { useEffect, useRef, useState } from "react";
-import { checkout } from "../services/order.api";
+import { v4 as uuidv4 } from "uuid";
 import type { AddressForm } from "../types";
 import { useGetDeliveryMethods } from "../hooks/useDeliveryMethods";
-import { useBasketId } from "@/shared/hooks/useLocalStorage";
 import ProgressPayment from "../components/ProgressPayment";
 import PaymentSkeleton from "../components/PaymentSkeleton";
 import { Lock, ArrowLeft } from "lucide-react";
@@ -22,9 +20,13 @@ import type { BasketResponse } from "@/features/basket/types";
 import { BASKET_QUERY_KEYS } from "@/features/basket/constants/basket.constants";
 import { updateBasketDeliveryMethod } from "@/features/basket/services/basket.api";
 import { useAsideAnimation } from "@/shared/animations/aside.animation";
+import { useCheckout } from "../hooks/useCheckout";
+import { getBasketId } from "@/lib/utils/localStorageService";
 
-const Checkout = () => {
-  const basketId = useBasketId();
+export default function Checkout() {
+  const basketId = getBasketId();
+  const checkoutIdempotencyKey = useRef(uuidv4()); //fixed across re-render
+  const { handleCheckout } = useCheckout();
   const {
     data: basket,
     isLoading: cartLoading,
@@ -40,7 +42,7 @@ const Checkout = () => {
     useGetDeliveryMethods();
   const sidebarRef = useRef<HTMLDivElement>(null);
   useAsideAnimation({ sectionRef: sidebarRef });
-  
+
   const {
     control,
     handleSubmit,
@@ -70,17 +72,15 @@ const Checkout = () => {
     try {
       setIsLoading(true);
       toast.info("Please wait while we prepare the payment method...");
-      // if (basketId === undefined) {
-      //   setError("You don't have Basket.");
-      //   setIsLoading(false);
-      //   return;
-      // }
       const addressForm: AddressForm = {
         ...data,
         deliveryMethodId: Number(data.deliveryMethodId),
         basketId: basketId!,
       };
-      const order = await checkout(addressForm);
+      const order = await handleCheckout({
+        addressForm,
+        checkoutIdempotencyKey: checkoutIdempotencyKey.current,
+      });
       if (!order) throw new Error("Order has not created");
       const url =
         `https://accept.paymob.com/unifiedcheckout/` +
@@ -149,7 +149,7 @@ const Checkout = () => {
 
   return (
     <main className="main-container">
-      <section className="page-container">
+      <div className="page-container">
         <ProgressPayment currentStep={1} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           <div className="lg:col-span-2 space-y-6">
@@ -561,11 +561,11 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                <Button
+                <button
                   type="submit"
                   form="address-form"
                   disabled={isLoading}
-                  className="btn-primary py-6 rounded-xl tracking-widest text-base"
+                  className="btn-primary font-bold"
                 >
                   {isLoading ? (
                     <span className="flex items-center gap-2">
@@ -590,13 +590,13 @@ const Checkout = () => {
                       </svg>
                     </>
                   )}
-                </Button>
+                </button>
                 <Link
                   to="/library/basket"
-                  className="btn-secondary mt-3 uppercase tracking-widest"
+                  className="btn-secondary mt-3 tracking-widest"
                 >
                   <ArrowLeft className="size-3.5" />
-                  Return to Cart
+                  Return to Basket
                 </Link>
                 <div className="mt-6 flex items-center justify-center gap-2 text-xs text-on-surface-variant">
                   <Lock className="size-3.5" />
@@ -608,9 +608,7 @@ const Checkout = () => {
             </Aside>
           </aside>
         </div>
-      </section>
+      </div>
     </main>
   );
-};
-
-export default Checkout;
+}

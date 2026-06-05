@@ -23,6 +23,14 @@ export interface Book {
   publisher: string;
   categories: string[];
   isWished: boolean;
+
+}
+
+export interface BooksResponse {
+  data: Book[];
+  count: number; // Total matching records (for pagination UI)
+  pageIndex: number; // Current page (1-indexed)
+  pageSize: number; // Items per page (12)
 }
 
 export interface TrendingBooks {
@@ -31,13 +39,6 @@ export interface TrendingBooks {
   price: number;
   imageUrl: string;
   author: string;
-}
-
-export interface PaginatedBooks {
-  data: Book[];
-  count: number; // Total matching records (for pagination UI)
-  pageIndex: number; // Current page (1-indexed)
-  pageSize: number; // Items per page (12)
 }
 
 export interface BookDetailResponse {

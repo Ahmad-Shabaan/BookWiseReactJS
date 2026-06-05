@@ -13,8 +13,6 @@ const axiosClient = axios.create({
 
 // ✅ Attach CSRF token to every mutating request
 axiosClient.interceptors.request.use((config) => {
-  // config.headers["X-Idempotency-Key"] = "ahmed";
-
   const csrf = document.cookie
     .split("; ")
     .find((r) => r.startsWith("csrf_token="))

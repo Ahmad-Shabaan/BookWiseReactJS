@@ -1,9 +1,9 @@
-import { type ReactElement, type ReactNode } from "react";
+import { type ReactNode } from "react";
 const Aside = ({
   children,
   asideHeader,
 }: {
-  children: ReactElement;
+  children: ReactNode;
   asideHeader: string | ReactNode;
 }) => {
   return (

@@ -1,13 +1,13 @@
 //  # api methods for books
 
 import { config } from "@/config/env";
-import type { Book, BookFilters, Category, PaginatedBooks, TrendingBooks } from "../types/book";
+import type { Book, BookFilters, Category, BooksResponse, TrendingBooks } from "../types/book";
 import axiosClient from "@/shared/api/axiosClient";
 import { AxiosError } from "axios";
 
 export const getBooks = async (
   filters: BookFilters,
-): Promise<PaginatedBooks> => {
+): Promise<BooksResponse> => {
   try {
     const response = await axiosClient.get(config.apiUrl + "/books?pageSize=12", {
       params: filters,

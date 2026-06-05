@@ -1,5 +1,5 @@
 import axiosClient from "@/shared/api/axiosClient";
-import type { BasketResponse, UpdateBasketItemProps } from "../types";
+import type { BasketResponse, UpdateBasketItemParams } from "../types";
 
 // # TanStack Query mutations/queries'
 //Add to wishlist and remove from wishlist APIs
@@ -33,10 +33,10 @@ const updateBasketDeliveryMethod = async (
 };
 
 const updateBasket = async (
-  updateBasketProps: UpdateBasketItemProps,
+  updateBasketParams: UpdateBasketItemParams,
 ): Promise<BasketResponse> => {
-  const res = await axiosClient.patch(`/basket/${updateBasketProps.basketId}`, {
-    ...updateBasketProps.basketItem,
+  const res = await axiosClient.patch(`/basket/${updateBasketParams.basketId}`, {
+    ...updateBasketParams.basketItem,
   });
   return res.data;
 };

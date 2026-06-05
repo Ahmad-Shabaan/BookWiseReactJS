@@ -1,11 +1,10 @@
 import axiosClient from "@/shared/api/axiosClient";
-import type {
-  AddressForm,
-  Order,
-  OrderResponse,
-} from "../types";
+import type { CheckoutParams, Order, OrderResponse } from "../types";
 
-export const checkout = async (order: AddressForm): Promise<Order> => {
+export const checkoutApi = async ({
+  addressForm: order,
+  checkoutIdempotencyKey,
+}: CheckoutParams): Promise<Order> => {
   const mappedOrder = {
     ShipToAddress: {
       FirstName: order.firstName,
@@ -19,7 +18,11 @@ export const checkout = async (order: AddressForm): Promise<Order> => {
     BasketId: order.basketId,
     DeliveryMethodId: order.deliveryMethodId,
   };
-  const res = await axiosClient.post("/payments/checkout", mappedOrder);
+  const res = await axiosClient.post("/payments/checkout", mappedOrder, {
+    headers: {
+      "X-Idempotency-Key": checkoutIdempotencyKey,
+    },
+  });
   return res.data;
 };
 
@@ -29,6 +32,3 @@ export const getOrderByPaymobOrderId = async (
   const res = await axiosClient.get(`/orders/paymob/${id}/confirm`);
   return res.data;
 };
-
-
-
