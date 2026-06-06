@@ -32,14 +32,12 @@ const ForgetPasswordForm = () => {
     <form
       id="login-form"
       onSubmit={handleSubmit(submitHandler)}
-      className="flex flex-col gap-6 mt-4 w-full "
+      className="flex flex-col gap-4 sm:gap-6 w-full "
       noValidate
       data-animate="form"
     >
       {/* ── Server error ── */}
-      {isForgettingPasswordError && (
-        <ErrorMessage msg={forgetPasswordError} className="w-[90%] max-w-100" />
-      )}
+      {isForgettingPasswordError && <ErrorMessage msg={forgetPasswordError} />}
 
       {/* ── Email ── */}
       <FieldWrapper

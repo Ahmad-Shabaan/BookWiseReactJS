@@ -18,7 +18,7 @@ export const booksQueryOptions = (filters: BookFilters) =>
     gcTime: BOOKS_GC_TIME,
   });
 
-export const bookDetailsQueryOptions = (id: string) =>
+export const bookDetailsQueryOptions = (id: number) =>
   queryOptions({
     queryKey: BOOKS_QUERY_KEYS.details(id),
     queryFn: () => getBookById(id),

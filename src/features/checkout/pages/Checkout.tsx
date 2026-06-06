@@ -21,10 +21,10 @@ import { BASKET_QUERY_KEYS } from "@/features/basket/constants/basket.constants"
 import { updateBasketDeliveryMethod } from "@/features/basket/services/basket.api";
 import { useAsideAnimation } from "@/shared/animations/aside.animation";
 import { useCheckout } from "../hooks/useCheckout";
-import { getBasketId } from "@/lib/utils/localStorageService";
+import useGetBasketId from "@/shared/hooks/useGetBasketId";
 
 export default function Checkout() {
-  const basketId = getBasketId();
+  const basketId = useGetBasketId();
   const checkoutIdempotencyKey = useRef(uuidv4()); //fixed across re-render
   const { handleCheckout } = useCheckout();
   const {
@@ -151,11 +151,13 @@ export default function Checkout() {
     <main className="main-container">
       <div className="page-container">
         <ProgressPayment currentStep={1} />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          <div className="lg:col-span-2 space-y-6">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          <div className="lg:col-span-2 space-y-6"> */}
+        <div className="w-full  col-center lg:flex-row gap-6 lg:items-start">
+          <div className="w-full  xl:max-w-xl flex-1 space-y-6">
             {/* <div className="flex flex-col lg:flex-row gap-8 xl:gap-16">
           <div className="w-full lg:w-2/3 space-y-8 sm:space-y-12"> */}
-            <section className="bg-surface-container-low rounded-xl p-5 sm:p-8 lg:p-12">
+            <section className="bg-surface-container-low rounded-md px-4 py-8">
               <h2 className="aside-header">Shipping Information</h2>
               <form
                 id="address-form"
@@ -359,7 +361,7 @@ export default function Checkout() {
               </form>
             </section>
 
-            <section className="bg-surface-container-low rounded-xl p-5 sm:p-8 lg:p-12">
+            <section className="bg-surface-container-low rounded-md px-4 py-8">
               <h2 className="aside-header">Delivery Method</h2>
               <div className="space-y-3 sm:space-y-4">
                 {deliveryMethodError ? (
@@ -452,7 +454,11 @@ export default function Checkout() {
             </section>
           </div>
 
-          <aside className="col-span-1 flex flex-col gap-6" ref={sidebarRef}>
+          <aside
+            className="w-full lg:max-w-sm xl:max-w-md flex flex-col gap-6"
+            // className="col-span-1 flex flex-col gap-6"
+            ref={sidebarRef}
+          >
             <Aside asideHeader="Order Summary">
               <>
                 <div className="space-y-6 mb-8 pr-1">
@@ -560,48 +566,50 @@ export default function Checkout() {
                     </span>
                   </div>
                 </div>
-
-                <button
-                  type="submit"
-                  form="address-form"
-                  disabled={isLoading}
-                  className="btn-primary font-bold"
-                >
-                  {isLoading ? (
-                    <span className="flex items-center gap-2">
-                      <span className="size-4 rounded-full border-2 border-on-primary/30 border-t-on-primary animate-spin" />
-                      Processing…
-                    </span>
-                  ) : (
-                    <>
-                      Continue to Payment
-                      <svg
-                        className="size-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                        />
-                      </svg>
-                    </>
-                  )}
-                </button>
-                <Link
-                  to="/library/basket"
-                  className="btn-secondary mt-3 tracking-widest"
-                >
-                  <ArrowLeft className="size-3.5" />
-                  Return to Basket
-                </Link>
-                <div className="mt-6 flex items-center justify-center gap-2 text-xs text-on-surface-variant">
-                  <Lock className="size-3.5" />
-                  Secure SSL Checkout
+                <div className="w-full col-center">
+                  <button
+                    type="submit"
+                    form="address-form"
+                    disabled={isLoading}
+                    className="btn-primary font-bold w-auto lg:w-full"
+                  >
+                    {isLoading ? (
+                      <span className="flex items-center gap-2">
+                        <span className="size-4 rounded-full border-2 border-on-primary/30 border-t-on-primary animate-spin" />
+                        Processing…
+                      </span>
+                    ) : (
+                      <>
+                        Continue to Payment
+                        <svg
+                          className="size-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                          />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                  <Link
+                    to="/library/basket"
+                    className="btn-secondary mt-3 tracking-widest w-fit lg:w-full"
+                  >
+                    <ArrowLeft className="size-3.5" />
+                    Return to Basket
+                  </Link>
+                  <div className="mt-6 flex items-center justify-center gap-2 text-xs text-on-surface-variant">
+                    <Lock className="size-3.5" />
+                    Secure SSL Checkout
+                  </div>
                 </div>
+
                 {/* </div> */}
                 {/* </div> */}
               </>

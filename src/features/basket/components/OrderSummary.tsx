@@ -23,7 +23,7 @@ const OrderSummary = memo(function OrderSummary({
 
   const sidebarRef = useRef<HTMLDivElement>(null);
   useAsideAnimation({ sectionRef: sidebarRef });
-  
+
   const updateDeliveryMethod = async (
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
@@ -63,7 +63,7 @@ const OrderSummary = memo(function OrderSummary({
   const tax = subtotal * 0.0;
   const total = subtotal + shipping + tax;
   return (
-    <aside className="col-span-1 flex flex-col gap-6" ref={sidebarRef}>
+    <aside className="w-full lg:max-w-sm flex flex-col gap-6" ref={sidebarRef}>
       <Aside asideHeader="Order Summary">
         <>
           {deliveryMethodError ? (
@@ -137,14 +137,15 @@ const OrderSummary = memo(function OrderSummary({
               <span className="currency-span">EGP</span>
             </span>
           </div>
-
-          <Link
-            to="/library/checkout"
-            className="btn-primary  font-bold"
-          >
-            Proceed to Checkout
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+          <div className="w-full flex-center">
+            <Link
+              to="/library/checkout"
+              className="btn-primary  font-bold w-fit lg:w-full"
+            >
+              Proceed to Checkout
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
 
           <div className="mt-6 flex items-center justify-center gap-2 text-xs text-on-surface-variant">
             <Lock className="w-3.5 h-3.5" />

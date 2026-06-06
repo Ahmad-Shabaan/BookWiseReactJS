@@ -5,9 +5,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import authReducer from "@/features/auth/store/authSlice";
 import wishlistReducer from "@/features/wishlist/store/wishlistSlice";
-import basketCountReducer from "@/features/basket/store/basketSlice";
-
-
+import basketReducer from "@/features/basket/store/basketSlice";
+import themeReducer from "@/shared/store/themeSlice";
 
 // what to do when state shape changes? Migrations! (optional, but recommended for production apps)
 // const migrations = {
@@ -23,13 +22,14 @@ const persistConfig = {
   storage,
   // version: 2, // bump this when your state shape changes
   // migrate: createMigrate(migrations, { debug: false }),
-  whitelist: ["books" , "auth", "wishlist","basketCount"], // ✅ only persist UI state
+  whitelist: ["books", "auth", "wishlist", "basket", "theme"], // ✅ only persist UI state
   // blacklist: ['auth'],  // ❌ never persist auth (security)
 };
 const rootReducer = combineReducers({
   auth: authReducer,
   wishlist: wishlistReducer,
-  basketCount : basketCountReducer
+  basket: basketReducer,
+  theme: themeReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -42,6 +42,10 @@ export const store = configureStore({
         ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
       },
     }),
+});
+store.subscribe(() => {
+  const theme = store.getState().theme;
+  document.documentElement.setAttribute("data-theme", theme);
 });
 export const persistor = persistStore(store);
 // Infer the `RootState` and `AppDispatch` types from the store itself

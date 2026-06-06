@@ -5,16 +5,18 @@ import { Link } from "react-router-dom";
 const ForgetPassword = () => {
   return (
     <main className="main-container pt-0 min-h-svh">
-      <div className="page-container flex-center h-dvh ">
-        <section className="aside-section w-fit px-6 py-8 flex flex-col items-center gap-6">
+      <div className="page-container flex-center min-h-svh ">
+        <section className="aside-section max-w-md xl:max-w-lg px-4 sm:px-6 py-6 sm:py-8 col-center gap-4 sm:gap-6 ">
           <div className="rounded-full bg-surface-variant p-4">
             <GlobeLockIcon className="size-6 text-primary" />
           </div>
-          <h1 className="aside-header text-3xl mb-0">Forgot password?</h1>
-          <p className="text-center text-on-surface-variant w-[90%] max-w-100">
-            No worries, it happens. Enter your email and we'll send you reset
-            instructions.
-          </p>
+          <div className="col-center">
+            <h1 className="section-header sm:text-3xl">Forgot password?</h1>
+            <p className="section-description">
+              No worries, it happens. Enter your email and we'll send you reset
+              instructions.
+            </p>
+          </div>
           {/*    Enter your email address and we'll send you a link to reset your password." */}
           <ForgetPasswordForm />
 

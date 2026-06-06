@@ -35,9 +35,12 @@ const updateBasketDeliveryMethod = async (
 const updateBasket = async (
   updateBasketParams: UpdateBasketItemParams,
 ): Promise<BasketResponse> => {
-  const res = await axiosClient.patch(`/basket/${updateBasketParams.basketId}`, {
-    ...updateBasketParams.basketItem,
-  });
+  const res = await axiosClient.patch(
+    `/basket/${updateBasketParams.basketId}`,
+    {
+      ...updateBasketParams.basketItem,
+    },
+  );
   return res.data;
 };
 export { getBasket, updateBasket, getBasketCount, updateBasketDeliveryMethod };

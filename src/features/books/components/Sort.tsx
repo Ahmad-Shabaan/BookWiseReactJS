@@ -33,7 +33,7 @@ const BookSearch = () => {
       role="group"
       aria-label="Sort options"
     >
-      <section className="flex flex-wrap gap-2 p-2 shadow-soft">
+      <section className="flex flex-wrap gap-2 shadow-soft">
         <button
           onClick={() => clearSort()}
           aria-pressed={!sortOption}

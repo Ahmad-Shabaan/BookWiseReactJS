@@ -19,24 +19,20 @@ const SignupPage: React.FC = () => {
       ref={containerRef}
       className="main-container pt-0 min-h-svh flex items-start sm:items-center justify-center"
     >
-      <div className="page-container grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-content-center">
-        <div className="w-full flex flex-col gap-6 col-span-2 2xl:col-span-2 2xl:col-start-2 items-center md:items-start">
-          <Logo className="size-12"/>
-          <section className="flex flex-col items-center md:items-start gap-1">
-            <h1
-              data-animate="header"
-              className="text-2xl font-bold text-on-surface tracking-tight"
-            >
+      <div className="page-container flex-center">
+        <div className="w-full sm:max-w-xl flex flex-col gap-4 sm:gap-6 items-center lg:items-start ">
+          <Logo className="size-12" />
+          <section className="col-center lg:items-start">
+            <h1 data-animate="header" className="section-header sm:text-3xl">
               Create an account
             </h1>
             <p
               data-animate="paragraph"
-              className="split text-sm text-on-surface-variant leading-relaxed"
+              className="split section-description max-w-full"
             >
               Fill in your details below to get started in seconds.
             </p>
           </section>
-
           {/* ── Form card ── */}
           <SignupForm
             onSubmit={handleSubmit}
@@ -50,7 +46,7 @@ const SignupPage: React.FC = () => {
           src={BookWise}
           alt="Bookshelf background"
           aria-hidden="true"
-          className="hidden lg:inline-block object-cover max-h-272 col-span-1"
+          className="hidden lg:inline-block object-cover lg:h-278"
         />
       </div>
     </main>

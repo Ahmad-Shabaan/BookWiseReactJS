@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useGetWishlist } from "../hooks/useWishlist";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import CustomPagination from "@/shared/components/common/Pagination/CustomPagination";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { mergeWishlist } from "../store/wishlistSlice";
 import type { WishlistBook } from "../types/wishlist";
 import SectionHeader from "@/shared/components/common/SectionHeader";
@@ -25,6 +25,9 @@ const WishlistPage = () => {
   const [isPending, startTransition] = useTransition();
   const [uiPageIndex, setUiPageIndex] = useState<number>(data?.pageIndex ?? 1);
   const dispatch = useAppDispatch();
+  const wishlistItemsCount = useAppSelector(
+    (state) => state.wishlist.wishlistCount,
+  );
   const sidebarRef = useRef<HTMLDivElement>(null);
   useAsideAnimation({ sectionRef: sidebarRef });
 
@@ -55,16 +58,18 @@ const WishlistPage = () => {
   if (isError)
     return (
       <AppError
-        message="Failed to load orders. Please try again."
-        link="Back to Home"
+        message="We couldn’t load your wishlist right now. Please try again in a moment."
+        link="Back to Library"
         to="/library"
       />
     );
   return (
     <div className="main-container">
       <div className="page-container">
-        <div className="grid grid-cols-1 lg:grid-cols-7 2xl:grid-cols-16 gap-6 items-start">
-          <div className="lg:col-span-5 2xl:col-span-13">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-7 2xl:grid-cols-16 gap-6 items-start">
+  */}
+        <div className="w-full col-center lg:flex-row gap-6 lg:items-start">
+          <div className="w-full flex-1">
             <SectionHeader to="/library" link="Explore more Books">
               <div className="flex items-center gap-6 z-10">
                 <div className="icon-card">
@@ -72,12 +77,10 @@ const WishlistPage = () => {
                 </div>
                 <h1 className="section-header">
                   Wishlist
-                  {data && data.items.length > 0 && (
-                    <span className="items-count-span">
-                      {data.items.length}{" "}
-                      {data.items.length === 1 ? "Item" : "Items"}
-                    </span>
-                  )}
+                  <span className="items-count-span">
+                    {wishlistItemsCount}{" "}
+                    {wishlistItemsCount === 1 ? "Item" : "Items"}
+                  </span>
                 </h1>
               </div>
             </SectionHeader>
@@ -102,7 +105,7 @@ const WishlistPage = () => {
               )}
             </div>
           </div>
-          <aside className="lg:col-span-2 2xl:col-span-3 flex flex-col gap-6" ref={sidebarRef}>
+          <aside className="w-full lg:max-w-65 lg:flex flex-col gap-6" ref={sidebarRef}>
             <Aside asideHeader="My Library">
               <>
                 <p className="text-on-surface-variant text-body-md mb-6">
@@ -116,7 +119,7 @@ const WishlistPage = () => {
                     />
                     <span className="font-medium text-sm">Wishlist</span>
                     <span className="ml-auto text-xs bg-surface-container-highest px-2 py-1 rounded-full">
-                      {data?.items.length}
+                      {wishlistItemsCount}
                     </span>
                   </button>
                   <button className="flex items-center gap-3 w-full p-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">

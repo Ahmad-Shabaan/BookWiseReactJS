@@ -3,7 +3,7 @@ import { Heart, ShoppingCart, BookOpen, ArrowLeft } from "lucide-react";
 import gsap from "@/lib/gsap.config";
 import { useBookDetail } from "../hooks/useBooks";
 import BookDetailsSkeleton from "../components/BookDetailsSkeleton";
-import { useAppSelector } from "@/store/hooks";
+// import { useAppSelector } from "@/store/hooks";
 import { useHandleToggleWishlist } from "@/features/wishlist/hooks/useWishlist";
 import { STATUS_CONFIG } from "../constants/books.constants";
 import AppError from "@/shared/components/common/ErrorBoundary/AppError";
@@ -14,29 +14,32 @@ import {
 import type { BasketItem } from "@/features/basket/types";
 import { useRef } from "react";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
-import { getBasketId } from "@/lib/utils/localStorageService";
 import { toast } from "sonner";
+import useGetBasketId from "@/shared/hooks/useGetBasketId";
+import { useAppSelector } from "@/store/hooks";
 
 const BookDetailsPage = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
   const { id } = useParams<{ id: string }>();
-  const { data: book, isLoading, isError } = useBookDetail(id ?? "");
+  const { data: book, isLoading, isError } = useBookDetail(Number(id));
   const toggleWishlist = useHandleToggleWishlist();
   const { updateOrRemoveBasketItem } = useUpdateBasket();
   // const queryClient = useQueryClient();
-  const basketId = getBasketId();
+  const basketId = useGetBasketId();
   const { data: basket } = useGetBasket(basketId);
   const wishlistIds = useAppSelector((state) => state.wishlist);
   const isWished = (bookId: number): boolean => {
     return wishlistIds.wishlistBooks.findIndex((el) => el === bookId) === -1
-      ? false
-      : true;
+      ? false // mean add it
+      : true; //mean delete it
   };
   const handleToggleWishlist = (bookId: number) => {
     toggleWishlist({
       bookId,
-      isWished: isWished(bookId),
+      isWished: isWished(bookId), // intended state
+      page: "Main",
     });
+
     if (btnRef.current) {
       gsap.fromTo(
         btnRef.current,

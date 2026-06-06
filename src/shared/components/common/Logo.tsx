@@ -1,9 +1,11 @@
 import { cn } from "@/lib/utils";
-import useTheme from "@/shared/hooks/useTheme";
+// import useTheme from "@/shared/hooks/useTheme";
+import { useAppSelector } from "@/store/hooks";
 import { Link } from "react-router-dom";
 
 const Logo = ({ className }: { className?: string }) => {
-  const [theme] = useTheme();
+  // const [theme] = useTheme();
+  const theme = useAppSelector((state) => state.theme);
   return (
     <Link to="/">
       {theme === "dark" ? (

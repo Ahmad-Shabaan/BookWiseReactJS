@@ -33,8 +33,10 @@ const OrderDetails = () => {
   return (
     <main className="main-container">
       <div className="page-container">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          <div className="lg:col-span-2">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          <div className="lg:col-span-2"> */}
+        <div className="w-full col-center lg:flex-row gap-6 lg:items-start">
+          <div className="w-full flex-1">
             <SectionHeader to="/library/orders" link="Explore Orders">
               <>
                 <div className="flex items-center gap-6 z-10">
@@ -56,7 +58,7 @@ const OrderDetails = () => {
                     {config.label}
                   </span>
                   <span className="px-4 py-1.5 rounded-full bg-tertiary-container/20 border border-tertiary-container/30 text-tertiary-fixed text-xs font-semibold tracking-wider uppercase">
-                    {order!.deliveryMethod} 
+                    {order!.deliveryMethod}
                   </span>
                 </div>
               </>
@@ -117,7 +119,7 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
-          <aside className="col-span-1 flex flex-col gap-6" ref={sidebarRef}>
+          <aside className="w-full lg:max-w-sm flex flex-col gap-6" ref={sidebarRef}>
             <Aside asideHeader="Payment Summary">
               <>
                 <div className="flex flex-col gap-4 mb-8">

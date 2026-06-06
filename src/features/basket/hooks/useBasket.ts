@@ -18,7 +18,10 @@ import type {
 import { useAppDispatch } from "@/store/hooks";
 import type { AxiosError } from "axios";
 import { updateBasket } from "../services/basket.api";
-import { BASKET_QUERY_KEYS } from "../constants/basket.constants";
+import {
+  // BASKET_COUNT_QUERY_KEYS,
+  BASKET_QUERY_KEYS,
+} from "../constants/basket.constants";
 import { toast } from "sonner";
 import {
   decrementBasketCount,
@@ -55,7 +58,12 @@ export const useUpdateBasket = () => {
     mutationFn: updateBasket,
     onMutate({ basketItem }) {
       let flag: Flag = undefined;
-      const oldBasket = queryClient.getQueryData(BASKET_QUERY_KEYS) || [];
+      // const oldBasket = queryClient.getQueryData(BASKET_QUERY_KEYS);
+      // target item  /Closure now captures only: item not whole basket
+      const item = queryClient
+        .getQueryData<BasketResponse>(BASKET_QUERY_KEYS)
+        ?.items.find((i) => i.id === basketItem.id);
+
       queryClient.setQueryData(
         BASKET_QUERY_KEYS,
         (prevState?: BasketResponse) => {
@@ -92,24 +100,35 @@ export const useUpdateBasket = () => {
           };
         },
       );
-      toast.success("Basket has been updated successfully.");
       return () => {
         if (flag === "Decrement") dispatch(incrementBasketCount());
         if (flag === "Increment") dispatch(decrementBasketCount());
-        queryClient.setQueryData(BASKET_QUERY_KEYS, oldBasket);
-        toast.error(
-          "Oops! We couldn’t update your cart. Please try again in a moment.",
-        );
+        if (item === undefined) return;
+        queryClient.setQueryData<BasketResponse>(BASKET_QUERY_KEYS, (prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            items:
+              prev.items.findIndex((i) => i.id === item.id) === -1
+                ? [...prev.items, item]
+                : prev.items.filter((ele) => ele.id !== item.id),
+          };
+        });
       };
     },
     onError(_, __, rollback) {
+      toast.error(
+        "Oops! We couldn’t update your cart. Please try again in a moment.",
+      );
       if (rollback) rollback();
     },
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: BASKET_QUERY_KEYS,
-      });
-    },
+    // onSuccess() {
+    // actually cache is up to date with db no need validate
+    // queryClient.invalidateQueries({
+    //   queryKey: BASKET_QUERY_KEYS,
+    // });
+    // toast.success("Basket has been updated successfully.");
+    // },
   });
 
   return {
@@ -120,19 +139,39 @@ export const useUpdateBasket = () => {
 
 export const useUpdateBasketItemQuantity = () => {
   const queryClient = useQueryClient();
+  const oldQuantity = useRef<number | undefined>(undefined);
   const mutation = useMutation({
     mutationFn: updateBasket, // creates a mutation for sending update requests to the server
-    onError() {
+    onError(_, { basketItem }) {
+      if (!oldQuantity.current) return;
+      queryClient.setQueryData(
+        BASKET_QUERY_KEYS,
+        (prevState?: BasketResponse) => {
+          if (!prevState) return prevState;
+          return {
+            ...prevState,
+            items: prevState.items.map((i) =>
+              i.id === basketItem.id
+                ? { ...i, quantity: oldQuantity.current }
+                : i,
+            ),
+          };
+        },
+      );
       toast.error(
         "Oops! Your basket wasn’t updated. Please try again in a moment.",
       );
     },
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: BASKET_QUERY_KEYS,
-      });
+    // onSuccess() {
+    // queryClient.invalidateQueries({
+    //   queryKey: BASKET_QUERY_KEYS,
+    // });
+    // },
+    onSettled() {
+      oldQuantity.current = undefined;
     },
   });
+
   // stores a stable reference to the latest mutate function
   const mutateRef = useRef(mutation.mutate);
   useEffect(() => {
@@ -162,27 +201,25 @@ export const useUpdateBasketItemQuantity = () => {
       basketId,
       basketItem,
     }: UpdateBasketItemParams) => {
+      // snapshot previous value
+      if (!oldQuantity.current)
+        oldQuantity.current = queryClient
+          .getQueryData<BasketResponse>(BASKET_QUERY_KEYS)
+          ?.items.find((i) => i.id === basketItem.id)?.quantity;
       queryClient.setQueryData(
         BASKET_QUERY_KEYS,
         (prevState?: BasketResponse) => {
           if (!prevState) return prevState;
-          const updatedItems: BasketItem[] = [];
-          for (const item of prevState.items) {
-            // fill with not target
-            if (item.id !== basketItem.id) {
-              updatedItems.push(item);
-              continue;
-            }
-            // update
-            updatedItems.push({ ...item, quantity: basketItem.quantity });
-          }
           return {
             ...prevState,
-            items: updatedItems,
+            items: prevState.items.map((i) =>
+              i.id === basketItem.id
+                ? { ...i, quantity: basketItem.quantity }
+                : i,
+            ),
           };
         },
       );
-      toast.success("Basket has been updated successfully.");
       debouncedUpdateRef.current?.({
         basketId: basketId,
         basketItem: basketItem,

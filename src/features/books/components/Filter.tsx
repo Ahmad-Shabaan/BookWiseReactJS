@@ -14,7 +14,7 @@ const FilterSection = ({
   title: string;
   children: React.ReactNode;
 }) => (
-  <div className=" w-full p-2 shadow-soft">
+  <div className=" w-full p-1 shadow-soft">
     <span className="mb-4 block text-base text-primary">{title}</span>
     {children}
   </div>
@@ -73,7 +73,7 @@ const Filter = () => {
     <div aria-label="Book filters" className="w-full space-y-4 ">
       {/* ── Categories ───────────────────────────────────────────────────── */}
       <FilterSection title="Categories">
-        <div className="flex flex-wrap gap-2 p-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => clearFilter("category")}
             aria-pressed={!category}

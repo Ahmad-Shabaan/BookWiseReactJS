@@ -41,7 +41,7 @@ const TrendingSection = () => {
           {isLoading ? (
             Array.from({ length: 12 }).map((_, i) => (
               <div key={i} className="w-1/4 min-w-52 shrink-0">
-                <SkeletonCard parentType="Main"/>
+                <SkeletonCard parentType="Wishlist"/>
               </div>
             ))
           ) : isError ? (

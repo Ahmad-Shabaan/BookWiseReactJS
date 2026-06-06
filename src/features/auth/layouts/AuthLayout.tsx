@@ -7,11 +7,8 @@ const AuthLayout = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   useLoginFormAnimation({ sectionRef: containerRef });
   return (
-    <main
-      ref={containerRef}
-      className="main-container pt-0 min-h-svh flex items-start sm:items-center justify-center relative"
-    >
-      <div className="page-container">
+    <main className="main-container pt-0 min-h-svh flex items-start sm:items-center justify-center relative">
+      <div className="page-container" ref={containerRef}>
         {/* ── Atmospheric Orbs ── */}
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <div
@@ -29,13 +26,14 @@ const AuthLayout = () => {
         </div>
 
         {/* ── Main Grid ── */}
-        <div className="flex-1 relative z-10 grid md:grid-cols-2">
+        <div className="flex-1 relative z-10 grid lg:grid-cols-2">
           {/* ── LEFT PANEL (desktop only) ── */}
           <div
             data-animate="brand"
-            className="hidden md:flex flex-col justify-center gap-4 
-             border-r border-outline md:pr-2 lg:pr-6"
+            className="hidden lg:flex flex-col justify-center gap-4 
+             border-r border-outline lg:pr-6 xl:max-w-lg xl:justify-self-end"
           >
+            {/* md:pr-2 */}
             <Logo />
             {/* Center copy */}
             <section className="space-y-4 ">
@@ -44,7 +42,7 @@ const AuthLayout = () => {
                 <br />
                 <span className="text-gradient">life, organized.</span>
               </h2>
-              <p className="text-lg text-on-surface-variant leading-relaxed ">
+              <p className="text-lg text-on-surface-variant leading-relaxed">
                 Track every book, discover your next favorite, and share what
                 you're reading with the world.
               </p>

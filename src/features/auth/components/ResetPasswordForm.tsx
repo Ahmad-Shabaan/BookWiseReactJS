@@ -47,13 +47,13 @@ const ResetPasswordForm = () => {
     <form
       id="login-form"
       onSubmit={handleSubmit(submitHandler)}
-      className="flex flex-col gap-5 w-full mt-4"
+      className="flex flex-col gap-4 sm:gap-6 w-full mt-4"
       noValidate
       data-animate="form"
     >
       {/* ── Server error ── */}
       {isResettingPasswordError && (
-        <ErrorMessage msg={resetPasswordError} className="w-[90%] max-w-100" />
+        <ErrorMessage msg={resetPasswordError} />
       )}
 
       {/* ── Password ── */}

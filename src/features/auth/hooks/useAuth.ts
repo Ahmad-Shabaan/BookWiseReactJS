@@ -21,11 +21,11 @@ export function useAuth() {
   // ── Login mutation ────────────────────────────────────
   const loginMutation = useMutation({
     mutationFn: loginApi,
-    onSuccess: ({ data }, variables) => {
+    onSuccess: (data, variables) => {
       dispatch(
         setUser({
-          user: { email: variables.email },
-          expiresIn: data.expiresIn,
+          user: { email: variables.email ,userId : data.userId },
+          // expiresIn: data.expiresIn,
         }),
       );
       queryClient.invalidateQueries({ queryKey: WISHLIST_COUNT_QUERY_KEYS });

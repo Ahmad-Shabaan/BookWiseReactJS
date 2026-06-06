@@ -47,10 +47,7 @@ const NotFound = () => {
           >
             Lost in the Stacks.
           </h1>
-          <p
-            data-animate="hero-desc"
-            className=" mx-auto mb-4 sm:mb-6 max-w-3/4 sm:max-w-md md:max-w-lg text-sm  font-light text-on-surface-variant "
-          >
+          <p data-animate="hero-desc" className="section-description">
             The chapter you&apos;re looking for has vanished into the ether. It
             may have been archived or moved to a secret shelf.
           </p>

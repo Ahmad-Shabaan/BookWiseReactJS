@@ -21,10 +21,15 @@ export interface WishlistResponse {
   totalPages: number;
 }
 
-export interface WishlistBookParams {
+export interface ToggleWishlistAsyncParams {
   bookId: number;
   isWished: boolean;
   filters:BookFilters;
-  checkoutIdempotencyKey:string | null
-  
+  checkoutIdempotencyKey:string | null 
+}
+
+export interface RemoveFromWishlistParams {
+  bookId: number;
+  pageIndex:number;
+  // isWished: boolean;
 }

@@ -167,7 +167,7 @@ export default function LoginForm({
           className="grow border-t border-outline-variant/15"
           aria-hidden="true"
         />
-        <span className="px-4 text-[11px] font-bold uppercase tracking-widest text-on-surface-variant/60">
+        <span className="px-4 text-[11px] font-bold uppercase tracking-wide text-on-surface-variant/60">
           Or continue with
         </span>
         <div

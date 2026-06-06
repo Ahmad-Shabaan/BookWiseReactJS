@@ -4,12 +4,13 @@ import { config } from "@/config/env";
 import type { Book, BookFilters, Category, BooksResponse, TrendingBooks } from "../types/book";
 import axiosClient from "@/shared/api/axiosClient";
 import { AxiosError } from "axios";
+import { BOOKS_PAGE_SIZE } from "../constants/books.constants";
 
 export const getBooks = async (
   filters: BookFilters,
 ): Promise<BooksResponse> => {
   try {
-    const response = await axiosClient.get(config.apiUrl + "/books?pageSize=12", {
+    const response = await axiosClient.get(config.apiUrl + `/books?pageSize=${BOOKS_PAGE_SIZE}`, {
       params: filters,
     });
     return response.data;
@@ -27,7 +28,7 @@ export const getTrendingBooks = async (): Promise<TrendingBooks[]> => {
   }
 };
 
-export const getBookById = async (id: string): Promise<Book> => {
+export const getBookById = async (id: number): Promise<Book> => {
   try {
     const response = await axiosClient.get(config.apiUrl + `/books/${id}`);
     return response.data;

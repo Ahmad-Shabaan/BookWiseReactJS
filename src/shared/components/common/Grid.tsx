@@ -21,9 +21,9 @@ const Grid = ({
   parentType = "Main",
 }: GridProps) => {
   const navigate = useNavigate();
-  const wishlistIds = useAppSelector((state) => state.wishlist);
+  const wishedIds = useAppSelector((state) => state.wishlist.wishlistBooks);
   const gridRef = useRef<HTMLDivElement>(null);
-  useCardsAnimation({ sectionRef: gridRef, dependencies: [books, isLoading] });
+  useCardsAnimation({ sectionRef: gridRef, dependencies: [isLoading] });
 
   // ── Loading state ─────────────────────────────────────────────────────────
   if (isLoading)
@@ -85,9 +85,7 @@ const Grid = ({
             book={book as Book}
             parentType={parentType}
             isWished={
-              wishlistIds.wishlistBooks.findIndex((el) => el === book.id) === -1
-                ? false
-                : true
+              wishedIds.findIndex((el) => el === book.id) === -1 ? false : true
             }
           />
         </div>

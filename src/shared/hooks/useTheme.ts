@@ -8,7 +8,6 @@ const useTheme = (): [Theme, () => void] => {
     if (storedTheme === "dark" || storedTheme === "light") return storedTheme;
     return "dark";
   });
-
   useEffect(() => {
     const html = document.documentElement;
     html.dataset.theme = theme;
@@ -16,6 +15,7 @@ const useTheme = (): [Theme, () => void] => {
     // html.classList.add(theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };

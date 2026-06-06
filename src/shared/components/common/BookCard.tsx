@@ -13,8 +13,8 @@ import { useHandleToggleWishlist } from "@/features/wishlist/hooks/useWishlist";
 import { toast } from "sonner";
 // import type { WishlistBook } from "@/features/wishlist/types/wishlist";
 // import { getBasket } from "@/features/basket/services/basket.api";
-import { getBasketId } from "@/lib/utils/localStorageService";
 import type { Book } from "@/features/books/types/book";
+import useGetBasketId from "@/shared/hooks/useGetBasketId";
 
 // ── forwardRef lets BookGrid's GSAP stagger target each card DOM node ──────
 const BookCard = forwardRef<
@@ -30,14 +30,14 @@ const BookCard = forwardRef<
   const toggleWishlist = useHandleToggleWishlist();
   const { updateOrRemoveBasketItem } = useUpdateBasket();
   // const queryClient = useQueryClient();
-  const basketId = getBasketId();
+  const basketId = useGetBasketId();
   const { data: basket, isLoading } = useGetBasket(basketId);
 
   // ── Wishlist button: quick GSAP scale punch on toggle ────────────────────
   const handleWishlist = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleWishlist({ bookId: book.id, isWished });
+    toggleWishlist({ bookId: book.id, isWished, page: parentType });
     if (btnRef.current) {
       gsap.fromTo(
         btnRef.current,
@@ -139,7 +139,7 @@ const BookCard = forwardRef<
               aria-pressed={isWished}
               className={`
               absolute z-10
-              pointer-events-auto p-1.5 sm:p-2 rounded-full
+              pointer-events-auto p-1.5 rounded-full
               border-2 
               transition-colors duration-200
               flex items-center justify-center
@@ -150,7 +150,7 @@ const BookCard = forwardRef<
               <Heart
                 // size={26}
                 fill={`${isWished ? "#ff6e84" : "none"}`}
-                className={` ${isWished ? "text-error" : "text-on-surface"} size-4 sm:size-7`}
+                className={` ${isWished ? "text-error" : "text-on-surface"} size-4 sm:size-5`}
               />
             </button>
           </div>

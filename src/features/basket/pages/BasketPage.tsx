@@ -17,10 +17,11 @@ import BasketSkeleton from "../components/BasketSkeleton";
 import OrderSummary from "../components/OrderSummary";
 import EmptyState from "@/shared/components/common/EmptyState";
 import AppError from "@/shared/components/common/ErrorBoundary/AppError";
-import { getBasketId } from "@/lib/utils/localStorageService";
+import useGetBasketId from "@/shared/hooks/useGetBasketId";
+import { useAppSelector } from "@/store/hooks";
 
 const BasketPage = () => {
-  const basketId = getBasketId();
+  const basketId = useGetBasketId();
   const {
     data: basket,
     isLoading: cartLoading,
@@ -28,7 +29,7 @@ const BasketPage = () => {
   } = useGetBasket(basketId);
   const { updateOrRemoveBasketItem } = useUpdateBasket();
   const { updateBasketItemQuantity } = useUpdateBasketItemQuantity();
-
+  const basketItemsCount = useAppSelector((state) => state.basket.basketCount);
   const updateQuantity = async (itemId: number, newQuantity: number) => {
     if (!basket || newQuantity < 1) return;
     const updatedBasket: BasketItem = Object.assign(
@@ -54,20 +55,11 @@ const BasketPage = () => {
 
   if (cartLoading) return <BasketSkeleton />;
 
-  if (cartError) {
-    return (
-      <AppError
-        message="Oops! Something went wrong with your cart. Please try again in a minute."
-        link="Brows Books"
-        to="/library"
-      />
-    );
-  }
-  if (!basket) return null;
-  const itemCount =
-    basket?.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
+  // if (!basket) return null;
+  // const itemCount =
+  //   basket?.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
 
-  if (itemCount === 0) {
+  if (basketItemsCount === 0) {
     return (
       <EmptyState
         icon=<ShoppingBag size={34} className="text-primary" />
@@ -76,13 +68,20 @@ const BasketPage = () => {
       />
     );
   }
-
+  if (cartError || !basket) {
+    return (
+      <AppError
+        message="Oops! Something went wrong with your cart. Please try again in a minute."
+        link="Brows Books"
+        to="/library"
+      />
+    );
+  }
   return (
     <main className="main-container">
       <div className="page-container">
-        {/* <div className="flex items-start gap-6 flex-col md:flex-row"> */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          <div className="lg:col-span-2">
+        <div className="w-full col-center lg:flex-row gap-6 lg:items-start">
+          <div className="w-full flex-1">
             <SectionHeader to="/library" link="Explore more Books">
               <div className="flex items-center gap-6 z-10">
                 <div className="icon-card">
@@ -91,9 +90,10 @@ const BasketPage = () => {
                 <div>
                   <h1 className="section-header">
                     Your Basket
-                    {itemCount > 0 && (
+                    {basketItemsCount > 0 && (
                       <span className="items-count-span">
-                        {itemCount} {itemCount === 1 ? "Item" : "Items"}
+                        {basketItemsCount}{" "}
+                        {basketItemsCount === 1 ? "Item" : "Items"}
                       </span>
                     )}
                   </h1>

@@ -18,9 +18,9 @@ const AppError = ({ message, onRetry, link, to }: PaymentErrorProps) => {
         <AlertTriangle className="size-7 text-error" />
       </div>
       <div className="col-center">
-        <h1 className="section-header">Something went wrong</h1>
+        <h1 className="section-header  sm:text-4xl">Something went wrong</h1>
 
-        <p className="text-sm text-on-surface-variant  max-w-sm">
+        <p className="section-description">
           {message ??
             "We couldn't load the checkout page.<br/>This might be a temporary issue."}
         </p>

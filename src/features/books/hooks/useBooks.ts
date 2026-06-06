@@ -10,7 +10,7 @@ export const useGetTrendingBooks = () : UseQueryResult<TrendingBooks[] , Error> 
   return useQuery(trendingBooksQueryOptions());
 }
 
-export const useBookDetail = (id: string) => {
+export const useBookDetail = (id: number) => {
   return useQuery(bookDetailsQueryOptions(id));
 }
 

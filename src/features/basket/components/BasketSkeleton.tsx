@@ -37,12 +37,7 @@ const BasketSkeleton = () => {
                         <SkeletonBlock className="h-7 w-24 sm:ml-4 shrink-0" />
                       </div>
                       <div className="flex justify-between items-center mt-6 pt-6 border-t border-outline-variant/15">
-                        <div className="flex items-center gap-4 bg-surface-container-highest rounded-lg px-2 py-1 border border-outline-variant/15">
-                          <SkeletonBlock className="size-6 rounded" />
-                          <SkeletonBlock className="h-4 w-6" />
-                          <SkeletonBlock className="size-6 rounded" />
-                        </div>
-                        <SkeletonBlock className="h-4 w-16" />
+                        <SkeletonBlock className="h-8 w-30 rounded-lg" />
                       </div>
                     </div>
                   </div>

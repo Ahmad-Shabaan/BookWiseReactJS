@@ -51,11 +51,9 @@ export default function BooksPage() {
 
   useEffect(() => {
     if (!data) return;
-
     const ids: number[] = data.data
-      .filter((book) => book.isWished)
+      .filter((book) => book.isWished === true)
       .map((book) => book.id);
-
     dispatch(mergeWishlist(ids));
   }, [data, dispatch]);
   // Close mobile menu on route change / escape key
@@ -97,8 +95,8 @@ export default function BooksPage() {
   return (
     <div className="main-container lg:pt-16 relative">
       <div className="page-container">
-        <div className="grid grid-cols-1 lg:grid-cols-7 2xl:grid-cols-16 gap-6 items-start ">
-          <div className="lg:col-span-5 2xl:col-span-13 order-1 lg:order-1 relative">
+        <div className="w-full col-center lg:flex-row gap-6 lg:items-start">
+          <div className="w-full flex-1 relative">
             <SectionHeader
               to="/library"
               link="Explore more Books"
@@ -121,28 +119,30 @@ export default function BooksPage() {
 
             {/* ── Content area ────────────────────────────────────────── */}
             <div className="min-w-0 flex-1 w-full">
-              {error && (
+              {error ? (
                 <ErrorMessage msg="Oops! Something went wrong while loading books. Please try again in a minute." />
-              )}
-
-              {/* Grid — passes isLoading so BookGrid owns skeleton rendering */}
-              <BookGrid
-                books={data?.data ?? []}
-                isLoading={isLoading}
-                skeletonCount={12}
-                parentType="Main"
-              />
-
-              {/* Pagination */}
-              {data && !isLoading && !isPending && (
-                <div className="mt-10">
-                  <CustomPagination
-                    pageIndex={uiPageIndex}
-                    pageSize={data.pageSize}
-                    count={data.count}
-                    onPageChange={handlePageChange}
+              ) : (
+                <>
+                  {/* Grid — passes isLoading so BookGrid owns skeleton rendering */}
+                  <BookGrid
+                    books={data?.data ?? []}
+                    isLoading={isLoading}
+                    skeletonCount={12}
+                    parentType="Main"
                   />
-                </div>
+
+                  {/* Pagination */}
+                  {data && !isLoading && !isPending && (
+                    <div className="mt-10">
+                      <CustomPagination
+                        pageIndex={uiPageIndex}
+                        pageSize={data.pageSize}
+                        count={data.count}
+                        onPageChange={handlePageChange}
+                      />
+                    </div>
+                  )}
+                </>
               )}
             </div>
             {!mobileOpen && (
@@ -221,7 +221,7 @@ export default function BooksPage() {
           )}
 
           <aside
-            className="hidden order-2 lg:order-2 lg:col-span-2 2xl:col-span-3  lg:flex flex-col gap-6"
+            className="hidden w-full max-w-65 lg:flex flex-col gap-6"
             ref={sidebarRef}
           >
             <Aside asideHeader="Sort by">
@@ -247,11 +247,11 @@ export default function BooksPage() {
                 <div className="w-full flex justify-between items-center flex-wrap text-on-surface pt-4 gap-y-2">
                   <button
                     onClick={clearFilters}
-                    className="text-sm font-semibold text-on-surface rounded-full transition hover:text-primary border border-on-surface-variant px-4 py-2 cursor-pointer"
+                    className="text-sm lg:text-xs font-semibold  text-on-surface rounded-full transition hover:text-primary border border-on-surface-variant px-4 lg:px-3 py-2 cursor-pointer"
                   >
                     Clear Filters
                   </button>
-                  <div className="bg-primary text-on-primary px-4 py-2 flex-center font-semibold text-sm rounded-full ">
+                  <div className="bg-primary text-on-primary px-4 lg:px-3 py-2 flex-center font-semibold text-sm lg:text-xs rounded-full ">
                     Show {data?.count} results
                   </div>
                 </div>

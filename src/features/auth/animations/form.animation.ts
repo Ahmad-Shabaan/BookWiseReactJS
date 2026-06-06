@@ -27,12 +27,12 @@ export function useSignupFormAnimation({
       });
 
       tl.from(titleSplit.words, {
-        y: -120,
+        y: -80,
         opacity: 0,
-        rotation: "random(-90, 90)",
-        duration: 0.8,
-        ease: "back.out(1.4)",
-        stagger: 0.12,
+        rotation: "random(-35, 35)",
+        duration: 0.85,
+        ease: "back.out(1.3)",
+        stagger: 0.1,
         clearProps: "transform,opacity",
       });
 
@@ -44,42 +44,42 @@ export function useSignupFormAnimation({
       tl.from(
         descSplit.words,
         {
-          y: -60,
+          y: -28,
           opacity: 0,
-          rotation: "random(-25, 25)",
-          duration: 0.6,
+          rotation: "random(-12, 12)",
+          duration: 0.55,
           ease: "power3.out",
-          stagger: 0.04,
+          stagger: 0.035,
           clearProps: "transform,opacity",
         },
-        "-=0.55",
+        "-=0.5",
       );
 
       tl.fromTo(
         q("[data-animate='form'] > *"),
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 18 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.55,
-          ease: "power2.out",
-          stagger: 0.08,
+          duration: 0.5,
+          ease: "power3.out",
+          stagger: 0.06,
           clearProps: "transform,opacity",
         },
-        "-=0.45",
+        "-=0.4",
       );
 
       tl.fromTo(
         q("[data-animate='image']"),
-        { opacity: 0, x: 60 },
+        { opacity: 0, x: 50 },
         {
           opacity: 1,
           x: 0,
-          duration: 0.6,
-          ease: "power2.out",
+          duration: 0.65,
+          ease: "power3.out",
           clearProps: "transform,opacity",
         },
-        "-=0.6",
+        "-=0.55",
       );
       return () => {
         titleSplit.revert();
@@ -91,65 +91,122 @@ export function useSignupFormAnimation({
   );
 }
 
-export function useLoginFormAnimation({
-  sectionRef,
-}: AnimationProps) {
-  useGSAP(
-    () => {
-      if (!sectionRef.current) return;
-      if (prefersReducedMotion()) return;
-      const q = gsap.utils.selector(sectionRef.current);
+export function useLoginFormAnimation({ sectionRef }: AnimationProps) {
+  useGSAP(() => {
+    if (!sectionRef.current) return;
+    if (prefersReducedMotion()) return;
+    const q = gsap.utils.selector(sectionRef.current);
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 1024px)", () => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
       tl.fromTo(
         q("[data-animate='orb']"),
-        { opacity: 0, scale: 0.6 },
+        { opacity: 0, scale: 0.35 },
         {
-          opacity: 1,
+          opacity: 0.65,
           scale: 1,
-          duration: 0.8,
-          stagger: 0.12,
+          duration: 1.0,
+          stagger: 0.18,
+          ease: "power2.out",
           clearProps: "transform,opacity",
         },
       )
         .fromTo(
           q("[data-animate='brand']"),
-          { opacity: 0, x: -30 },
+          { opacity: 0, x: -36 },
           {
             opacity: 1,
             x: 0,
-            duration: 0.6,
+            duration: 0.7,
+            ease: "power3.out",
             clearProps: "transform,opacity",
           },
           "-=0.55",
         )
         .fromTo(
           q("[data-animate='header'] > *"),
-          { opacity: 0, y: 16 },
+          { opacity: 0, y: 22 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            stagger: 0.1,
+            duration: 0.65,
+            stagger: 0.12,
+            ease: "power2.out",
             clearProps: "transform,opacity",
           },
           "-=0.4",
         )
         .fromTo(
           q("[data-animate='form'] > *"),
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 16 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.55,
-            stagger: 0.08,
+            duration: 0.5,
+            stagger: 0.06,
+            ease: "power2.out",
             clearProps: "transform,opacity",
           },
-          "-=0.45",
+          "-=0.35",
         );
       return () => {
         tl.kill();
       };
-    },
-  );
+    });
+    mm.add("(max-width: 1023.98px)", () => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.fromTo(
+        q("[data-animate='orb']"),
+        { opacity: 0, scale: 0.35 },
+        {
+          opacity: 0.65,
+          scale: 1,
+          duration: 1.0,
+          stagger: 0.18,
+          ease: "power2.out",
+          clearProps: "transform,opacity",
+        },
+      )
+        .fromTo(
+          q("[data-animate='brand-mobile']"),
+          { opacity: 0, y: 12 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            ease: "power3.out",
+            clearProps: "transform,opacity",
+          },
+          "-=0.55",
+        )
+        .fromTo(
+          q("[data-animate='header'] > *"),
+          { opacity: 0, y: 22 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            stagger: 0.12,
+            ease: "power2.out",
+            clearProps: "transform,opacity",
+          },
+          "-=0.4",
+        )
+        .fromTo(
+          q("[data-animate='form'] > *"),
+          { opacity: 0, y: 16 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.06,
+            ease: "power2.out",
+            clearProps: "transform,opacity",
+          },
+          "-=0.35",
+        );
+      return () => tl.kill();
+    });
+    return () => mm.kill();
+  });
 }

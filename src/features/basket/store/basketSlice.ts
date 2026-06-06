@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const basketSlice = createSlice({
-  name: "wishlist",
+  name: "basket",
   initialState: {
     basketCount: 0,
   },

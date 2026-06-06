@@ -1,14 +1,14 @@
 import type { BookFilters } from "../types/book";
 
 export const BOOKS_PAGE_SIZE = 12;
-export const BOOKS_DEBOUNCE_MS = 300;
-export const BOOKS_STALE_TIME = 60_000;
-export const BOOKS_GC_TIME = 300_000;
+export const SEARCH_DEBOUNCE_MS = 300;
+export const BOOKS_STALE_TIME = 300_000;
+export const BOOKS_GC_TIME = 1_800_000;
 
 export const BOOKS_QUERY_KEYS = {
   all: () => ["books"] as const,
   list: (filters: BookFilters) => ["books", "list", filters] as const,
-  details: (id: string) => ["books", "details", id] as const,
+  details: (id: number) => ["books", "details", id] as const,
 };
 export const TRENDING_BOOKS_QUERY_KEY = ["trending-books"] as const
 export const CATEGORIES_QUERY_KEY = ["categories"] as const;

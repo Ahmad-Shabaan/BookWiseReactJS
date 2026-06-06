@@ -2,7 +2,6 @@ import { useGSAP } from "@gsap/react";
 import gsap, { prefersReducedMotion } from "@/lib/gsap.config";
 import type { SectionAnimationParams } from "../types/common.types";
 
-
 export function useCardsAnimation({
   sectionRef,
   dependencies,
@@ -14,15 +13,14 @@ export function useCardsAnimation({
       const q = gsap.utils.selector(sectionRef.current);
       gsap.fromTo(
         q("article"),
-        { opacity: 0, y: 24, scale: 0.97 },
+        { opacity: 0, scale: 0.95 }, // x: 28
         {
           opacity: 1,
-          y: 0,
           scale: 1,
-          duration: 0.4,
-          ease: "power2.out",
-          stagger: { amount: 0.2, from: "start" },
-          clearProps: "transform,scale,opacity",
+          duration: 0.5,
+          ease: "power3.out",
+          stagger: { amount: 0.25, from: "start" },
+          clearProps: "transform,opacity",
         },
       );
     },

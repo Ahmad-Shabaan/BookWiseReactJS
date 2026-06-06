@@ -1,8 +1,8 @@
 import { debounce } from "@/lib/utils/debounceFn";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { SEARCH_DEBOUNCE_MS } from "../constants/books.constants";
 
-const DEBOUNCE_MS = 400;
 
 const BookSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,7 +34,7 @@ const BookSearch = () => {
         next.set("page", "1");
       }
       setSearchParams(next, { replace: true });
-    }, DEBOUNCE_MS),
+    }, SEARCH_DEBOUNCE_MS),
   );
 
   useEffect(() => {

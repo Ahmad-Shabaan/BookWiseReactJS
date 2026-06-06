@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 const wishlistSlice = createSlice({
   name: "wishlist",
@@ -8,8 +8,10 @@ const wishlistSlice = createSlice({
     wishlistCount: 0,
   },
   reducers: {
-    mergeWishlist: (state, { payload: ids }: { payload: number[] }) => {
-      state.wishlistBooks = ids;
+    mergeWishlist: (state, { payload: ids }: PayloadAction<number[]>) => {
+      const set = new Set(state.wishlistBooks);
+      ids.forEach((id) => set.add(id));
+      state.wishlistBooks = Array.from(set);
     },
     mergeWishlistCount: (state, { payload: count }: { payload: number }) => {
       state.wishlistCount = count;
@@ -41,6 +43,10 @@ const wishlistSlice = createSlice({
   },
 });
 
-export const { optimisticToggle, revertToggle, mergeWishlist, mergeWishlistCount } =
-  wishlistSlice.actions;
+export const {
+  optimisticToggle,
+  revertToggle,
+  mergeWishlist,
+  mergeWishlistCount,
+} = wishlistSlice.actions;
 export default wishlistSlice.reducer;

@@ -3,16 +3,16 @@ import { createSlice } from '@reduxjs/toolkit';
 
 type initialState = {
   user: {
-    id: number;
+    userId: string;
     username: string;
     email: string;
   } | null;
-  expiresAt: number | null;
+  // expiresAt: number | null;
   isAuthenticated: boolean;
 };
 const initialState: initialState = {
   user: null,
-  expiresAt: null,
+  // expiresAt: null,
   isAuthenticated: false,
 };
 
@@ -21,13 +21,13 @@ const authSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUser(state, action) {
-      state.user      = action.payload.user;
+      state.user = action.payload.user;
       state.isAuthenticated = true;
-      state.expiresAt = Date.now() + action.payload.expiresIn * 1000;
+      // state.expiresAt = Date.now() + action.payload.expiresIn * 1000;
     },
     clearUser(state) {
       state.user      = null;
-      state.expiresAt = null;
+      // state.expiresAt = null;
       state.isAuthenticated = false;
 
     },

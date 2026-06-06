@@ -1,8 +1,8 @@
 import type { OrderStatus } from "../types";
 
 export const ORDERS_PAGE_SIZE = 12;
-export const ORDERS_STALE_TIME = 60_000;
-export const ORDERS_GC_TIME = 300_000;
+export const ORDERS_STALE_TIME = 300_000;
+export const ORDERS_GC_TIME = 1_800_000;
 
 
 export const ORDERS_QUERY_KEYS = {

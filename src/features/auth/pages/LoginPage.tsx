@@ -4,20 +4,23 @@ import { useAuth } from "../hooks/useAuth";
 export default function LoginPage() {
   const { login, isLoggingIn, loginError, isLoginError } = useAuth();
   return (
-    <div className=" flex flex-col items-center md:items-start">
-      <div className=" md:hidden flex-center mb-6">
+    <div className=" flex flex-col items-center lg:items-start">
+      <div data-animate="brand-mobile" className=" lg:hidden flex-center mb-6">
         <Logo className="size-12" />
       </div>
+      {/* md:pl-2 */}
       <div
-        className="w-full md:pl-2 lg:pl-6  flex flex-col items-center md:items-start"
+        className="w-full  lg:pl-6  flex flex-col items-center lg:items-start xl:max-w-lg"
         data-animate="card"
       >
         <section
           data-animate="header"
-          className="space-y-1 mb-6 flex items-center md:items-start justify-center flex-col"
+          className="flex items-center lg:items-start justify-center flex-col"
+
+          // className="space-y-1 mb-6 flex items-center lg:items-start justify-center flex-col"
         >
-          <h1 className="text-3xl font-black tracking-tight">Welcome back!</h1>
-          <p className="text-on-surface-variant">
+          <h1 className="section-header sm:text-3xl">Welcome back!</h1>
+          <p className="section-description max-w-full">
             Sign in to continue your reading journey.
           </p>
         </section>

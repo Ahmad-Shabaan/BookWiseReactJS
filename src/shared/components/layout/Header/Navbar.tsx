@@ -4,13 +4,13 @@ import {
   X,
   Heart,
   ShoppingBasket,
-  UserIcon,
+  ListOrderedIcon,
   LogOutIcon,
   Sun,
   Moon,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetBasketCount } from "@/features/basket/hooks/useBasket";
 import { useMobileMenuAnimation, useNavAnimation } from "./navbar.animation";
 import { mergeWishlistCount } from "@/features/wishlist/store/wishlistSlice";
@@ -20,7 +20,7 @@ import { useLocation } from "react-router-dom";
 // import { HashLink } from "react-router-hash-link";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Spinner } from "@/components/ui/spinner";
-import useTheme from "@/shared/hooks/useTheme";
+// import useTheme from "@/shared/hooks/useTheme";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Logo from "../../common/Logo";
+import { toggleTheme } from "@/shared/store/themeSlice";
 
 const NAV_LINKS = [
   { label: "Discover", to: "/" },
@@ -38,18 +39,22 @@ const NAV_LINKS = [
 ];
 const Navbar = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const theme = useAppSelector((state) => state.theme);
   const [basketId] = useState<string | null>(localStorage.getItem("basketId"));
   const navRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: wishlistCount } = useGetWishlistCount(isAuthenticated);
   const { data: basketCount } = useGetBasketCount(basketId!, isAuthenticated);
   const { logout, isLoggingOut } = useAuth();
-  const [theme, toggleTheme] = useTheme();
+  // const [theme, toggleTheme] = useTheme();
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
   const wishListCountState = useAppSelector(
     (state) => state.wishlist.wishlistCount,
   );
+
+  const basketCountState = useAppSelector((state) => state.basket.basketCount);
 
   useEffect(() => {
     if (wishlistCount !== undefined) {
@@ -117,7 +122,7 @@ const Navbar = () => {
               to="/library/basket"
               style={
                 {
-                  "--count": `"${!basketCount ? 0 : basketCount > 9 ? "9+" : basketCount}"`,
+                  "--count": `"${!basketCountState ? 0 : basketCountState > 9 ? "9+" : basketCountState}"`,
                 } as React.CSSProperties
               }
               className="nav-icon"
@@ -141,19 +146,23 @@ const Navbar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <img
-                    alt="User profile"
+                    alt="User Profile"
                     className="w-8 h-8 sm:w-10 sm:h-10 object-cover"
                     src="/icons/user.png"
                   />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {isAuthenticated && (
-                    <DropdownMenuItem>
-                      <UserIcon />
-                      Profile
+                    <DropdownMenuItem
+                      onSelect={() => navigate("/library/orders")}
+                    >
+                      <div className="flex-center gap-2">
+                        <ListOrderedIcon />
+                        Orders
+                      </div>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem onClick={toggleTheme}>
+                  <DropdownMenuItem onSelect={() => dispatch(toggleTheme())}>
                     {theme === "light" ? (
                       <>
                         <Moon /> Dark Mode
@@ -173,7 +182,13 @@ const Navbar = () => {
                       </Link>
                     </DropdownMenuItem>
                   ) : (
-                    <DropdownMenuItem onClick={logout} variant="destructive">
+                    <DropdownMenuItem
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        logout();
+                      }}
+                      variant="destructive"
+                    >
                       {isLoggingOut ? (
                         <>
                           <Spinner /> Logging out
@@ -218,17 +233,21 @@ const Navbar = () => {
               ))}
               {isAuthenticated && (
                 <div data-animate="nav-link" className="nav-link">
-                  <button className="flex items-center gap-2 cursor-not-allowed">
-                    Profile
-                    <UserIcon size={16} />
-                  </button>
+                  <Link
+                    to={"/library/orders"}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2"
+                  >
+                    Orders
+                    <ListOrderedIcon size={16} />
+                  </Link>
                 </div>
               )}
               <div data-animate="nav-link" className="nav-link">
                 <button
                   className="flex items-center gap-2 cursor-pointer"
                   onClick={() => {
-                    toggleTheme();
+                    dispatch(toggleTheme());
                     setMobileOpen(false);
                   }}
                 >
@@ -256,7 +275,6 @@ const Navbar = () => {
                     className="flex items-center gap-2 cursor-pointer"
                     onClick={() => {
                       logout();
-                      setMobileOpen(false);
                     }}
                   >
                     {isLoggingOut ? (

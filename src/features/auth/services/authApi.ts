@@ -1,9 +1,13 @@
 //  # TanStack Query mutations/queries'
 import axiosClient from "@/shared/api/axiosClient";
 import type { SignupFormValues } from "../schemas/signup.schema";
+import type { User } from "../types/auth.types";
 
-const loginApi = async (creds: { email: string; password: string }) =>
-  await axiosClient.post("/account/login", creds);
+const loginApi = async (creds: {
+  email: string;
+  password: string;
+}): Promise<User> => (await axiosClient.post("/account/login", creds)).data;
+
 const logoutApi = async () => await axiosClient.delete("/account/logout");
 const refreshApi = async () => await axiosClient.post("/account/refresh-token");
 const signupApi = async (creds: SignupFormValues) =>
@@ -18,5 +22,11 @@ const resetPasswordApi = async (data: {
   newPassword: string;
 }) => await axiosClient.post("/account/reset-password", data);
 
-
-export { loginApi, logoutApi, refreshApi, signupApi, forgetPasswordApi, resetPasswordApi };
+export {
+  loginApi,
+  logoutApi,
+  refreshApi,
+  signupApi,
+  forgetPasswordApi,
+  resetPasswordApi,
+};

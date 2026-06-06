@@ -913,6 +913,16 @@ svh = استقرار
 
 
 
+///////////////////////////////////////////
+
+global state need in theme 
+
+because when u use custome hook
+Navbar → useTheme() instance A
+Logo   → useTheme() instance B
+
+toggle → hook logs update
+Logo → no log no any render 
 
 
 
@@ -961,16 +971,26 @@ svh = استقرار
 
 
 
-
-
-
-
-
-
-
-
-
-
+      // queryClient.setQueryData(
+      //   BASKET_QUERY_KEYS,
+      //   (prevState?: BasketResponse) => {
+      //     if (!prevState) return prevState;
+      //     const updatedItems: BasketItem[] = [];
+      //     for (const item of prevState.items) {
+      //       // fill with not target
+      //       if (item.id !== basketItem.id) {
+      //         updatedItems.push(item);
+      //         continue;
+      //       }
+      //       // update
+      //       updatedItems.push({ ...item, quantity: basketItem.quantity });
+      //     }
+      //     return {
+      //       ...prevState,
+      //       items: updatedItems,
+      //     };
+      //   },
+      // );
 
 
 
