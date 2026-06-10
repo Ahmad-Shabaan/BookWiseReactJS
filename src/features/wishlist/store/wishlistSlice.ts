@@ -23,7 +23,6 @@ const wishlistSlice = createSlice({
         state.wishlistBooks.push(bookId);
         state.wishlistCount += 1;
       } else {
-        console.log("remove")
         state.wishlistBooks.splice(idx, 1);
         state.wishlistCount -= 1;
       }

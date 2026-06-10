@@ -1,6 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
 import { getMe } from "../services/authApi";
-import axiosClient from "@/shared/api/axiosClient";
 import {
   USER_GC_TIME,
   USER_QUERY_KEY,

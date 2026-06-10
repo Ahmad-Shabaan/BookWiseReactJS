@@ -51,9 +51,7 @@ const WishlistPage = () => {
 
   useEffect(() => {
     if (!data) return;
-    console.log("data", data);
     const ids: number[] = data.data.map((item: WishlistBook) => item.id);
-    console.log("ids", ids);
     dispatch(mergeWishlist(ids));
   }, [data, dispatch]);
 
