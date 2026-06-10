@@ -9,7 +9,7 @@ const MarketingSection = () => {
       ref={sectionRef}
       className="py-20 sm:py-24 md:py-32 bg-surface-container overflow-hidden"
     >
-      <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+      <div className="section-container">
         <div className="flex flex-col md:flex-row items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
           {/* TEXT */}
           <section

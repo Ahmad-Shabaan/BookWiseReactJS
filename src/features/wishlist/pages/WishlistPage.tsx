@@ -66,8 +66,6 @@ const WishlistPage = () => {
   return (
     <div className="main-container">
       <div className="page-container">
-        {/* <div className="grid grid-cols-1 lg:grid-cols-7 2xl:grid-cols-16 gap-6 items-start">
-         */}
         <div className="w-full col-center lg:flex-row gap-6 lg:items-start">
           <div className="w-full flex-1">
             <SectionHeader to="/library" link="Explore more Books">

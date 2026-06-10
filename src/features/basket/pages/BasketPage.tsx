@@ -17,19 +17,11 @@ import BasketSkeleton from "../components/BasketSkeleton";
 import OrderSummary from "../components/OrderSummary";
 import EmptyState from "@/shared/components/common/EmptyState";
 import AppError from "@/shared/components/common/ErrorBoundary/AppError";
-// import useGetBasketId from "@/shared/hooks/useGetBasketId";
 import { useAppSelector } from "@/store/hooks";
-// import { useQueryClient } from "@tanstack/react-query";
-// import { USER_QUERY_KEY } from "@/features/auth/constants/auth.constants";
-// import type { User } from "@/features/auth/types/auth.types";
 import useUser from "@/features/auth/hooks/useUser";
 
 const BasketPage = () => {
-  const { user:me } = useUser();
-
-  // const basketId = useGetBasketId();
-  // const me: User | undefined = useQueryClient().getQueryData(USER_QUERY_KEY);
-
+  const { user: me } = useUser();
   const {
     data: basket,
     isLoading: cartLoading,
@@ -66,20 +58,6 @@ const BasketPage = () => {
   };
 
   if (cartLoading) return <BasketSkeleton />;
-
-  // if (!basket) return null;
-  // const itemCount =
-  //   basket?.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
-
-  if (basketItemsCount === 0) {
-    return (
-      <EmptyState
-        icon=<ShoppingBag size={34} className="text-primary" />
-        message="Your cart is empty"
-        subMessage="Looks like you haven't added anything to your cart yet. Browse our collection and find your next great read."
-      />
-    );
-  }
   if (cartError || !basket) {
     return (
       <AppError
@@ -102,89 +80,95 @@ const BasketPage = () => {
                 <div>
                   <h1 className="section-header">
                     Your Basket
-                    {basketItemsCount > 0 && (
-                      <span className="items-count-span">
-                        {basketItemsCount}{" "}
-                        {basketItemsCount === 1 ? "Item" : "Items"}
-                      </span>
-                    )}
+                    <span className="items-count-span">
+                      {basketItemsCount}{" "}
+                      {basketItemsCount === 1 ? "Item" : "Items"}
+                    </span>
                   </h1>
                 </div>
               </div>
             </SectionHeader>
-            <div className="bg-surface-container-low rounded-xl p-4 sm:p-6 shadow-soft border border-outline-variant/10">
-              <div className="flex flex-col  gap-4 items-start flex-1 sm:max-h-dvh sm:overflow-y-scroll hide-scrollbar">
-                {basket.items.map((item) => (
-                  <article
-                    key={item.id}
-                    className="w-full shadow-soft flex flex-col sm:flex-row sm:gap-6 p-3 sm:p-4 rounded-xl bg-surface-container-low transition-all hover:bg-surface-container"
-                  >
-                    <div className="max-w-56 sm:size-40 aspect-auto sm:aspect-2/3 shrink-0 rounded-lg overflow-hidden shadow-soft-dim bg-surface-container-lowest flex items-center justify-center relative">
-                      {item.pictureUrl ? (
-                        <img
-                          src={item.pictureUrl}
-                          alt={item.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <BookOpen className="w-10 h-10 text-on-surface-variant" />
-                      )}
-                    </div>
-
-                    <div className="flex flex-col flex-1 justify-between py-2">
-                      <div className="flex flex-col  sm:flex-row sm:justify-between items-end sm:items-start space-y-1">
-                        <div className="space-y-1 flex flex-col items-start w-full">
-                          <h2 className="text-xl font-semibold text-on-background tracking-tight">
-                            {item.title}
-                          </h2>
-                          <p className="text-on-surface-variant text-sm md:text-base">
-                            {item.author}
-                          </p>
-                        </div>
-                        <span className="text-xl sm:text-2xl font-bold text-on-background whitespace-nowrap sm:ml-4">
-                          {item.price.toFixed(2)}{" "}
-                          <span className="currency-span">EGP</span>
-                        </span>
+            {basketItemsCount === 0 ? (
+              <EmptyState
+                icon=<ShoppingBag size={34} className="text-primary" />
+                message="Your cart is empty"
+                subMessage="Looks like you haven't added anything to your cart yet. Browse our collection and find your next great read."
+              />
+            ) : (
+              <div className="bg-surface-container-low rounded-xl p-4 sm:p-6 shadow-soft border border-outline-variant/10">
+                <div className="flex flex-col  gap-4 items-start flex-1 sm:max-h-dvh sm:overflow-y-scroll hide-scrollbar">
+                  {basket.items.map((item) => (
+                    <article
+                      key={item.id}
+                      className="w-full shadow-soft flex flex-col sm:flex-row sm:gap-6 p-3 sm:p-4 rounded-xl bg-surface-container-low transition-all hover:bg-surface-container"
+                    >
+                      <div className="max-w-56 sm:size-40 aspect-auto sm:aspect-2/3 shrink-0 rounded-lg overflow-hidden shadow-soft-dim bg-surface-container-lowest flex items-center justify-center relative">
+                        {item.pictureUrl ? (
+                          <img
+                            src={item.pictureUrl}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <BookOpen className="w-10 h-10 text-on-surface-variant" />
+                        )}
                       </div>
-                      {/* </div> */}
 
-                      <div className="flex justify-between items-center mt-6 pt-6 border-t border-outline-variant/15">
-                        <div className="flex items-center gap-4 bg-surface-container-highest rounded-lg px-2 py-1 border border-outline-variant/15">
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity - 1)
-                            }
-                            className="cursor-pointer p-1 text-on-surface-variant hover:text-primary transition-colors"
-                          >
-                            <Minus className="w-4 h-4" />
-                          </button>
-                          <span className="text-sm font-medium w-6 text-center text-on-background">
-                            {item.quantity}
+                      <div className="flex flex-col flex-1 justify-between py-2">
+                        <div className="flex flex-col  sm:flex-row sm:justify-between items-end sm:items-start space-y-1">
+                          <div className="space-y-1 flex flex-col items-start w-full">
+                            <h2 className="text-xl font-semibold text-on-background tracking-tight">
+                              {item.title}
+                            </h2>
+                            <p className="text-on-surface-variant text-sm md:text-base">
+                              {item.author}
+                            </p>
+                          </div>
+                          <span className="text-xl sm:text-2xl font-bold text-on-background whitespace-nowrap sm:ml-4">
+                            {item.price.toFixed(2)}{" "}
+                            <span className="currency-span">EGP</span>
                           </span>
+                        </div>
+                        {/* </div> */}
+
+                        <div className="flex justify-between items-center mt-6 pt-6 border-t border-outline-variant/15">
+                          <div className="flex items-center gap-4 bg-surface-container-highest rounded-lg px-2 py-1 border border-outline-variant/15">
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
+                              className="cursor-pointer p-1 text-on-surface-variant hover:text-primary transition-colors"
+                            >
+                              <Minus className="w-4 h-4" />
+                            </button>
+                            <span className="text-sm font-medium w-6 text-center text-on-background">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
+                              className="cursor-pointer p-1 text-on-surface-variant hover:text-primary transition-colors"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </button>
+                          </div>
                           <button
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
-                            }
-                            className="cursor-pointer p-1 text-on-surface-variant hover:text-primary transition-colors"
+                            onClick={() => removeItem(item.id)}
+                            className="cursor-pointer text-on-surface-variant hover:text-error transition-colors flex items-center gap-2 text-sm font-medium"
                           >
-                            <Plus className="w-4 h-4" />
+                            <Trash2 className="w-4 h-4" />
+                            Remove
                           </button>
                         </div>
-                        <button
-                          onClick={() => removeItem(item.id)}
-                          className="cursor-pointer text-on-surface-variant hover:text-error transition-colors flex items-center gap-2 text-sm font-medium"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          Remove
-                        </button>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
-          <OrderSummary basket={basket} />
+          {basketItemsCount >= 1 && <OrderSummary basket={basket} />}
         </div>
       </div>
     </main>

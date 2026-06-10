@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useCTAAnimation } from "./cta.animations";
+import { Link } from "react-router-dom";
 
 export function CTASection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -10,8 +11,11 @@ export function CTASection() {
       className="py-24 sm:py-28 md:py-32 relative bg-background"
       ref={sectionRef}
     >
-      <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
-        <div data-animate="cta-content" className="relative rounded-4xl sm:rounded-[3rem] overflow-hidden bg-surface-container py-16 sm:py-20 md:py-24 px-6 sm:px-10 md:px-8 text-center col-center shadow-soft border border-outline-variant/15 group will-change-transform">
+      <div className=" section-container">
+        <div
+          data-animate="cta-content"
+          className="relative rounded-4xl sm:rounded-[3rem] overflow-hidden bg-surface-container py-16 sm:py-20 md:py-24 px-6 sm:px-10 md:px-8 text-center col-center shadow-soft border border-outline-variant/15 group will-change-transform"
+        >
           {/* Ambient glow layers */}
           <div className="absolute inset-0 bg-linear-to-b from-primary/10 to-transparent pointer-events-none group-hover:from-primary/20 transition-colors duration-700" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-primary/20 blur-[150px] rounded-full pointer-events-none" />
@@ -33,10 +37,17 @@ export function CTASection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-              <button className="bg-linear-to-r from-primary to-secondary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg shadow-[0_10px_30px_rgba(163,166,255,0.4)] hover:brightness-110 active:scale-95 transition-all w-full sm:w-auto">
+              <Link
+                to="/login"
+                className="bg-linear-to-r from-primary to-secondary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg shadow-[0_10px_30px_rgba(163,166,255,0.4)] hover:brightness-110 active:scale-95 transition-all w-full sm:w-auto"
+                // className="btn-primary w-full sm:w-auto"
+              >
                 Create Free Account
-              </button>
-              <button className="px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg text-on-surface border border-outline-variant/30 hover:bg-surface-container-highest transition-colors w-full sm:w-auto">
+              </Link>
+              <button
+                className="px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg text-on-surface border border-outline-variant/30 hover:bg-surface-container-highest transition-colors w-full sm:w-auto"
+                // className="btn-secondary w-full sm:w-auto"
+              >
                 Download App
               </button>
             </div>

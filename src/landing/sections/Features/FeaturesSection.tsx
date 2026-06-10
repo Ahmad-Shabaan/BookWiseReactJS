@@ -8,7 +8,7 @@ const FeaturesSection = () => {
   useFeaturesAnimations(sectionRef);
   return (
     <div className="py-16 sm:py-20 md:py-24" ref={sectionRef}>
-      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+      <section className=" section-container">
         <SectionTitle title="Engineered for Readers" subtitle="Experience" />
 
         <div

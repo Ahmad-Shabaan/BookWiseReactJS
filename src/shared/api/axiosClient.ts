@@ -1,9 +1,6 @@
 // # Configured axios instance
-// src/api/axiosClient.js
 import axios from "axios";
 // import { config } from "@/config/env";
-// import { store } from "@/store/store";
-// import { clearUser } from "@/features/auth/store/authSlice";
 let isRefreshing = false;
 let refreshPromise: Promise<void> | null = null;
 const axiosClient = axios.create({
@@ -12,16 +9,6 @@ const axiosClient = axios.create({
   withCredentials: true, // ✅ sends cookies automatically
 });
 
-// ✅ Attach CSRF token to every mutating request
-axiosClient.interceptors.request.use((config) => {
-  const csrf = document.cookie
-    .split("; ")
-    .find((r) => r.startsWith("csrf_token="))
-    ?.split("=")[1];
-
-  if (csrf) config.headers["X-CSRF-TOKEN"] = csrf;
-  return config;
-});
 
 // ✅ Handle 401 globally — auto logout
 axiosClient.interceptors.response.use(
@@ -34,7 +21,6 @@ axiosClient.interceptors.response.use(
       error.response?.status === 401 &&
       !original._retry &&
       !original.url?.includes("/login") &&
-      // !original.url?.includes("/account/me") &&
       !original.skipAuthRefresh &&
       !original.url?.includes("/refresh-token");
     if (shouldRefresh) {

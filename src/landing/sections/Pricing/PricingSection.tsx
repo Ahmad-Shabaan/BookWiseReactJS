@@ -13,7 +13,7 @@ const PricingSection = () => {
       ref={sectionRef}
       id="pricing"
     >
-      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+      <section className="section-container">
         <div className="flex flex-col items-center">
           <SectionTitle title="Simple Pricing" align="center" />
         </div>

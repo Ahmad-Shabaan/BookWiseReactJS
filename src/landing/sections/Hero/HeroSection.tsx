@@ -21,7 +21,7 @@ export function HeroSection() {
       ref={sectionRef}
       className="relative w-full flex items-center overflow-hidden min-h-svh"
     >
-      <div className="container w-full  mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+      <div className=" section-container">
         {/* Background */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-linear-to-r from-background via-background/80 to-transparent z-10" />

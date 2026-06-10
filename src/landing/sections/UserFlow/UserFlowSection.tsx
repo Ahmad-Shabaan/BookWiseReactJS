@@ -12,7 +12,7 @@ const UserFlowSection = () => {
       className="py-24 sm:py-28 md:py-32 relative bg-background"
       ref={sectionRef}
     >
-      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+      <section className=" section-container">
         <div className="flex flex-col items-center">
           <Badge variant="outline" className="mb-2 px-4 py-1">
             Process

@@ -12,7 +12,7 @@ const FAQSection = () => {
       ref={sectionRef}
       className="py-24 sm:py-28 md:py-32 bg-surface-container-low"
     >
-      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 section-title-center">
+      <section className=" section-container section-title-center">
         <SectionTitle
           title="Frequently Asked Questions"
           align="center"

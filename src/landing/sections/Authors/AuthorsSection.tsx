@@ -8,7 +8,7 @@ const AuthorsSection = () => {
   useAuthorsAnimation(sectionRef);
   return (
     <div className="py-16 sm:py-20 md:py-24 bg-background" ref={sectionRef}>
-      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+      <section className="section-container">
         <div className="pr-4 sm:pr-6 md:pr-0">
           <SectionTitle title="Top Authors" accentColor="secondary" />
         </div>

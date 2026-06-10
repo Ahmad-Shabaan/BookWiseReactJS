@@ -8,7 +8,7 @@ export function TestimonialsSection() {
 
   return (
     <div className="py-24 sm:py-28 md:py-32 bg-surface" ref={sectionRef}>
-      <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
+      <div className=" section-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8 mt-12 sm:mt-16">
           {TESTIMONIALS.map((t, i) => (
             <article

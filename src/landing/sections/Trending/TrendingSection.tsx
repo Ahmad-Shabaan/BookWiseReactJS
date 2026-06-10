@@ -11,19 +11,19 @@ import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage"
 const TrendingSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { data: books, isLoading, isError } = useGetTrendingBooks();
-  useTrendingAnimation({sectionRef ,isLoading});
+  useTrendingAnimation({ sectionRef, isLoading });
   return (
     <div
       ref={sectionRef}
       className="py-14 sm:py-16 md:py-20 bg-surface-container-low "
       id="collections"
     >
-      <section className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative">
+      <section className="section-container relative">
         <SectionTitle title="Trending Now" accentColor="secondary" />
-        <div className="absolute right-0 top-0 px-4 text-xs py-1 border rounded-full">
-          <Link to="/library" className="flex-center gap-1">
+        <div className="absolute right-4  top-9 sm:top-0  text-xs px-2 sm:px-4 py-0.5 sm:py-1 border rounded-full">
+          <Link to="/library" className="flex-center gap-1 ">
             See More
-            <ArrowRight size={14} />
+            <ArrowRight size={14} className={"hidden sm:block"} />
           </Link>
         </div>
         <div
@@ -41,7 +41,7 @@ const TrendingSection = () => {
           {isLoading ? (
             Array.from({ length: 12 }).map((_, i) => (
               <div key={i} className="w-1/4 min-w-52 shrink-0">
-                <SkeletonCard parentType="Wishlist"/>
+                <SkeletonCard parentType="Wishlist" />
               </div>
             ))
           ) : isError ? (
