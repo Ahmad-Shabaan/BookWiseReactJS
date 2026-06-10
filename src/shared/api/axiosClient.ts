@@ -8,7 +8,7 @@ let isRefreshing = false;
 let refreshPromise: Promise<void> | null = null;
 const axiosClient = axios.create({
   // baseURL: config.apiUrl,
-  baseURL: "",
+  baseURL: "/api",
   withCredentials: true, // ✅ sends cookies automatically
 });
 
