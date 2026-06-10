@@ -2,11 +2,11 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // localStorage
 // import { createMigrate } from "redux-persist";
 import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers } from "redux";
-import authReducer from "@/features/auth/store/authSlice";
+import { combineReducers, type UnknownAction } from "redux";
 import wishlistReducer from "@/features/wishlist/store/wishlistSlice";
 import basketReducer from "@/features/basket/store/basketSlice";
 import themeReducer from "@/shared/store/themeSlice";
+import { RESET_APP } from "./resetAction";
 
 // what to do when state shape changes? Migrations! (optional, but recommended for production apps)
 // const migrations = {
@@ -23,14 +23,24 @@ const persistConfig = {
   // version: 2, // bump this when your state shape changes
   // migrate: createMigrate(migrations, { debug: false }),
   whitelist: ["books", "wishlist", "basket", "theme"], // ✅ only persist UI state
-  blacklist: ['auth'],  // ❌ never persist auth (security)
+  // blacklist:[]  // never persist...
 };
-const rootReducer = combineReducers({
-  auth: authReducer,
+const appReducer = combineReducers({
   wishlist: wishlistReducer,
   basket: basketReducer,
   theme: themeReducer,
 });
+
+const rootReducer = (
+  state: ReturnType<typeof appReducer> | undefined,
+  action: UnknownAction,
+) => {
+  if (action.type === RESET_APP) {
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
@@ -39,7 +49,11 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // redux-persist dispatches non-serializable actions internally
-        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE","persist/PURGE"],
+        ignoredActions: [
+          "persist/PERSIST",
+          "persist/REHYDRATE",
+          "persist/PURGE",
+        ],
       },
     }),
 });

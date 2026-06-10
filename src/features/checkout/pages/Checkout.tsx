@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import FieldWrapper from "@/shared/components/common/Form/FieldWrapper";
 import { Input } from "@/components/ui/input";
-import { addressSchema, type AddressSchema } from "../utils";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { AddressForm } from "../types";
@@ -22,6 +21,7 @@ import { updateBasketDeliveryMethod } from "@/features/basket/services/basket.ap
 import { useAsideAnimation } from "@/shared/animations/aside.animation";
 import { useCheckout } from "../hooks/useCheckout";
 import useUser from "@/features/auth/hooks/useUser";
+import { addressSchema, type AddressSchema } from "@/lib/utils/validation";
 // import { USER_QUERY_KEY } from "@/features/auth/constants/auth.constants";
 // import type { User } from "@/features/auth/types/auth.types";
 

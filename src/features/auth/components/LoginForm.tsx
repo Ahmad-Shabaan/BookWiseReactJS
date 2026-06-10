@@ -6,13 +6,14 @@ import { Input } from "@/components/ui/input";
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginSchema } from "../schemas/login.schema";
+// import { loginSchema, type LoginSchema } from "../schemas/login.schema";
 
 import GoogleIcon from "@/assets/icons/google.svg";
 import GitHubIcon from "@/assets/icons/github.svg";
 import FieldWrapper from "./FieldWrapper";
 import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
 import type { LoginFormProps } from "../types/auth.types";
+import { loginSchema, type LoginSchema } from "@/lib/utils/validation";
 
 
 export default function LoginForm({

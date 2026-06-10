@@ -34,10 +34,11 @@ axiosClient.interceptors.response.use(
       error.response?.status === 401 &&
       !original._retry &&
       !original.url?.includes("/login") &&
+      // !original.url?.includes("/account/me") &&
+      !original.skipAuthRefresh &&
       !original.url?.includes("/refresh-token");
     if (shouldRefresh) {
       original._retry = true;
-      // !original.url?.includes("/account/me") && // prevent cycle of refreshing
 
       // 🔒 If refresh already running → wait
       if (isRefreshing && refreshPromise) {

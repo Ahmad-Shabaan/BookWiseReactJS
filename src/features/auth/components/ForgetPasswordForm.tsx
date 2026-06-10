@@ -2,13 +2,17 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { Mail } from "lucide-react";
-import {
-  forgetPasswordSchema,
-  type ForgetPasswordSchema,
-} from "../schemas/forget.password.schema";
+// import {
+//   forgetPasswordSchema,
+//   type ForgetPasswordSchema,
+// } from "../schemas/forget.password.schema";
 import FieldWrapper from "./FieldWrapper";
 import { useAuth } from "../hooks/useAuth";
 import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
+import {
+  forgetPasswordSchema,
+  type ForgetPasswordSchema,
+} from "@/lib/utils/validation";
 const ForgetPasswordForm = () => {
   const {
     forgetPassword,

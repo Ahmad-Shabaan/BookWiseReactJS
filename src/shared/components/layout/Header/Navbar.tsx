@@ -45,7 +45,7 @@ const NAV_LINKS = [
 const Navbar = () => {
   // const { isAuthenticated, user } = useAppSelector((state) => state.auth);
   // const me: User | undefined = useQueryClient().getQueryData(USER_QUERY_KEY);
-  const { user: me, isAuthenticated } = useUser();
+  const { user: me, isAuthenticated } = useUser(true);
 
   const theme = useAppSelector((state) => state.theme);
   // const basketId = useGetBasketId();
@@ -53,6 +53,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: wishlistCount } = useGetWishlistCount(isAuthenticated);
+  console.log("from query",wishlistCount);
   const { data: basketCount } = useGetBasketCount(isAuthenticated, me?.userId);
   const { logout, isLoggingOut } = useAuth();
   // const [theme, toggleTheme] = useTheme();
@@ -61,6 +62,8 @@ const Navbar = () => {
   const wishListCountState = useAppSelector(
     (state) => state.wishlist.wishlistCount,
   );
+    console.log("from store",wishListCountState);
+
 
   const basketCountState = useAppSelector((state) => state.basket.basketCount);
 

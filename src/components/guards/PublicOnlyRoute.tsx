@@ -11,7 +11,7 @@ import { Navigate, Outlet } from "react-router-dom";
 const PublicOnlyRoute = () => {
   // const me = useQueryClient().getQueryData(USER_QUERY_KEY);
   // const { data: me, isLoading } = useGetMe();
-  const { isAuthenticated, isLoading } = useUser();
+  const { isAuthenticated, isLoading } = useUser(true);
 
   if (isLoading) return null;
   // If already authenticated, they don't need to see the public only pages.

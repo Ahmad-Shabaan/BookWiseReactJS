@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 // import { setUser, clearUser } from "../store/authSlice";
-// import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import {
   forgetPasswordApi,
   loginApi,
@@ -15,9 +15,10 @@ import { persistor } from "@/store/store";
 
 import { toast } from "sonner";
 import { USER_QUERY_KEY } from "../constants/auth.constants";
+import { RESET_APP } from "@/store/resetAction";
 
 export function useAuth() {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   // const user = useAppSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -62,15 +63,12 @@ export function useAuth() {
   // ── Logout mutation ───────────────────────────────────
   const logoutMutation = useMutation({
     mutationFn: logoutApi,
-    // Regardless of logout success or failure, clear user data and timers
     onSuccess: async () => {
+      dispatch({ type: RESET_APP });
       await queryClient.cancelQueries();
       queryClient.clear();
-      // dispatch(clearUser());
       persistor.pause(); //to disable the subscriber before purging:
       await persistor.purge();
-      // queryClient.invalidateQueries({ queryKey: WISHLIST_COUNT_QUERY_KEYS });
-      // queryClient.invalidateQueries({ queryKey: BASKET_COUNT_QUERY_KEYS });
       navigate("/login", { replace: true });
     },
     onError: () => {

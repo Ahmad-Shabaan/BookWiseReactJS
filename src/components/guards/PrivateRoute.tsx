@@ -12,21 +12,8 @@ import useUser from "@/features/auth/hooks/useUser";
 
 const PrivateRoute = () => {
   const { isAuthenticated, isLoading } = useUser();
-  // const dispatch = useAppDispatch();
-  // const { data: me, isError } = useGetMe();
-  // useEffect(() => {
-  //   if (me) {
-  //     dispatch(
-  //       setUser({
-  //         user: { email: me.email, userId: me.userId },
-  //       }),
-  //     );
-  //   }
-  // }, [me, dispatch]);
 
   if (isLoading) return <Loading />;
-  // return children;
-  // const me = useQueryClient().getQueryData(USER_QUERY_KEY);
 
   // If authenticated, render the nested components using Outlet.
   // Otherwise, redirect to the login page.

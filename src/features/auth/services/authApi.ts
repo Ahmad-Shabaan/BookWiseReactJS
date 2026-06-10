@@ -8,8 +8,12 @@ const loginApi = async (creds: {
   password: string;
 }): Promise<User> => (await axiosClient.post("/account/login", creds)).data;
 
-const getMe = async (): Promise<User> =>
-  (await axiosClient.get("/account/me")).data;
+const getMe = async (skipAuthRefresh?: boolean): Promise<User> =>
+  (
+    await axiosClient.get("/account/me", {
+      skipAuthRefresh: skipAuthRefresh ?? false,
+    })
+  ).data;
 
 const logoutApi = async () => await axiosClient.delete("/account/logout");
 const refreshApi = async () => await axiosClient.post("/account/refresh-token");
@@ -32,5 +36,5 @@ export {
   signupApi,
   forgetPasswordApi,
   resetPasswordApi,
-  getMe
+  getMe,
 };

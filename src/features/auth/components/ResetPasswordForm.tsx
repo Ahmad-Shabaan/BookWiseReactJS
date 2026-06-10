@@ -2,15 +2,16 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import FieldWrapper from "./FieldWrapper";
-import {
-  resetPasswordSchema,
-  type ResetPasswordSchema,
-} from "../schemas/reset.password.schema";
+// import {
+//   resetPasswordSchema,
+//   type ResetPasswordSchema,
+// } from "../schemas/reset.password.schema";
 import { useAuth } from "../hooks/useAuth";
 import { useSearchParams } from "react-router-dom";
 import AppError from "@/shared/components/common/ErrorBoundary/AppError";
 import { Lock } from "lucide-react";
 import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage";
+import { resetPasswordSchema, type ResetPasswordSchema } from "@/lib/utils/validation";
 const ResetPasswordForm = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
