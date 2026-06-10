@@ -2,8 +2,8 @@
 // src/api/axiosClient.js
 import axios from "axios";
 import { config } from "@/config/env";
-import { store } from "@/store/store";
-import { clearUser } from "@/features/auth/store/authSlice";
+// import { store } from "@/store/store";
+// import { clearUser } from "@/features/auth/store/authSlice";
 let isRefreshing = false;
 let refreshPromise: Promise<void> | null = null;
 const axiosClient = axios.create({
@@ -29,13 +29,14 @@ axiosClient.interceptors.response.use(
     const original = error.config;
     const retryRequest = () => axiosClient(original);
     // Try refresh once on 401
-    if (
+    const shouldRefresh: boolean =
       error.response?.status === 401 &&
       !original._retry &&
       !original.url?.includes("/login") &&
-      !original.url?.includes("/refresh-token")
-    ) {
-      original._retry = true;
+      !original.url?.includes("/refresh-token");
+      if (shouldRefresh) {
+        original._retry = true;
+        // !original.url?.includes("/account/me") && // prevent cycle of refreshing
 
       // 🔒 If refresh already running → wait
       if (isRefreshing && refreshPromise) {
@@ -57,7 +58,7 @@ axiosClient.interceptors.response.use(
         .catch(() => {
           isRefreshing = false;
           refreshPromise = null;
-          store.dispatch(clearUser());
+          // store.dispatch(clearUser());
           return Promise.reject(error);
         });
 

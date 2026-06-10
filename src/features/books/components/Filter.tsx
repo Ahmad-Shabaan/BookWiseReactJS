@@ -56,7 +56,7 @@ const Filter = () => {
     setSearchParams(next, { replace: true });
   };
 
-  if (isCategoriesLoading || isAuthorsLoading)
+  if ( isCategoriesLoading || isAuthorsLoading)
     return (
       <div>
         <div className="animate-pulse h-4 bg-surface-container rounded w-1/3 mb-4" />

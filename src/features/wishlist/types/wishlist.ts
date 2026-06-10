@@ -14,12 +14,16 @@ export interface WishlistBook {
   publisher: string;
 }
 export interface WishlistResponse {
-  items: WishlistBook[];
-  totalCount: number;
+  data: WishlistBook[];
+  count: number;
   pageIndex: number;
   pageSize: number;
-  totalPages: number;
 }
+  // data: Book[];
+  // count: number; // Total matching records (for pagination UI)
+  // pageIndex: number; // Current page (1-indexed)
+  // pageSize: number;
+
 
 export interface ToggleWishlistAsyncParams {
   bookId: number;

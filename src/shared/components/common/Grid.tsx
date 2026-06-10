@@ -48,7 +48,7 @@ const Grid = ({
     );
 
   // ── Empty state ───────────────────────────────────────────────────────────
-  if (!books || books.length === 0)
+  if (books.length === 0)
     return parentType === "Main" ? (
       <EmptyState
         message="Oops! No books found for this filter."

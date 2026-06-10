@@ -25,7 +25,6 @@ const PaymentResult = () => {
         if (order.orderStatus === "PaymentReceived") {
           setOrderId(order.id);
           setStatus("success");
-          localStorage.removeItem("basketId");
           return;
         }
         if (order.orderStatus === "PaymentFailed") {
@@ -47,7 +46,7 @@ const PaymentResult = () => {
     );
   }
 
-  if (status === "loading") return <ProcessingPayment />;
+  if ( status === "loading") return <ProcessingPayment />;
 
   return (
     <AppError

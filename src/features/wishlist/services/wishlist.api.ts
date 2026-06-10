@@ -22,10 +22,8 @@ const getWishlist = async (
 };
 
 const getWishlistCount = async (
-  isAuthenticated: boolean,
   signal: AbortSignal,
 ): Promise<number> => {
-  if (!isAuthenticated) return 0;
   const res = await axiosClient.get("/v1/wishlist/count", { signal });
   return res.data.count;
 };

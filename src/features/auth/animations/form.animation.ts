@@ -87,7 +87,7 @@ export function useSignupFormAnimation({
         tl.kill();
       };
     },
-    { dependencies },
+    { dependencies : dependencies ??[] },
   );
 }
 
@@ -155,30 +155,30 @@ export function useLoginFormAnimation({ sectionRef }: AnimationProps) {
     });
     mm.add("(max-width: 1023.98px)", () => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      // tl.fromTo(
+      //   q("[data-animate='orb']"),
+      //   { opacity: 0, scale: 0.35 },
+      //   {
+      //     opacity: 0.65,
+      //     scale: 1,
+      //     duration: 1.0,
+      //     stagger: 0.18,
+      //     ease: "power2.out",
+      //     clearProps: "transform,opacity",
+      //   },
+      // )
       tl.fromTo(
-        q("[data-animate='orb']"),
-        { opacity: 0, scale: 0.35 },
+        q("[data-animate='brand-mobile']"),
+        { opacity: 0, y: 12 },
         {
-          opacity: 0.65,
-          scale: 1,
-          duration: 1.0,
-          stagger: 0.18,
-          ease: "power2.out",
-          clearProps: "transform,opacity",
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: "power3.out",
+          // clearProps: "transform,opacity",
         },
+        "-=0.55",
       )
-        .fromTo(
-          q("[data-animate='brand-mobile']"),
-          { opacity: 0, y: 12 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.55,
-            ease: "power3.out",
-            clearProps: "transform,opacity",
-          },
-          "-=0.55",
-        )
         .fromTo(
           q("[data-animate='header'] > *"),
           { opacity: 0, y: 22 },
@@ -188,7 +188,7 @@ export function useLoginFormAnimation({ sectionRef }: AnimationProps) {
             duration: 0.65,
             stagger: 0.12,
             ease: "power2.out",
-            clearProps: "transform,opacity",
+            // clearProps: "transform,opacity",
           },
           "-=0.4",
         )
@@ -201,7 +201,7 @@ export function useLoginFormAnimation({ sectionRef }: AnimationProps) {
             duration: 0.5,
             stagger: 0.06,
             ease: "power2.out",
-            clearProps: "transform,opacity",
+            // clearProps: "transform,opacity",
           },
           "-=0.35",
         );

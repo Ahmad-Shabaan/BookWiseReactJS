@@ -19,12 +19,13 @@ import ErrorMessage from "@/shared/components/common/ErrorBoundary/ErrorMessage"
 
 // ── BooksPage ─────────────────────────────────────────────────────────────────
 export default function BooksPage() {
+
   const [searchParams, setSearchParams] = useSearchParams();
   const filters = useFiltersFromURL();
   const dispatch = useAppDispatch();
 
   const activeCount = Object.entries(filters).length - 1;
-  const { data, isLoading, error } = useBooks(filters);
+  const { data, isLoading, error , isFetching} = useBooks(filters);
   const [uiPageIndex, setUiPageIndex] = useState<number>(data?.pageIndex ?? 1);
   const [isPending, startTransition] = useTransition();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -56,6 +57,8 @@ export default function BooksPage() {
       .map((book) => book.id);
     dispatch(mergeWishlist(ids));
   }, [data, dispatch]);
+
+
   // Close mobile menu on route change / escape key
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -126,7 +129,7 @@ export default function BooksPage() {
                   {/* Grid — passes isLoading so BookGrid owns skeleton rendering */}
                   <BookGrid
                     books={data?.data ?? []}
-                    isLoading={isLoading}
+                    isLoading={ isLoading || isFetching}
                     skeletonCount={12}
                     parentType="Main"
                   />

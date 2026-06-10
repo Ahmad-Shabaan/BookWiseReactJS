@@ -69,7 +69,6 @@ const useToggleWishlistFromBooks = () => {
       const wasWished = queryClient
         .getQueryData<BooksResponse>(BOOKS_QUERY_KEYS.list(variables.filters))
         ?.data?.find((b) => b.id === variables.bookId)?.isWished;
-
       queryClient.setQueryData(
         BOOKS_QUERY_KEYS.list(variables.filters),
         (prevState?: BooksResponse) => {
@@ -154,7 +153,7 @@ const useRemoveFromWishlist = () => {
 
       const item = queryClient
         .getQueryData<WishlistResponse>(WISHLIST_QUERY_KEYS.list(pageIndex))
-        ?.items?.find((b) => b.id === bookId);
+        ?.data?.find((b) => b.id === bookId);
 
       queryClient.setQueryData<WishlistResponse>(
         WISHLIST_QUERY_KEYS.list(pageIndex),
@@ -162,10 +161,24 @@ const useRemoveFromWishlist = () => {
           if (!prevState) return prevState;
           return {
             ...prevState,
-            items: prevState.items.filter((book) => book.id !== bookId),
+            data: prevState.data.filter((book) => book.id !== bookId),
           };
         },
       );
+
+      queryClient.setQueryData(
+        BOOKS_QUERY_KEYS.all(),
+        (prevState?: BooksResponse) => {
+          if (!prevState) return prevState;
+          return {
+            ...prevState,
+            data: prevState.data.map((book) =>
+              book.id === bookId ? { ...book, isWished: false } : book,
+            ),
+          };
+        },
+      );
+
       return () => {
         dispatch(revertToggle(bookId));
         if (item === undefined) return;
@@ -175,7 +188,7 @@ const useRemoveFromWishlist = () => {
             if (!prev) return prev;
             return {
               ...prev,
-              items: [...prev.items, item],
+              data: [...prev.data, item],
             };
           },
         );
@@ -187,7 +200,8 @@ const useRemoveFromWishlist = () => {
       );
       if (rollback) rollback();
     },
-    onSuccess() {
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ["books"], exact: false });
       if (wishedIds.length > WISHLIST_PAGE_SIZE)
         queryClient.invalidateQueries({
           queryKey: WISHLIST_QUERY_KEYS.all(),

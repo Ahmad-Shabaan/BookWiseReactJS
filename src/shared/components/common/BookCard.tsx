@@ -1,4 +1,4 @@
-import { forwardRef, useRef } from "react";
+import { forwardRef, useRef, useState } from "react";
 import gsap from "@/lib/gsap.config";
 import { Heart } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
@@ -14,7 +14,11 @@ import { toast } from "sonner";
 // import type { WishlistBook } from "@/features/wishlist/types/wishlist";
 // import { getBasket } from "@/features/basket/services/basket.api";
 import type { Book } from "@/features/books/types/book";
-import useGetBasketId from "@/shared/hooks/useGetBasketId";
+import useUser from "@/features/auth/hooks/useUser";
+// import useGetBasketId from "@/shared/hooks/useGetBasketId";
+// import { useQueryClient } from "@tanstack/react-query";
+// import { USER_QUERY_KEY } from "@/features/auth/constants/auth.constants";
+// import type { User } from "@/features/auth/types/auth.types";
 
 // ── forwardRef lets BookGrid's GSAP stagger target each card DOM node ──────
 const BookCard = forwardRef<
@@ -25,13 +29,17 @@ const BookCard = forwardRef<
     parentType: "Main" | "Wishlist";
   }
 >(({ book, isWished, parentType }, ref) => {
+  const [loaded, setLoaded] = useState<boolean>(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   // const [isLoading, setIsLoading] = useState<boolean>(false);
   const toggleWishlist = useHandleToggleWishlist();
   const { updateOrRemoveBasketItem } = useUpdateBasket();
   // const queryClient = useQueryClient();
-  const basketId = useGetBasketId();
-  const { data: basket, isLoading } = useGetBasket(basketId);
+  // const basketId = useGetBasketId();
+  // const me: User | undefined = useQueryClient().getQueryData(USER_QUERY_KEY);
+  const { user: me } = useUser();
+
+  const { data: basket, isLoading } = useGetBasket(me?.userId);
 
   // ── Wishlist button: quick GSAP scale punch on toggle ────────────────────
   const handleWishlist = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,6 +61,7 @@ const BookCard = forwardRef<
   ) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!me?.userId || !basket) return;
     // let basket: BasketResponse | undefined;
     // try {
     //   basket = queryClient.getQueryData(BASKET_QUERY_KEYS);
@@ -61,7 +70,7 @@ const BookCard = forwardRef<
     //     basket = await getBasket(basketId);
     //     setIsLoading(false);
     //   }
-    let basketItem: BasketItem | undefined = basket?.items?.find(
+    let basketItem: BasketItem | undefined = basket.items?.find(
       (i) => i.id === bookId,
     );
     if (!basketItem) {
@@ -74,7 +83,7 @@ const BookCard = forwardRef<
         author: book.author,
         publisher: book.publisher,
       };
-      updateOrRemoveBasketItem({ basketItem, basketId });
+      updateOrRemoveBasketItem({ basketItem, basketId: me.userId });
     } else {
       toast.info(
         "You've already added this book to your basket. View your basket.",
@@ -103,13 +112,21 @@ const BookCard = forwardRef<
     >
       {/* ── Cover ─────────────────────────────────────── */}
       <div className="flex items-center w-full">
-        <div className="relative w-full max-h-full aspect-auto sm:aspect-2/3  overflow-hidden ">
+        <div className="relative w-full max-h-full aspect-auto sm:aspect-2/3  overflow-hidden">
           <img
             src={book.imageUrl}
+            onLoad={() => setLoaded(true)}
             alt={`Cover of ${book.title}`}
             loading="lazy"
-            className="h-full w-full object-cover"
+            className={`h-full w-full object-cover ${loaded ? "opacity-100" : "opacity-0"}`}
           />
+          {!loaded && (
+            <img
+              src={"/book-wise.svg"}
+              alt={`Cover of book`}
+              className="abs-center size-14 animate-pulse duration-300  object-cover"
+            />
+          )}
 
           {/* Gradient overlay — always present for readability */}
           <div
@@ -190,10 +207,10 @@ const BookCard = forwardRef<
             </p>
             <hr className="sm:hidden" />
             <p className="sm:hidden text-xs sm:text-sm text-on-surface-variant tracking-wide font-medium">
-              Copies in library: 15
+              Copies in library: {book.totalCopies}
             </p>
             <p className="sm:hidden text-xs sm:text-sm text-on-surface-variant tracking-wide font-medium">
-              Available today: 5
+              Available today: {book.availableCopies}
             </p>
             <div className="sm:hidden flex justify-center">
               <button

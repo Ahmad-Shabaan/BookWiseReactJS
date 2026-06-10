@@ -17,6 +17,7 @@ import router from "./routes/index.tsx";
 
 import { Suspense } from "react";
 import Loading from "./shared/components/common/Loading.tsx";
+// import AuthProvider from "./shared/providers/AuthProvider.tsx";
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
@@ -24,8 +25,10 @@ createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <QueryClientProvider client={queryClient}>
-        <Suspense fallback={<Loading/>}>
-          <RouterProvider router={router} />
+        <Suspense fallback={<Loading />}>
+          {/* <AuthProvider> */}
+            <RouterProvider router={router} />
+          {/* </AuthProvider> */}
         </Suspense>
         <Toaster position="top-right" />
         <ReactQueryDevtools />

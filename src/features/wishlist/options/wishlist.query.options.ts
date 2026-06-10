@@ -11,10 +11,11 @@ import { getWishlist, getWishlistCount } from "../services/wishlist.api";
 
 export const wishlistCountQueryOptions = (isAuthenticated: boolean) =>
   queryOptions({
-    queryFn: ({ signal }) => getWishlistCount(isAuthenticated, signal),
-    queryKey: WISHLIST_COUNT_QUERY_KEYS,
+    queryFn: ({ signal }) => getWishlistCount(signal),
+    queryKey: WISHLIST_COUNT_QUERY_KEYS(isAuthenticated),
     staleTime: WISHLIST_COUNT_STALE_TIME,
     gcTime: WISHLIST_COUNT_GC_TIME,
+    enabled: isAuthenticated,
   });
 
 export const wishlistQueryOptions = (pageIndex: number) =>

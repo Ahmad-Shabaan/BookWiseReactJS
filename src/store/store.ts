@@ -22,8 +22,8 @@ const persistConfig = {
   storage,
   // version: 2, // bump this when your state shape changes
   // migrate: createMigrate(migrations, { debug: false }),
-  whitelist: ["books", "auth", "wishlist", "basket", "theme"], // ✅ only persist UI state
-  // blacklist: ['auth'],  // ❌ never persist auth (security)
+  whitelist: ["books", "wishlist", "basket", "theme"], // ✅ only persist UI state
+  blacklist: ['auth'],  // ❌ never persist auth (security)
 };
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -39,7 +39,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // redux-persist dispatches non-serializable actions internally
-        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE","persist/PURGE"],
       },
     }),
 });

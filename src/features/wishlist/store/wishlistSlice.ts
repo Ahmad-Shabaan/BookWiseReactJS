@@ -9,9 +9,10 @@ const wishlistSlice = createSlice({
   },
   reducers: {
     mergeWishlist: (state, { payload: ids }: PayloadAction<number[]>) => {
-      const set = new Set(state.wishlistBooks);
-      ids.forEach((id) => set.add(id));
-      state.wishlistBooks = Array.from(set);
+      // const set = new Set(state.wishlistBooks);
+      // ids.forEach((id) => set.add(id));
+      // state.wishlistBooks = Array.from(set);
+      state.wishlistBooks = ids;
     },
     mergeWishlistCount: (state, { payload: count }: { payload: number }) => {
       state.wishlistCount = count;
@@ -22,6 +23,7 @@ const wishlistSlice = createSlice({
         state.wishlistBooks.push(bookId);
         state.wishlistCount += 1;
       } else {
+        console.log("remove")
         state.wishlistBooks.splice(idx, 1);
         state.wishlistCount -= 1;
       }

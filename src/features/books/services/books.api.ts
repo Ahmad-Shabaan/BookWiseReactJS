@@ -39,7 +39,7 @@ export const getBookById = async (id: number): Promise<Book> => {
 
 export const getCategories = async (): Promise<Category[]> => {
   try {
-    const response = await axiosClient.get(config.apiUrl + `/books/categories`);
+    const response = await axiosClient.get(config.apiUrl + `/v1/categories`);
     return response.data;
   } catch (error) {
     throw error instanceof AxiosError ? error : new Error("Unknown error");
@@ -48,7 +48,7 @@ export const getCategories = async (): Promise<Category[]> => {
 
 export const getAuthors = async (): Promise<Category[]> => {
   try {
-    const response = await axiosClient.get(config.apiUrl + `/books/authors`);
+    const response = await axiosClient.get(config.apiUrl + `/v1/authors`);
     return response.data;
   } catch (error) {
     throw error instanceof AxiosError ? error : new Error("Unknown error");

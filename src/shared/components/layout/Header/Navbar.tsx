@@ -30,6 +30,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Logo from "../../common/Logo";
 import { toggleTheme } from "@/shared/store/themeSlice";
+import useUser from "@/features/auth/hooks/useUser";
+// import { useQueryClient } from "@tanstack/react-query";
+// import { USER_QUERY_KEY } from "@/features/auth/constants/auth.constants";
+// import type { User } from "@/features/auth/types/auth.types";
+// import useGetBasketId from "@/shared/hooks/useGetBasketId";
 
 const NAV_LINKS = [
   { label: "Discover", to: "/" },
@@ -38,14 +43,17 @@ const NAV_LINKS = [
   { label: "Pricing", to: "/#pricing" },
 ];
 const Navbar = () => {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  // const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  // const me: User | undefined = useQueryClient().getQueryData(USER_QUERY_KEY);
+  const { user: me, isAuthenticated } = useUser();
+
   const theme = useAppSelector((state) => state.theme);
-  const [basketId] = useState<string | null>(localStorage.getItem("basketId"));
+  // const basketId = useGetBasketId();
   const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: wishlistCount } = useGetWishlistCount(isAuthenticated);
-  const { data: basketCount } = useGetBasketCount(basketId!, isAuthenticated);
+  const { data: basketCount } = useGetBasketCount(isAuthenticated, me?.userId);
   const { logout, isLoggingOut } = useAuth();
   // const [theme, toggleTheme] = useTheme();
   const { pathname } = useLocation();

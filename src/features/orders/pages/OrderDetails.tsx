@@ -119,7 +119,10 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
-          <aside className="w-full lg:max-w-sm flex flex-col gap-6" ref={sidebarRef}>
+          <aside
+            className="w-full lg:max-w-sm flex flex-col gap-6"
+            ref={sidebarRef}
+          >
             <Aside asideHeader="Payment Summary">
               <>
                 <div className="flex flex-col gap-4 mb-8">

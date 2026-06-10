@@ -15,18 +15,25 @@ import type { BasketItem } from "@/features/basket/types";
 import { useRef } from "react";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { toast } from "sonner";
-import useGetBasketId from "@/shared/hooks/useGetBasketId";
+// import useGetBasketId from "@/shared/hooks/useGetBasketId";
 import { useAppSelector } from "@/store/hooks";
+import useUser from "@/features/auth/hooks/useUser";
+// import { useQueryClient } from "@tanstack/react-query";
+// import { USER_QUERY_KEY } from "@/features/auth/constants/auth.constants";
+// import type { User } from "@/features/auth/types/auth.types";
 
 const BookDetailsPage = () => {
+  const { user:me } = useUser();
   const btnRef = useRef<HTMLButtonElement>(null);
   const { id } = useParams<{ id: string }>();
   const { data: book, isLoading, isError } = useBookDetail(Number(id));
   const toggleWishlist = useHandleToggleWishlist();
   const { updateOrRemoveBasketItem } = useUpdateBasket();
   // const queryClient = useQueryClient();
-  const basketId = useGetBasketId();
-  const { data: basket } = useGetBasket(basketId);
+  // const basketId = useGetBasketId();
+  // const me: User | undefined = useQueryClient().getQueryData(USER_QUERY_KEY);
+
+  const { data: basket } = useGetBasket(me?.userId);
   const wishlistIds = useAppSelector((state) => state.wishlist);
   const isWished = (bookId: number): boolean => {
     return wishlistIds.wishlistBooks.findIndex((el) => el === bookId) === -1
@@ -49,7 +56,7 @@ const BookDetailsPage = () => {
     }
   };
 
-  if (isLoading) return <BookDetailsSkeleton />;
+  if ( isLoading) return <BookDetailsSkeleton />;
 
   if (isError || !book) {
     return (
@@ -69,7 +76,8 @@ const BookDetailsPage = () => {
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    let basketItem: BasketItem | undefined = basket?.items?.find(
+    if (!me?.userId || !basket) return;
+    let basketItem: BasketItem | undefined = basket.items?.find(
       (i) => i.id === bookId,
     );
     if (!basketItem) {
@@ -82,7 +90,7 @@ const BookDetailsPage = () => {
         author: book.author,
         publisher: book.publisher,
       };
-      updateOrRemoveBasketItem({ basketItem, basketId });
+      updateOrRemoveBasketItem({ basketItem, basketId: me?.userId });
     } else {
       toast.info(
         "You've already added this book to your basket. View your basket.",

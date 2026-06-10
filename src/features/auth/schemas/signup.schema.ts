@@ -4,12 +4,12 @@ export const signupSchema = z
   .object({
     displayName: z
       .string()
-      .min(3, "Display name must be at least 3 characters")
+      .min(2, "Display name is required")
       .max(50, "Display name must be at most 50 characters"),
 
     firstName: z
       .string()
-      .min(2, "First name must be at least 2 characters")
+      .min(2, "First name is required")
       .max(50, "First name is too long")
       .regex(
         /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/,
@@ -18,7 +18,7 @@ export const signupSchema = z
 
     lastName: z
       .string()
-      .min(2, "Last name must be at least 2 characters")
+      .min(2, "Last name is required")
       .max(50, "Last name is too long")
       .regex(
         /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/,
@@ -29,8 +29,8 @@ export const signupSchema = z
 
     phoneNumber: z
       .string()
-      .min(7, "Phone number is too short")
-      .max(20, "Phone number is too long")
+      .min(7, "Phone number is wrong")
+      .max(20, "Phone number is wrong")
       .regex(/^[+]?[0-9\s\-().]+$/, "Phone number contains invalid characters"),
 
     password: z
@@ -38,7 +38,11 @@ export const signupSchema = z
       .min(8, "Password must be at least 8 characters")
       .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
       .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-      .regex(/[0-9]/, "Password must contain at least one number"),
+      .regex(/[0-9]/, "Password must contain at least one number")
+      .regex(
+        /[^A-Za-z0-9]/,
+        "Password must contain at least one special character",
+      ),
 
     confirmPassword: z.string().min(8, "Please confirm your password"),
 
@@ -65,7 +69,7 @@ export const signupSchema = z
     postalCode: z
       .string()
       .min(3, "Postal code is required")
-      .max(20, "Postal code is too long")
+      .max(20, "Postal code is wrong")
       .regex(/^[A-Za-z0-9\s-]+$/, "Postal code contains invalid characters"),
   })
   .refine((data) => data.password === data.confirmPassword, {

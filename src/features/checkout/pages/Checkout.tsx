@@ -21,17 +21,23 @@ import { BASKET_QUERY_KEYS } from "@/features/basket/constants/basket.constants"
 import { updateBasketDeliveryMethod } from "@/features/basket/services/basket.api";
 import { useAsideAnimation } from "@/shared/animations/aside.animation";
 import { useCheckout } from "../hooks/useCheckout";
-import useGetBasketId from "@/shared/hooks/useGetBasketId";
+import useUser from "@/features/auth/hooks/useUser";
+// import { USER_QUERY_KEY } from "@/features/auth/constants/auth.constants";
+// import type { User } from "@/features/auth/types/auth.types";
 
 export default function Checkout() {
-  const basketId = useGetBasketId();
+  // const basketId = useGetBasketId();
+  const { user: me} = useUser();
+
+  // const me: User | undefined = useQueryClient().getQueryData(USER_QUERY_KEY);
+
   const checkoutIdempotencyKey = useRef(uuidv4()); //fixed across re-render
   const { handleCheckout } = useCheckout();
   const {
     data: basket,
     isLoading: cartLoading,
     isError: cartError,
-  } = useGetBasket(basketId);
+  } = useGetBasket(me?.userId);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // const [error, setError] = useState<string | null>(null);
@@ -68,14 +74,16 @@ export default function Checkout() {
       setValue("deliveryMethodId", basket.deliveryMethodId?.toString() ?? "");
     }
   }, [setValue, basket]);
+
   const onSubmit = handleSubmit(async (data) => {
     try {
+      if (!me?.userId) return;
       setIsLoading(true);
       toast.info("Please wait while we prepare the payment method...");
       const addressForm: AddressForm = {
         ...data,
         deliveryMethodId: Number(data.deliveryMethodId),
-        basketId: basketId!,
+        basketId: me.userId,
       };
       const order = await handleCheckout({
         addressForm,
@@ -128,12 +136,12 @@ export default function Checkout() {
       await queryClient.invalidateQueries({
         queryKey: BASKET_QUERY_KEYS,
       });
+      toast.success("Delivery method updated successfully.");
     } catch {
       toast.error(
         "Oops! Something went wrong while updating the delivery method. Please try again in a minute.",
       );
     } finally {
-      toast.success("Delivery method updated successfully.");
       setInLoadingUpdateDeliveryMethod(false);
     }
   };

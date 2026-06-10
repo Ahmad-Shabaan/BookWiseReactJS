@@ -22,6 +22,7 @@ const SignupPage: React.FC = () => {
       <div className="page-container flex-center">
         <div className="w-full sm:max-w-xl flex flex-col gap-4 sm:gap-6 items-center lg:items-start ">
           <Logo className="size-12" />
+          
           <section className="col-center lg:items-start">
             <h1 data-animate="header" className="section-header sm:text-3xl">
               Create an account
@@ -32,7 +33,7 @@ const SignupPage: React.FC = () => {
             >
               Fill in your details below to get started in seconds.
             </p>
-          </section>
+          </section> 
           {/* ── Form card ── */}
           <SignupForm
             onSubmit={handleSubmit}

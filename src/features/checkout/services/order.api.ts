@@ -18,6 +18,8 @@ export const checkoutApi = async ({
     BasketId: order.basketId,
     DeliveryMethodId: order.deliveryMethodId,
   };
+  console.log(mappedOrder);
+  // return;
   const res = await axiosClient.post("/payments/checkout", mappedOrder, {
     headers: {
       "X-Idempotency-Key": checkoutIdempotencyKey,

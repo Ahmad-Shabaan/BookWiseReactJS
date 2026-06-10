@@ -5,17 +5,15 @@ import type { BasketResponse, UpdateBasketItemParams } from "../types";
 //Add to wishlist and remove from wishlist APIs
 
 // or recreate if not exist
-const getBasket = async (basketId: string): Promise<BasketResponse> => {
+const getBasket = async (basketId?: string): Promise<BasketResponse> => {
   const res = await axiosClient.get("/basket", { params: { basketId } });
   return res.data;
 };
 
 const getBasketCount = async (
-  basketId: string,
-  isAuthenticated: boolean,
   signal: AbortSignal,
+  basketId?: string,
 ): Promise<number> => {
-  if (!isAuthenticated) return 0;
   const res = await axiosClient.get("/basket", {
     params: { basketId },
     signal,

@@ -17,31 +17,43 @@ import BasketSkeleton from "../components/BasketSkeleton";
 import OrderSummary from "../components/OrderSummary";
 import EmptyState from "@/shared/components/common/EmptyState";
 import AppError from "@/shared/components/common/ErrorBoundary/AppError";
-import useGetBasketId from "@/shared/hooks/useGetBasketId";
+// import useGetBasketId from "@/shared/hooks/useGetBasketId";
 import { useAppSelector } from "@/store/hooks";
+// import { useQueryClient } from "@tanstack/react-query";
+// import { USER_QUERY_KEY } from "@/features/auth/constants/auth.constants";
+// import type { User } from "@/features/auth/types/auth.types";
+import useUser from "@/features/auth/hooks/useUser";
 
 const BasketPage = () => {
-  const basketId = useGetBasketId();
+  const { user:me } = useUser();
+
+  // const basketId = useGetBasketId();
+  // const me: User | undefined = useQueryClient().getQueryData(USER_QUERY_KEY);
+
   const {
     data: basket,
     isLoading: cartLoading,
     isError: cartError,
-  } = useGetBasket(basketId);
+  } = useGetBasket(me?.userId);
   const { updateOrRemoveBasketItem } = useUpdateBasket();
   const { updateBasketItemQuantity } = useUpdateBasketItemQuantity();
   const basketItemsCount = useAppSelector((state) => state.basket.basketCount);
+
   const updateQuantity = async (itemId: number, newQuantity: number) => {
-    if (!basket || newQuantity < 1) return;
+    if (!me?.userId || !basket || newQuantity < 1) return;
     const updatedBasket: BasketItem = Object.assign(
       {},
       basket.items.find((i) => i.id === itemId),
     );
     updatedBasket.quantity = newQuantity;
-    updateBasketItemQuantity({ basketId, basketItem: updatedBasket });
+    updateBasketItemQuantity({
+      basketId: me?.userId,
+      basketItem: updatedBasket,
+    });
   };
 
   const removeItem = async (itemId: number) => {
-    if (!basket) return;
+    if (!me?.userId || !basket) return;
     const updatedBasket: BasketItem = Object.assign(
       {},
       basket.items.find((i) => i.id === itemId),
@@ -49,7 +61,7 @@ const BasketPage = () => {
     updatedBasket.quantity = 0;
     updateOrRemoveBasketItem({
       basketItem: updatedBasket,
-      basketId,
+      basketId: me?.userId,
     });
   };
 

@@ -31,16 +31,16 @@ import { useEffect, useRef } from "react";
 import { debounce } from "@/lib/utils/debounceFn";
 
 export const useGetBasket = (
-  basketId: string,
+  basketId?: string,
 ): UseQueryResult<BasketResponse, Error> => {
   return useQuery(basketQueryOptions(basketId));
 };
 
 export const useGetBasketCount = (
-  basketId: string,
   isAuthenticated: boolean,
+  basketId?: string,
 ): UseQueryResult<number, Error> => {
-  return useQuery(basketCountQueryOptions(basketId, isAuthenticated));
+  return useQuery(basketCountQueryOptions(isAuthenticated , basketId));
 };
 
 //steps
@@ -122,13 +122,13 @@ export const useUpdateBasket = () => {
       );
       if (rollback) rollback();
     },
-    // onSuccess() {
-    // actually cache is up to date with db no need validate
-    // queryClient.invalidateQueries({
-    //   queryKey: BASKET_QUERY_KEYS,
-    // });
-    // toast.success("Basket has been updated successfully.");
-    // },
+    onSuccess() {
+      // actually cache is up to date with db no need validate
+      // queryClient.invalidateQueries({
+      // queryKey: BASKET_QUERY_KEYS,
+      // });
+      toast.success("Basket has been updated successfully.");
+    },
   });
 
   return {

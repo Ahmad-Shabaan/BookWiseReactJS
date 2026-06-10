@@ -21,7 +21,7 @@ import { useAsideAnimation } from "@/shared/animations/aside.animation";
 const WishlistPage = () => {
   const [searchParam, setSearchParams] = useSearchParams();
   const pageIndex: number = parseInt(searchParam.get("page") || "1");
-  const { data, isLoading, isError } = useGetWishlist(pageIndex);
+  const { data, isLoading, isError, isFetching } = useGetWishlist(pageIndex);
   const [isPending, startTransition] = useTransition();
   const [uiPageIndex, setUiPageIndex] = useState<number>(data?.pageIndex ?? 1);
   const dispatch = useAppDispatch();
@@ -51,7 +51,9 @@ const WishlistPage = () => {
 
   useEffect(() => {
     if (!data) return;
-    const ids: number[] = data.items.map((item: WishlistBook) => item.id);
+    console.log("data", data);
+    const ids: number[] = data.data.map((item: WishlistBook) => item.id);
+    console.log("ids", ids);
     dispatch(mergeWishlist(ids));
   }, [data, dispatch]);
 
@@ -67,7 +69,7 @@ const WishlistPage = () => {
     <div className="main-container">
       <div className="page-container">
         {/* <div className="grid grid-cols-1 lg:grid-cols-7 2xl:grid-cols-16 gap-6 items-start">
-  */}
+         */}
         <div className="w-full col-center lg:flex-row gap-6 lg:items-start">
           <div className="w-full flex-1">
             <SectionHeader to="/library" link="Explore more Books">
@@ -86,26 +88,29 @@ const WishlistPage = () => {
             </SectionHeader>
             <div className="min-w-0 flex-1 w-full">
               <BookGrid
-                books={data?.items ?? []}
-                isLoading={isLoading}
+                books={data?.data ?? []}
+                isLoading={isLoading || isFetching}
                 skeletonCount={12}
                 parentType="Wishlist"
               />
 
               {/* Pagination */}
-              {data && !isLoading && !isPending && data.items.length > 0 && (
+              {data && !isLoading && !isPending && data.data.length > 0 && (
                 <div className="mt-10">
                   <CustomPagination
                     pageIndex={uiPageIndex}
                     pageSize={data.pageSize}
-                    count={data.totalCount}
+                    count={data.count}
                     onPageChange={handlePageChange}
                   />
                 </div>
               )}
             </div>
           </div>
-          <aside className="w-full lg:max-w-65 lg:flex flex-col gap-6" ref={sidebarRef}>
+          <aside
+            className="w-full lg:max-w-65 lg:flex flex-col gap-6"
+            ref={sidebarRef}
+          >
             <Aside asideHeader="My Library">
               <>
                 <p className="text-on-surface-variant text-body-md mb-6">
