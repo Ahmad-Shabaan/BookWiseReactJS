@@ -1,13 +1,14 @@
 // # Configured axios instance
 // src/api/axiosClient.js
 import axios from "axios";
-import { config } from "@/config/env";
+// import { config } from "@/config/env";
 // import { store } from "@/store/store";
 // import { clearUser } from "@/features/auth/store/authSlice";
 let isRefreshing = false;
 let refreshPromise: Promise<void> | null = null;
 const axiosClient = axios.create({
-  baseURL: config.apiUrl,
+  // baseURL: config.apiUrl,
+  baseURL: "",
   withCredentials: true, // ✅ sends cookies automatically
 });
 
@@ -34,9 +35,9 @@ axiosClient.interceptors.response.use(
       !original._retry &&
       !original.url?.includes("/login") &&
       !original.url?.includes("/refresh-token");
-      if (shouldRefresh) {
-        original._retry = true;
-        // !original.url?.includes("/account/me") && // prevent cycle of refreshing
+    if (shouldRefresh) {
+      original._retry = true;
+      // !original.url?.includes("/account/me") && // prevent cycle of refreshing
 
       // 🔒 If refresh already running → wait
       if (isRefreshing && refreshPromise) {
