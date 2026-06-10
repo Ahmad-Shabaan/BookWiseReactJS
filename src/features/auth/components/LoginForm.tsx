@@ -29,6 +29,7 @@ export default function LoginForm({
     formState: { errors },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
+    mode: "onBlur",
     defaultValues: { email: "", password: "" },
   });
 

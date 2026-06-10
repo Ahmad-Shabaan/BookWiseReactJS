@@ -13,15 +13,15 @@ const AuthLayout = () => {
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <div
             data-animate="orb"
-            className="absolute -left-[15%] -top-[15%] h-[55%] w-[55%] rounded-full bg-primary/15 blur-[140px]"
+            className="absolute -left-[15%] -top-[15%] h-[55%] w-[55%] rounded-full bg-primary/15 blur-[80px] will-change-transform will-change-opacity"
           />
           <div
             data-animate="orb"
-            className="absolute -right-[10%] top-[15%] h-[40%] w-[40%] rounded-full bg-secondary/10 blur-[120px]"
+            className="absolute -right-[10%] top-[15%] h-[40%] w-[40%] rounded-full bg-secondary/10 blur-[60px] will-change-transform will-change-opacity"
           />
           <div
             data-animate="orb"
-            className="absolute bottom-[-5%] left-[30%] h-[35%] w-[35%] rounded-full bg-tertiary/8 blur-[160px]"
+            className="absolute bottom-[-5%] left-[30%] h-[35%] w-[35%] rounded-full bg-tertiary/8 blur-[80px] will-change-transform will-change-opacity"
           />
         </div>
 
