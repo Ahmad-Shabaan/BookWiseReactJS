@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import SignupForm from "../components/SignupForm";
 import BookWise from "@/assets/images/book-wise.png";
-import type { SignupFormValues } from "../schemas/signup.schema";
 import { useRegister } from "../hooks/useRegister";
 import { useSignupFormAnimation } from "../animations/form.animation";
 import Logo from "@/shared/components/common/Logo";
+import type { SignupFormValues } from "@/lib/utils/validation";
 
 const SignupPage: React.FC = () => {
   const { isSigningUp, signup, signupError, isSignupError } = useRegister();

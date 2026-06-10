@@ -1,4 +1,4 @@
-import type { SignupFormValues } from "../schemas/signup.schema";
+import type { SignupFormValues } from "@/lib/utils/validation";
 
 export interface User {
   userId: string;

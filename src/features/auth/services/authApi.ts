@@ -1,7 +1,7 @@
 //  # TanStack Query mutations/queries'
 import axiosClient from "@/shared/api/axiosClient";
-import type { SignupFormValues } from "../schemas/signup.schema";
 import type { User } from "../types/auth.types";
+import type { SignupFormValues } from "@/lib/utils/validation";
 
 const loginApi = async (creds: {
   email: string;
