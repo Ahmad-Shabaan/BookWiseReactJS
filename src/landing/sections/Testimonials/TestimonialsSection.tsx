@@ -2,7 +2,7 @@ import { TESTIMONIALS } from "@/landing/data/testimonials";
 import { useRef } from "react";
 import { useTestimonialsAnimation } from "./testimonials.animations";
 
-export function TestimonialsSection() {
+function TestimonialsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   useTestimonialsAnimation(sectionRef);
 
@@ -42,3 +42,4 @@ export function TestimonialsSection() {
     </div>
   );
 }
+export default TestimonialsSection;

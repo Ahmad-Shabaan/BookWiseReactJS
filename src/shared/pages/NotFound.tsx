@@ -29,7 +29,7 @@ const NotFound = () => {
             <div className="bg-primary/20 absolute inset-0 scale-75 rounded-full blur-3xl" />
             <div className="bg-surface-container-low relative inline-block overflow-hidden rounded-3xl border border-surface-container-highest p-4 backdrop-blur-xl">
               <img
-                src="/images/not-found.png"
+                src="/images/not-found.webp"
                 alt="Lost in the Stacks"
                 className="h-76 w-52 rounded-xl object-cover shadow-2xl grayscale brightness-75 transition-all duration-700 hover:grayscale-0"
               />

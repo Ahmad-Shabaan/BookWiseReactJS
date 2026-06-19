@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useCTAAnimation } from "./cta.animations";
 import { Link } from "react-router-dom";
 
-export function CTASection() {
+function CTASection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   useCTAAnimation(sectionRef);
 
@@ -57,3 +57,5 @@ export function CTASection() {
     </div>
   );
 }
+
+export default CTASection;

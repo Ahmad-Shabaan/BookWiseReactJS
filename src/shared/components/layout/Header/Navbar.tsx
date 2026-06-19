@@ -53,7 +53,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: wishlistCount } = useGetWishlistCount(isAuthenticated);
-  console.log("from query",wishlistCount);
+  console.log("from query", wishlistCount);
   const { data: basketCount } = useGetBasketCount(isAuthenticated, me?.userId);
   const { logout, isLoggingOut } = useAuth();
   // const [theme, toggleTheme] = useTheme();
@@ -62,8 +62,7 @@ const Navbar = () => {
   const wishListCountState = useAppSelector(
     (state) => state.wishlist.wishlistCount,
   );
-    console.log("from store",wishListCountState);
-
+  console.log("from store", wishListCountState);
 
   const basketCountState = useAppSelector((state) => state.basket.basketCount);
 
@@ -130,7 +129,7 @@ const Navbar = () => {
           {/* Right controls */}
           <div className="flex items-start gap-3 sm:gap-4 lg:gap-6 text-on-surface">
             <Link
-              to="/library/basket"
+              to={isAuthenticated ? "/library/basket" : "/login"}
               style={
                 {
                   "--count": `"${!basketCountState ? 0 : basketCountState > 9 ? "9+" : basketCountState}"`,
@@ -142,7 +141,7 @@ const Navbar = () => {
               <ShoppingBasket className="size-5 sm:size-6 lg:size-7 text-on-surface" />
             </Link>
             <Link
-              to="/library/wishlisted"
+              to={isAuthenticated ? "/library/wishlisted" : "/login"}
               aria-label="Wishlist"
               style={
                 {

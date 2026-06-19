@@ -5,12 +5,9 @@ import { useHeroAnimation } from "./hero.animations";
 import { useNavigate } from "react-router-dom";
 
 export function HeroSection() {
-  // 1️Section root (used as GSAP scope)
   const sectionRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState<string>();
   const navigate = useNavigate();
-
-  //  Animation hook (ALL GSAP is isolated)
   useHeroAnimation(sectionRef);
 
   const handleSearch = () => {
@@ -29,7 +26,7 @@ export function HeroSection() {
           <img
             className="w-full h-full object-cover opacity-60"
             alt="Hero background"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYiu3uAf6zcTTjE00Mm84t9fMbttQwSuxE-GAI79geGz0mzhnTBmT5v5oVBCRhuMVMheTovLRiOA9zT7XDBRjpDr3A2_nUDjihGEO-5-3cPcrdvlnXNRqznX_vCylpjByPHZGgm4P3wso3kM7Yx1A1o9iueBWz_XKhpN9k0wTb5IKeyj894Cc110Vg6h1T-gNxuV9fY9WzyXyQxgYx4WiO92XxtJ-9wb1TmiI-qhmt-mFGzlpFfngvWuWaLbpCfz1m3TwyksyYhKs"
+            src="/images/hero-image.webp"
             loading="eager"
             fetchPriority="high"
           />

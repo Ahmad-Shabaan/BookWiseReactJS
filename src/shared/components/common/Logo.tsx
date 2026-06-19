@@ -11,12 +11,12 @@ const Logo = ({ className }: { className?: string }) => {
       {theme === "dark" ? (
         <>
           <img
-            src="/images/phone-dark-logo.png"
+            src="/images/phone-dark-logo.webp"
             alt="logo"
             className={cn("lg:hidden size-9", className)}
           />
           <img
-            src="/images/dark-logo.png"
+            src="/images/dark-logo.webp"
             alt="logo"
             className="hidden lg:inline-block  md:h-8"
           />
@@ -24,13 +24,13 @@ const Logo = ({ className }: { className?: string }) => {
       ) : (
         <>
           <img
-            src="/images/phone-light-logo.png"
+            src="/images/phone-light-logo.webp"
             alt="logo"
             // className=" md:hidden size-9"
             className={cn("lg:hidden size-9", className)}
           />
           <img
-            src="/images/light-logo.png"
+            src="/images/light-logo.webp"
             alt="logo"
             // width={175}
             className="hidden lg:inline-block md:h-8 "
