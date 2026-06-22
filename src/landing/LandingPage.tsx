@@ -14,7 +14,6 @@ import Footer from "@/shared/components/layout/Footer/Footer";
 import { useScrollToHash } from "@/shared/hooks/useScrollToHash";
 import LazySection from "./components/LazySection";
 import SkeletonSection from "./components/SkeletonSection";
-import NavbarSkeleton from "./components/NavbarSkeleton";
 const Navbar = lazy(() => import("@/shared/components/layout/Header/Navbar"));
 const TrendingSection = lazy(
   () => import("./sections/Trending/TrendingSection"),
