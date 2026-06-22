@@ -72,7 +72,7 @@ export function HeroSection() {
               }}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search title, author..."
-              className="h-10 sm:h-11 md:h-12 pl-10 sm:pl-14 pr-24 sm:pr-28 md:pr-32 rounded-full text-sm sm:text-base md:text-lg"
+              className="h-10 sm:h-11 md:h-12 pl-10 sm:pl-14 pr-24 sm:pr-28 md:pr-32 rounded-full text-sm sm:text-base md:text-lg font-normal"
             />
           </div>
         </section>

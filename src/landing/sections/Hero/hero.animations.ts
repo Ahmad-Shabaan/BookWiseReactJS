@@ -8,11 +8,10 @@ export function useHeroAnimation(
   sectionRef: React.RefObject<HTMLDivElement | null>,
   imageLoaded: boolean,
 ) {
-  useGSAP(async () => {
+  useGSAP(() => {
     if (!sectionRef.current) return;
     if (!imageLoaded) return;
     if (prefersReducedMotion()) return;
-    const gsap: any = await import("@/lib/gsap.config");
     // const q = gsap.utils.selector(sectionRef);
     // const split = SplitText.create(q(".heading"), {
     //   type: "chars,words",
@@ -45,9 +44,12 @@ export function useHeroAnimation(
 
     let split: any;
     let tl: gsap.core.Timeline | null = null;
+    let cancelled = false;
 
     const run = async () => {
+      const { default: gsap } = await import("@/lib/gsap.config");
       const { SplitText } = await import("gsap/SplitText");
+      if (cancelled) return;
       const q = gsap.utils.selector(sectionRef);
       split = SplitText.create(q(".heading"), {
         type: "chars,words",
@@ -84,8 +86,9 @@ export function useHeroAnimation(
     run();
 
     return () => {
-      if (split) split.revert();
-      if (tl) tl.kill();
+      cancelled = true;
+      split?.revert();
+      tl?.kill();
     };
   }, [imageLoaded]);
 }
