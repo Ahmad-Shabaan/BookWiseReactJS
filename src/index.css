@@ -9,11 +9,11 @@ create new custom variant use it if حاجات مش معمولة ب variables*/
 @custom-variant light (&:is([data-theme="light"] *));
 
 /* ───────────────── Fonts ───────────────── */
-@font-face {
+/* @font-face {
   font-family: "Modern Negra";
   src: url("/fonts/ModernNegraDemo.woff2") format("truetype");
   font-display: swap;
-}
+} */
 @font-face {
   font-family: "Inter";
   src: url("/fonts/inter-200.woff2") format("woff2");
@@ -154,7 +154,7 @@ create new custom variant use it if حاجات مش معمولة ب variables*/
   /* --border-xs:1px  */
   /* Fonts */
   --font-sans: "Inter", system-ui, sans-serif;
-  --font-modern-negra: "Modern Negra", sans-serif;
+  /* --font-modern-negra: "Modern Negra", sans-serif; */
   --font-serif: "DM Serif Text", serif;
 
   /* Shadows */

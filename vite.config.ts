@@ -15,21 +15,21 @@ export default defineConfig({
       output: {
         manualChunks: {
           // ── vendor main ─────────────────
-          "vendor-react": ["react", "react-dom"],
-          "vendor-router": ["react-router-dom"],
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
 
-          // ── كل حاجة تانية chunk  ───────────────
-          "vendor-query": ["@tanstack/react-query"],
-          "vendor-redux": ["@reduxjs/toolkit", "react-redux", "redux-persist"],
-          "vendor-form": ["react-hook-form", "zod"],
+          "vendor-state": [
+            "@reduxjs/toolkit",
+            "react-redux",
+            "redux-persist",
+            "@tanstack/react-query",
+          ],
           "vendor-ui": [
             "@radix-ui/react-dialog",
             "@radix-ui/react-dropdown-menu",
             "sonner",
-            "lucide-react",
           ],
-          "vendor-gsap": ["gsap"],
-          "vendor-axios": ["axios"],
+          "vendor-icons": ["lucide-react"],
+          "vendor-gsap": ["gsap", "gsap/ScrollTrigger"],
         },
       },
     },

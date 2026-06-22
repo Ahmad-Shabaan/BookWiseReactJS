@@ -42,12 +42,15 @@ export function HeroSection() {
         <section className="relative z-20 w-full max-w-5xl space-y-5 sm:space-y-6 md:space-y-8 py-24 sm:py-28">
           {/* Badge */}
           <div>
-            <p className="badge text-primary uppercase tracking-normal md:tracking-widest font-normal md:font-semibold text-sm sm:text-base">
+            <p className="badge text-primary uppercase tracking-normal md:tracking-widest font-normal text-sm sm:text-base">
               Evolution of Reading
             </p>
           </div>
 
-          <h1 className="heading font-black tracking-tight leading-[1.05] text-on-background text-[clamp(1.9rem, 6.5vw, 5.5rem)]">
+          <h1
+            className="heading font-black tracking-tight leading-[1.05] text-on-background"
+            style={{ fontSize: "clamp(1.9rem, 6.5vw, 5.5rem)" }}
+          >
             Discover your <br />
             <span className="nosplit text-gradient inline-block">
               next favorite
