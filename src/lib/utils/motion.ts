@@ -1,8 +1,3 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
 export const prefersReducedMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -24,6 +19,7 @@ type MotionConfig = {
   x?: number;
 };
 
+// my code
 const createMovingUp = (config?: MotionConfig) => {
   return {
     y: config?.y ?? 30,

@@ -1,6 +1,7 @@
 import { useGSAP } from "@gsap/react";
-import gsap, { prefersReducedMotion } from "@/lib/gsap.config";
+import gsap from "gsap";
 import type { SectionAnimationParams } from "../types/common.types";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 
 export function useAsideAnimation({
   sectionRef,

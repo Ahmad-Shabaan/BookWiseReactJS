@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import SignupForm from "../components/SignupForm";
-import BookWise from "@/assets/images/book-wise.png";
+import BookWise from "@/assets/images/book-wise.webp";
 import { useRegister } from "../hooks/useRegister";
 import { useSignupFormAnimation } from "../animations/form.animation";
 import Logo from "@/shared/components/common/Logo";

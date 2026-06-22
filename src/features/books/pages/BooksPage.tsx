@@ -36,6 +36,8 @@ export default function BooksPage() {
   const handlePageChange = useCallback(
     (p: number) => {
       setUiPageIndex(p);
+
+      //low priority
       startTransition(() => {
         setSearchParams(
           (prev) => {

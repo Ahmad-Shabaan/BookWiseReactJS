@@ -3,13 +3,6 @@ const Footer = () => {
   return (
     <footer className="w-full border-t border-outline-variant/15 bg-background">
       <div className="container w-full mx-auto px-4 sm:px-6 md:px-12 lg:px-16 py-10 sm:py-12">
-        {/*
-          ✅ FIX: Added `flex-wrap` so the three sections (brand, links, social)
-          wrap to a second row on narrow tablets instead of compressing.
-          Previously the `flex-col md:flex-row` layout jumped directly from
-          a vertical stack to a horizontal row with no intermediate state,
-          creating a cramped look at 768px.
-        */}
         <div className="flex flex-col sm:flex-row flex-wrap justify-between items-center gap-6 sm:gap-8">
           {/* Brand + copyright */}
           <div className="space-y-3 text-center sm:text-left">

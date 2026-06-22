@@ -1,8 +1,9 @@
 import { useGSAP } from "@gsap/react";
-import gsap, { prefersReducedMotion } from "@/lib/gsap.config";
+import gsap from "@/lib/gsap.config";
 import { SplitText } from "gsap/all";
 
 import type React from "react";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 
 type AnimationProps = {
   sectionRef: React.RefObject<HTMLDivElement | null>;

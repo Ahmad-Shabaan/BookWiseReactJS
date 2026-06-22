@@ -1,24 +1,16 @@
+import { toast } from "sonner";
 import { forwardRef, useRef, useState } from "react";
-import gsap from "@/lib/gsap.config";
+import gsap from "gsap";
 import { Heart } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
-// import { useQueryClient } from "@tanstack/react-query";
 import {
   useGetBasket,
   useUpdateBasket,
 } from "@/features/basket/hooks/useBasket";
 import type { BasketItem } from "@/features/basket/types";
-// import { BASKET_QUERY_KEYS } from "@/features/basket/constants/basket.constants";
 import { useHandleToggleWishlist } from "@/features/wishlist/hooks/useWishlist";
-import { toast } from "sonner";
-// import type { WishlistBook } from "@/features/wishlist/types/wishlist";
-// import { getBasket } from "@/features/basket/services/basket.api";
 import type { Book } from "@/features/books/types/book";
 import useUser from "@/features/auth/hooks/useUser";
-// import useGetBasketId from "@/shared/hooks/useGetBasketId";
-// import { useQueryClient } from "@tanstack/react-query";
-// import { USER_QUERY_KEY } from "@/features/auth/constants/auth.constants";
-// import type { User } from "@/features/auth/types/auth.types";
 
 // ── forwardRef lets BookGrid's GSAP stagger target each card DOM node ──────
 const BookCard = forwardRef<
@@ -31,12 +23,8 @@ const BookCard = forwardRef<
 >(({ book, isWished, parentType }, ref) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const btnRef = useRef<HTMLButtonElement>(null);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const toggleWishlist = useHandleToggleWishlist();
   const { updateOrRemoveBasketItem } = useUpdateBasket();
-  // const queryClient = useQueryClient();
-  // const basketId = useGetBasketId();
-  // const me: User | undefined = useQueryClient().getQueryData(USER_QUERY_KEY);
   const { user: me } = useUser();
 
   const { data: basket, isLoading } = useGetBasket(me?.userId);

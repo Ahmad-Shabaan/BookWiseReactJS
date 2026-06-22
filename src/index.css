@@ -480,7 +480,7 @@ create new custom variant use it if حاجات مش معمولة ب variables*/
   }
 
   /* NAV */
-  #nav {
+  /* #nav {
     @apply fixed top-0 left-0 z-50 w-full py-4 glass-panel;
 
     div {
@@ -497,8 +497,9 @@ create new custom variant use it if حاجات مش معمولة ب variables*/
 
     a {
       @apply text-base cursor-pointer;
-    }
+    } 
   }
+  */
 
   /* info filed */
 

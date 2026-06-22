@@ -1,15 +1,29 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazy } from "react";
-import PrivateRoute from "../components/guards/PrivateRoute";
-import PublicOnlyRoute from "../components/guards/PublicOnlyRoute";
-import AuthLayout from "@/features/auth/layouts/AuthLayout";
-import LoginPage from "@/features/auth/pages/LoginPage";
-import SignupPage from "@/features/auth/pages/SignupPage";
-import AppLayout from "@/shared/components/layout/AppLayout";
 import LandingPage from "@/landing";
-import ForgetPassword from "@/features/auth/pages/ForgetPassword";
-import ResetPassword from "@/features/auth/pages/ResetPassword";
-import NotFound from "@/shared/pages/NotFound";
+
+// import PrivateRoute from "../components/guards/PrivateRoute";
+// import PublicOnlyRoute from "../components/guards/PublicOnlyRoute";
+// import AuthLayout from "@/features/auth/layouts/AuthLayout";
+// import LoginPage from "@/features/auth/pages/LoginPage";
+// import SignupPage from "@/features/auth/pages/SignupPage";
+// import AppLayout from "@/shared/components/layout/AppLayout";
+// import ForgetPassword from "@/features/auth/pages/ForgetPassword";
+// import ResetPassword from "@/features/auth/pages/ResetPassword";
+// import NotFound from "@/shared/pages/NotFound";
+const PrivateRoute = lazy(() => import("../components/guards/PrivateRoute"));
+const PublicOnlyRoute = lazy(
+  () => import("../components/guards/PublicOnlyRoute"),
+);
+const AuthLayout = lazy(() => import("@/features/auth/layouts/AuthLayout"));
+const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
+const SignupPage = lazy(() => import("@/features/auth/pages/SignupPage"));
+const AppLayout = lazy(() => import("@/shared/components/layout/AppLayout"));
+const ForgetPassword = lazy(
+  () => import("@/features/auth/pages/ForgetPassword"),
+);
+const ResetPassword = lazy(() => import("@/features/auth/pages/ResetPassword"));
+const NotFound = lazy(() => import("@/shared/pages/NotFound"));
 
 const Profile = lazy(() => import("@/features/profile/pages/Profile"));
 const Books = lazy(() => import("@/features/books/pages/BooksPage"));
@@ -31,7 +45,6 @@ const ConfirmedPayment = lazy(
 const Orders = lazy(() => import("@/features/orders/pages/Orders"));
 const OrderDetails = lazy(() => import("@/features/orders/pages/OrderDetails"));
 
-
 const router = createBrowserRouter([
   {
     element: <LandingPage />,
@@ -44,9 +57,7 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <AuthLayout />,
-        children: [
-          { index: true, element: <LoginPage /> },
-        ],
+        children: [{ index: true, element: <LoginPage /> }],
       },
       {
         path: "/forgot-password",

@@ -1,9 +1,6 @@
-import {
-  prefersReducedMotion,
-  START_SCROLL_TRIGGER,
-} from "@/landing/animations";
 import { useGSAP } from "@gsap/react";
 import gsap from "@/lib/gsap.config";
+import { prefersReducedMotion ,START_SCROLL_TRIGGER } from "@/lib/utils/motion";
 
 export function useAuthorsAnimation(
   sectionRef: React.RefObject<HTMLDivElement | null>,

@@ -1,20 +1,20 @@
 import { useGSAP } from "@gsap/react";
-import gsap, { prefersReducedMotion } from "@/lib/gsap.config";
 import type React from "react";
 import type { SectionAnimationParams } from "@/shared/types/common.types";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 
 export function useNavAnimation({ sectionRef }: SectionAnimationParams) {
-  useGSAP(
-    () => {
-      if (!sectionRef.current) return;
-      if (prefersReducedMotion()) return;
-      gsap.fromTo(
-        sectionRef.current,
-        { y: -100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.1 },
-      );
-    },
-  );
+  useGSAP(async () => {
+    if (!sectionRef.current) return;
+    if (prefersReducedMotion()) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const gsap: any = await import("@/lib/gsap.config");
+    gsap.fromTo(
+      sectionRef.current,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.1 },
+    );
+  });
 }
 
 type useNavbarAnimationParams = {
@@ -26,11 +26,12 @@ export function useMobileMenuAnimation({
   active,
 }: useNavbarAnimationParams) {
   useGSAP(
-    () => {
+    async () => {
       if (!sectionRef.current) return;
       if (prefersReducedMotion()) return;
-      if(active === false)
-        return;
+      if (active === false) return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const gsap: any = await import("@/lib/gsap.config");
       const q = gsap.utils.selector(sectionRef.current);
       const navLink = q("[data-animate='nav-link']");
       const menu = q("[data-animate='mobile-menu']");
@@ -113,6 +114,6 @@ export function useMobileMenuAnimation({
       //   });
       //   return () => t1.kill();
     },
-    {  dependencies: [active] },
+    { dependencies: [active] },
   );
 }

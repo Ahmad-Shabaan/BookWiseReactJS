@@ -1,36 +1,72 @@
-import { motion, prefersReducedMotion } from "@/landing/animations";
+import { motion, prefersReducedMotion } from "@/lib/utils/motion";
 import { useGSAP } from "@gsap/react";
-import gsap from "@/lib/gsap.config";
-import { SplitText } from "gsap/all";
+// import { SplitText } from "gsap/all";
 
 export function useHeroAnimation(
   sectionRef: React.RefObject<HTMLDivElement | null>,
 ) {
-  useGSAP(
-    () => {
-      if (!sectionRef.current) return;
-      if (prefersReducedMotion()) return;
+  useGSAP(async () => {
+    if (!sectionRef.current) return;
+    if (prefersReducedMotion()) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const gsap: any = await import("@/lib/gsap.config");
+    // const q = gsap.utils.selector(sectionRef);
+    // const split = SplitText.create(q(".heading"), {
+    //   type: "chars,words",
+    //   ignore: q(".nosplit"),
+    // });
+
+    // const tl = gsap.timeline({
+    //   defaults: { ease: "power3.out" },
+    // });
+
+    // tl.from(q(".badge"), { ...motion.movingUp, clearProps: "transform,opacity" })
+    //   .from(split.chars, { ...motion.movingUp , clearProps: "transform,opacity" }, "-=0.3")
+    //   .from(q(".nosplit"), { ...motion.movingRight, clearProps: "transform,opacity" }, "-=0.8")
+    //   .from(q(".search"), { ...motion.movingUp, clearProps: "transform,opacity" }, "-=0.5");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let split: any;
+    let tl: gsap.core.Timeline;
+
+    const run = async () => {
+      const { SplitText } = await import("gsap/SplitText");
 
       const q = gsap.utils.selector(sectionRef);
 
-      const split = SplitText.create(q(".heading"), {
+      split = SplitText.create(q(".heading"), {
         type: "chars,words",
         ignore: q(".nosplit"),
       });
-
-      const tl = gsap.timeline({
+      tl = gsap.timeline({
         defaults: { ease: "power3.out" },
       });
 
-      tl.from(q(".badge"), { ...motion.movingUp, clearProps: "transform,opacity" })
-        .from(split.chars, { ...motion.movingUp , clearProps: "transform,opacity" }, "-=0.3")
-        .from(q(".nosplit"), { ...motion.movingRight, clearProps: "transform,opacity" }, "-=0.8")
-        .from(q(".search"), { ...motion.movingUp, clearProps: "transform,opacity" }, "-=0.5");
+      tl.from(q(".badge"), {
+        ...motion.movingUp,
+        clearProps: "transform,opacity",
+      })
+        .from(
+          split.chars,
+          { ...motion.movingUp, clearProps: "transform,opacity" },
+          "-=0.3",
+        )
+        .from(
+          q(".nosplit"),
+          { ...motion.movingRight, clearProps: "transform,opacity" },
+          "-=0.8",
+        )
+        .from(
+          q(".search"),
+          { ...motion.movingUp, clearProps: "transform,opacity" },
+          "-=0.5",
+        );
+    };
 
-      return () => {
-        split.revert();
-        tl.kill();
-      };
-    },
-  );
+    run();
+
+    return () => {
+      split.revert();
+      tl.kill();
+    };
+  });
 }

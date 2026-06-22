@@ -10,13 +10,12 @@ import {
   Moon,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import { useGetBasketCount } from "@/features/basket/hooks/useBasket";
 import { useMobileMenuAnimation, useNavAnimation } from "./navbar.animation";
 import { mergeWishlistCount } from "@/features/wishlist/store/wishlistSlice";
 import { useGetWishlistCount } from "@/features/wishlist/hooks/useWishlist";
 import { mergeBasketCount } from "@/features/basket/store/basketSlice";
-import { useLocation } from "react-router-dom";
 // import { HashLink } from "react-router-hash-link";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Spinner } from "@/components/ui/spinner";

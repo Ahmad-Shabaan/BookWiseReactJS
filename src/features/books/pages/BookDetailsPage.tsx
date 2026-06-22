@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { Heart, ShoppingCart, BookOpen, ArrowLeft } from "lucide-react";
-import gsap from "@/lib/gsap.config";
+import gsap from "gsap";
 import { useBookDetail } from "../hooks/useBooks";
 import BookDetailsSkeleton from "../components/BookDetailsSkeleton";
 // import { useAppSelector } from "@/store/hooks";
