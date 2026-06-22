@@ -65,14 +65,14 @@ export function useHeroAnimation(
         .from(q(".badge"), {
           ...motion.movingUp,
           opacity: 1,
-          clearProps: "transform,opacity",
+          clearProps: "transform",
         })
         .from(
           split.chars,
           {
             ...motion.movingUp,
             opacity: 1,
-            clearProps: "transform,opacity",
+            clearProps: "transform",
           },
           "-=0.3",
         )
@@ -81,13 +81,13 @@ export function useHeroAnimation(
           {
             ...motion.movingRight,
             opacity: 1,
-            clearProps: "transform,opacity",
+            clearProps: "transform",
           },
           "-=0.8",
         )
         .from(
           q(".search"),
-          { ...motion.movingUp, opacity: 1, clearProps: "transform,opacity" },
+          { ...motion.movingUp, opacity: 1, clearProps: "transform" },
           "-=0.5",
         );
     };
