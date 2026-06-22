@@ -81,7 +81,7 @@ const OrderDetails = () => {
                     <div className="flex items-center gap-6 ">
                       <div className="size-24 rounded-lg overflow-hidden bg-surface-container-highest flex items-center justify-center shrink-0 shadow-soft-dim">
                         <img
-                          src={item.pictureUrl ?? "/icons/user.png"}
+                          src={item.pictureUrl ?? "/icons/user.webp"}
                           alt={item.bookTitle}
                           className="size-24 object-cover"
                           loading="lazy"

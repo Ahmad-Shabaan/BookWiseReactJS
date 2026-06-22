@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import { HeroSection } from "./sections/Hero/HeroSection";
-import TrendingSection from "./sections/Trending/TrendingSection";
+// import TrendingSection from "./sections/Trending/TrendingSection";
 // import Navbar from "@/shared/components/layout/Header/Navbar";
 // import MarketingSection from "./sections/Marketing/MarketingSection";
 // import FeaturesSection from "./sections/Features/FeaturesSection";
@@ -16,16 +16,21 @@ import LazySection from "./components/LazySection";
 import SkeletonSection from "./components/SkeletonSection";
 import NavbarSkeleton from "./components/NavbarSkeleton";
 const Navbar = lazy(() => import("@/shared/components/layout/Header/Navbar"));
+const TrendingSection = lazy(
+  () => import("./sections/Trending/TrendingSection"),
+);
 
 const LandingPage = () => {
   useScrollToHash();
   return (
     <main className="min-h-svh">
-      <Suspense fallback={<NavbarSkeleton />}>
+      <Suspense>
         <Navbar />
       </Suspense>
       <HeroSection />
-      <TrendingSection />
+      <Suspense fallback={<SkeletonSection />}>
+        <TrendingSection />
+      </Suspense>
       <LazySection
         load={() => import("./sections/Marketing/MarketingSection")}
         fallback={<SkeletonSection />}

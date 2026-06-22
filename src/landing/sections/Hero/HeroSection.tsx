@@ -6,9 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [searchQuery, setSearchQuery] = useState<string>();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [imageLoaded, setImageLoaded] = useState(false);
   const navigate = useNavigate();
-  useHeroAnimation(sectionRef);
+  useHeroAnimation(sectionRef, imageLoaded);
 
   const handleSearch = () => {
     navigate(`/library?search=${searchQuery}`, { replace: true });
@@ -25,10 +26,15 @@ export function HeroSection() {
           <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent z-10" />
           <img
             className="w-full h-full object-cover opacity-60"
-            alt="Hero background"
+            alt="Stack of open books with reading glasses"
             src="/images/hero-image.webp"
             loading="eager"
             fetchPriority="high"
+            onLoad={() => {
+              requestAnimationFrame(() => {
+                setImageLoaded(true);
+              });
+            }}
           />
         </div>
 
@@ -41,10 +47,7 @@ export function HeroSection() {
             </p>
           </div>
 
-          <h1
-            className="heading font-black tracking-tight leading-[1.05] text-on-background"
-            style={{ fontSize: "clamp(1.9rem, 6.5vw, 5.5rem)" }}
-          >
+          <h1 className="heading font-black tracking-tight leading-[1.05] text-on-background text-[clamp(1.9rem, 6.5vw, 5.5rem)]">
             Discover your <br />
             <span className="nosplit text-gradient inline-block">
               next favorite

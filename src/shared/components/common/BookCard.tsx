@@ -208,7 +208,7 @@ const BookCard = forwardRef<
               >
                 {isLoading ? (
                   <img
-                    src="/icons/add-to-cart.png"
+                    src="/icons/add-to-cart.webp"
                     alt="add-to-cart"
                     className="w-6 h-6  animate-[shift-x_2s_ease-in-out_infinite]"
                   />

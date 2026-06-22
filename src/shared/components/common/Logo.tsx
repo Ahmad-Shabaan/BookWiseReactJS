@@ -13,6 +13,7 @@ const Logo = ({ className }: { className?: string }) => {
           <img
             src="/images/phone-dark-logo.webp"
             alt="logo"
+            width={36}
             className={cn("lg:hidden size-9", className)}
           />
           <img
