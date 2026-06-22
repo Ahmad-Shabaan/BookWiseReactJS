@@ -64,30 +64,21 @@ export function useHeroAnimation(
       timeline
         .from(q(".badge"), {
           ...motion.movingUp,
-          opacity: 1,
-          clearProps: "transform",
+          clearProps: "transform,opacity",
         })
         .from(
           split.chars,
-          {
-            ...motion.movingUp,
-            opacity: 1,
-            clearProps: "transform",
-          },
+          { ...motion.movingUp, clearProps: "transform,opacity" },
           "-=0.3",
         )
         .from(
           q(".nosplit"),
-          {
-            ...motion.movingRight,
-            opacity: 1,
-            clearProps: "transform",
-          },
+          { ...motion.movingRight, clearProps: "transform,opacity" },
           "-=0.8",
         )
         .from(
           q(".search"),
-          { ...motion.movingUp, opacity: 1, clearProps: "transform" },
+          { ...motion.movingUp, clearProps: "transform,opacity" },
           "-=0.5",
         );
     };

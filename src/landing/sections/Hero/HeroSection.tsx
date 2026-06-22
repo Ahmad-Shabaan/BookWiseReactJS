@@ -42,13 +42,13 @@ export function HeroSection() {
         <section className="relative z-20 w-full max-w-5xl space-y-5 sm:space-y-6 md:space-y-8 py-24 sm:py-28">
           {/* Badge */}
           <div>
-            <p className="badge opacity-0 text-primary uppercase tracking-normal md:tracking-widest font-normal text-sm sm:text-base">
+            <p className="badge text-primary uppercase tracking-normal md:tracking-widest font-normal text-sm sm:text-base">
               Evolution of Reading
             </p>
           </div>
 
           <h1
-            className="heading opacity-0 font-black tracking-tight leading-[1.05] text-on-background"
+            className="heading font-black tracking-tight leading-[1.05] text-on-background"
             style={{ fontSize: "clamp(1.9rem, 6.5vw, 5.5rem)" }}
           >
             Discover your <br />
@@ -59,7 +59,7 @@ export function HeroSection() {
           </h1>
 
           {/* Search */}
-          <div className="search opacity-0 relative w-full max-w-lg sm:max-w-xl md:max-w-2xl">
+          <div className="search relative w-full max-w-lg sm:max-w-xl md:max-w-2xl">
             <Search
               onClick={handleSearch}
               className="absolute z-1 left-4 sm:left-5 top-1/2 -translate-y-1/2 text-on-surface-variant w-4 h-4 sm:w-5 sm:h-5 cursor-pointer"
